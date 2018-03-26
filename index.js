@@ -14,7 +14,7 @@ function startGraphQLServer(schemaObject, port) {
 
 // run server
     app.listen(port, () => {
-        console.log('POLARIS engine v0.1 is starting your server . . .');
+        console.log('POLARIS engine v1.0.0 is starting your server . . .');
         console.log('----------------------------------------------------------');
         console.log('GraphQL endpoint is now running at: http://localhost:'+port+'/graphql');
         console.log('GraphiQL is now running at: http://localhost:'+port+'/graphiql');
