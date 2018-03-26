@@ -1,6 +1,6 @@
 {
-  "name": "polaris",
-  "version": "1.0.0",
+  "name": "@vulcan/polaris",
+  "version": "0.0.1",
   "description": "A graphql js engine",
   "main": "index.js",
   "scripts": {
