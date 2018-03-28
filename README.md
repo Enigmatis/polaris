@@ -11,7 +11,7 @@ Every "polaris" entity is an object with the following fields:
 The schema is a "polaris" entity by itself.
 
 In order to run the server, you can use the following code:
-```
+```JavaScript
 const {RunGraphQLServer} = require('@vulcan/polaris');
 const Schema = require('./schema/schema');
 RunGraphQLServer(Schema, 3000);
@@ -26,7 +26,7 @@ You should supply the schema **before** the making.
 ### An example of a schema
 
 The ``schema.js`` file will look like this:
-```
+```JavaScript
 const {merge} = require('lodash');
 
 // Get the Query Root object
@@ -53,7 +53,7 @@ module.exports = {
 We are using the `lodash` **merge** function in order to merge our objects (such as resolvers).
 
 The `queryRoot.js` file will look like this:
-```
+```JavaScript
 // We use book in our Query object
 const Book = require('./../output/book');
 const {merge} = require('lodash');
@@ -72,7 +72,7 @@ module.exports = {
 ```
 
 And `book.js`:
-```
+```JavaScript
 const {CommonEntities: {commonEntityInterface, upperCaseDirective}} = require('@vulcan/polaris');
 
 // Define the Book type schema
