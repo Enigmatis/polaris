@@ -1,7 +1,4 @@
-const CommonEntityInterfaceDefinition = `interface CommonEntity{
-        id: ID!
-        creationDate: String,
-        lastUpdateDate: String,
-        dataVersion: Int!}`;
+const CommonEntityInterface = require('./entities/commonEntityInterface');
+const UpperCaseDirective = require('./entities/upperCaseDirective');
 
-module.exports = {commonEntityInterface: {types: CommonEntityInterfaceDefinition}};
+module.exports = {commonEntityInterface: CommonEntityInterface, upperCaseDirective: UpperCaseDirective};

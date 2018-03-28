@@ -19,8 +19,6 @@ class UpperCaseDirective extends SchemaDirectiveVisitor {
 }
 
 module.exports = {
-
     types: typeDefinitions,
     directive: {upper: UpperCaseDirective}
-
 };
