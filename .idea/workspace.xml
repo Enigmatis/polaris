@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3707ed53-0cb6-4a3b-b952-2e97fd698b1c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/common/entities/commonEntityInterface.js" afterPath="$PROJECT_DIR$/api/common/entities/commonEntityInterface.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/common/entities/connectionDirective.js" afterPath="$PROJECT_DIR$/api/common/entities/connectionDirective.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/common/entities/upperCaseDirective.js" afterPath="$PROJECT_DIR$/api/common/entities/upperCaseDirective.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="polaris.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -58,12 +56,44 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="commonEntities.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="commonEntities.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/common/commonEntities.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
               <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="0">
+                <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                <folding>
+                  <marker date="1522243099706" expanded="true" signature="1833:2071" ph="{&quot;resolvers&quot;: resolvers...}" />
+                  <marker date="1522243099706" expanded="true" signature="2542:2854" ph="{&quot;schemaDirectives&quot;: Book.schemaDirectives...}" />
+                  <marker date="1522243099706" expanded="true" signature="3357:3533" ph="{&quot;resolvers&quot;: resolvers...}" />
+                </folding>
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="289">
+                <caret line="85" column="22" selection-start-line="85" selection-start-column="22" selection-end-line="85" selection-end-column="22" />
+                <folding>
+                  <marker date="1522243099706" expanded="true" signature="1833:2071" ph="{&quot;resolvers&quot;: resolvers...}" />
+                  <marker date="1522243099706" expanded="true" signature="2542:2854" ph="{&quot;schemaDirectives&quot;: Book.schemaDirectives...}" />
+                  <marker date="1522243099706" expanded="true" signature="3357:3533" ph="{&quot;resolvers&quot;: resolvers...}" />
+                </folding>
+              </first_editor>
+              <second_editor>
+                <js_state />
+              </second_editor>
             </state>
           </provider>
         </entry>
@@ -125,11 +155,11 @@
         <option value="$PROJECT_DIR$/api/common/types/upperCaseDirectiveType.js" />
         <option value="$PROJECT_DIR$/api/common/directives/upperCaseDirective.js" />
         <option value="$PROJECT_DIR$/index.js" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/api/common/commonEntities.js" />
         <option value="$PROJECT_DIR$/api/common/entities/connectionDirective.js" />
         <option value="$PROJECT_DIR$/api/common/entities/commonEntityInterface.js" />
         <option value="$PROJECT_DIR$/api/common/entities/upperCaseDirective.js" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -365,7 +395,7 @@
       <workItem from="1522235051713" duration="2263000" />
       <workItem from="1522237706283" duration="1858000" />
       <workItem from="1522239734495" duration="1869000" />
-      <workItem from="1522241626894" duration="1436000" />
+      <workItem from="1522241626894" duration="1466000" />
     </task>
     <task id="LOCAL-00001" summary="update version">
       <created>1522063686223</created>
@@ -451,11 +481,18 @@
       <option name="project" value="LOCAL" />
       <updated>1522242952565</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="creating a connection directive but with fixed connection types and with no supplying arguments">
+      <created>1522243076182</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1522243076182</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23708000" />
+    <option name="totallyTimeSpent" value="23738000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
@@ -702,31 +739,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="187">
-            <caret line="73" column="13" selection-start-line="73" selection-start-column="13" selection-end-line="73" selection-end-column="13" />
-          </first_editor>
-          <second_editor>
-            <js_state />
-          </second_editor>
-        </state>
-      </provider>
-      <provider editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="0">
-            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/graphql/type/definition.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="279">
@@ -800,6 +812,33 @@
         <state relative-caret-position="119">
           <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="289">
+            <caret line="85" column="22" selection-start-line="85" selection-start-column="22" selection-end-line="85" selection-end-column="22" />
+            <folding />
+          </first_editor>
+          <second_editor>
+            <js_state />
+          </second_editor>
+        </state>
+      </provider>
+      <provider editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
