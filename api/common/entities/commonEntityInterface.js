@@ -4,4 +4,4 @@ const CommonEntityInterfaceDefinition = `interface CommonEntity{
         lastUpdateDate: String,
         dataVersion: Int!}`;
 
-module.exports = {typeDefs: CommonEntityInterfaceDefinition};
+module.exports = {typeDefs: [CommonEntityInterfaceDefinition]};

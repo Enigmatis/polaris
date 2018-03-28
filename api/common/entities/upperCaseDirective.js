@@ -1,7 +1,7 @@
 const {SchemaDirectiveVisitor} = require("graphql-tools");
 const {defaultFieldResolver} = require("graphql");
 
-const typeDefinitions = `
+const definition = `
     directive @upper on FIELD_DEFINITION
 `;
 
@@ -19,6 +19,6 @@ class UpperCaseDirective extends SchemaDirectiveVisitor {
 }
 
 module.exports = {
-    typeDefs: typeDefinitions,
+    typeDefs: [definition],
     schemaDirectives: {upper: UpperCaseDirective}
 };

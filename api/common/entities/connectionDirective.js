@@ -28,6 +28,6 @@ class ConnectionDirective extends SchemaDirectiveVisitor {
 
 module
     .exports = {
-    typeDefs: typeDefinitions,
+    typeDefs: [typeDefinitions],
     schemaDirectives: {connection: ConnectionDirective}
 };
