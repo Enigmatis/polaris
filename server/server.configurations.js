@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const {graphqlExpress, graphiqlExpress} = require('apollo-server-express');
 const {makeExecutableSchema} = require('graphql-tools');
 const path = require('path');
-var cors = require('cors');
 
 // initialize the app
 function startGraphQLServer(schemaObject, port) {
@@ -11,9 +10,8 @@ function startGraphQLServer(schemaObject, port) {
     const app = express();
 
 // create endpoints
-    app.use('/graphql', bodyParser.json(), graphqlExpress({schema}), cors());
-    app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}), cors());
-    // // app.use('/voyager', require('../voyager'));
+    app.use('/graphql', bodyParser.json(), graphqlExpress({schema}));
+    app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
     app.get('/voyager', function (req, res) {
         res.sendFile(path.join(__dirname, '/voyager/index.html'))
     }, cors());
