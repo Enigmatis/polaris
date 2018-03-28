@@ -39,8 +39,8 @@
       <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
+            <state relative-caret-position="119">
+              <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -349,7 +349,7 @@
       <workItem from="1522225974511" duration="870000" />
       <workItem from="1522231283975" duration="705000" />
       <workItem from="1522233235533" duration="1797000" />
-      <workItem from="1522235051713" duration="1435000" />
+      <workItem from="1522235051713" duration="1467000" />
     </task>
     <task id="LOCAL-00001" summary="update version">
       <created>1522063686223</created>
@@ -393,11 +393,18 @@
       <option name="project" value="LOCAL" />
       <updated>1522235976343</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add readme">
+      <created>1522236498697</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1522236498697</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17717000" />
+    <option name="totallyTimeSpent" value="17749000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="632" y="147" width="720" height="860" extended-state="0" />
@@ -438,7 +445,8 @@
     <MESSAGE value="add common entities" />
     <MESSAGE value="including voyager" />
     <MESSAGE value="added upper case directive and common directives" />
-    <option name="LAST_COMMIT_MESSAGE" value="added upper case directive and common directives" />
+    <MESSAGE value="add readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="add readme" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -726,8 +734,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
+        <state relative-caret-position="119">
+          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
           <folding />
         </state>
       </provider>
