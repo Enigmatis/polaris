@@ -3,27 +3,50 @@ const bodyParser = require('body-parser');
 const {graphqlExpress, graphiqlExpress} = require('apollo-server-express');
 const {makeExecutableSchema} = require('graphql-tools');
 const path = require('path');
+const cors = require('cors');
 
 // initialize the app
-function startGraphQLServer(schemaObject, port) {
+function createEndpoints(enableCrossOrigin, app, schema, enableGraphiql, enableVoyager) {
+    if (enableCrossOrigin) {
+        app.use(cors());
+    }
+
+    app.use('/graphql', bodyParser.json(), graphqlExpress({schema}));
+
+    if (enableGraphiql) {
+        app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
+    }
+    if (enableVoyager) {
+        app.get('/voyager', function (req, res) {
+            res.sendFile(path.join(__dirname, '/voyager/index.html'))
+        });
+    }
+}
+
+function listen(app, port, enableGraphiql, enableVoyager, enableCrossOrigin) {
+    app.listen(port, () => {
+        console.log('POLARIS graphql server is now running');
+        console.log('----------------------------------------------------------');
+        console.log('GraphQL endpoint is now running at: http://localhost:' + port + '/graphql');
+        if (enableGraphiql) {
+            console.log('GraphiQL is now running at: http://localhost:' + port + '/graphiql');
+        }
+        if (enableVoyager) {
+            console.log('Voyager is now running at: http://localhost:' + port + '/voyager');
+        }
+        if (enableCrossOrigin) {
+            console.log('Cross Origin is enabled.');
+        }
+    });
+}
+
+function startGraphQLServer(schemaObject, port, enableGraphiql = true, enableVoyager = true, enableCrossOrigin = true) {
     const schema = makeExecutableSchema(schemaObject);
     const app = express();
 
-// create endpoints
-    app.use('/graphql', bodyParser.json(), graphqlExpress({schema}));
-    app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
-    app.get('/voyager', function (req, res) {
-        res.sendFile(path.join(__dirname, '/voyager/index.html'))
-    });
+    createEndpoints(enableCrossOrigin, app, schema, enableGraphiql, enableVoyager);
 
-// run server
-    app.listen(port, () => {
-        console.log('POLARIS engine v1.0.0 is starting your server . . .');
-        console.log('----------------------------------------------------------');
-        console.log('GraphQL endpoint is now running at: http://localhost:' + port + '/graphql');
-        console.log('GraphiQL is now running at: http://localhost:' + port + '/graphiql');
-        console.log('Voyager is not running at: http://localhost:' + port + '/voyager');
-    });
+    listen(app, port, enableGraphiql, enableVoyager, enableCrossOrigin);
 }
 
 module.exports = {startGraphQLServer: startGraphQLServer};
