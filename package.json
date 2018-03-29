@@ -1,7 +1,7 @@
 {
   "name": "@enigma/polaris",
   "version": "0.0.1",
-  "description": "A graphql js engine",
+  "description": "An express graphql js engine",
   "main": "index.js",
   "scripts": {
     "test": "test"
