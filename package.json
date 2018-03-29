@@ -1,5 +1,5 @@
 {
-  "name": "@vulcan/polaris",
+  "name": "@enigma/polaris",
   "version": "0.0.1",
   "description": "A graphql js engine",
   "main": "index.js",
