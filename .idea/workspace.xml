@@ -4,7 +4,6 @@
     <list default="true" id="3707ed53-0cb6-4a3b-b952-2e97fd698b1c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/common/entities/connectionDirective.js" afterPath="$PROJECT_DIR$/api/common/entities/connectionDirective.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.configurations.js" afterPath="$PROJECT_DIR$/server/server.configurations.js" />
     </list>
     <ignored path="polaris.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,8 +39,8 @@
       <file leaf-file-name="connectionDirective.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/common/entities/connectionDirective.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+            <state relative-caret-position="510">
+              <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -366,7 +365,7 @@
       <workItem from="1522239734495" duration="1869000" />
       <workItem from="1522241626894" duration="2071000" />
       <workItem from="1522244353666" duration="319000" />
-      <workItem from="1522303949439" duration="2045000" />
+      <workItem from="1522303949439" duration="2140000" />
     </task>
     <task id="LOCAL-00001" summary="update version">
       <created>1522063686223</created>
@@ -473,11 +472,18 @@
       <option name="project" value="LOCAL" />
       <updated>1522244418662</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="creating dynamic edges/connections types">
+      <created>1522306019942</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1522306019942</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26707000" />
+    <option name="totallyTimeSpent" value="26802000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
@@ -523,7 +529,8 @@
     <MESSAGE value="creating a connection directive but with fixed connection types and with no supplying arguments" />
     <MESSAGE value="update readme" />
     <MESSAGE value="remove unneeded lines" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove unneeded lines" />
+    <MESSAGE value="creating dynamic edges/connections types" />
+    <option name="LAST_COMMIT_MESSAGE" value="creating dynamic edges/connections types" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -825,8 +832,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/common/entities/connectionDirective.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+        <state relative-caret-position="510">
+          <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
           <folding />
         </state>
       </provider>

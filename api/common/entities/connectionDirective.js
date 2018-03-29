@@ -14,8 +14,8 @@ const typeDefinitions = `
 class ConnectionDirective extends SchemaDirectiveVisitor {
     visitFieldDefinition(field) {
         var typeNameWithoutBraces = field.type.toString().replace(/\]|\[/g, '');
-        var edgeName = typeNameWithoutBraces + "Edge";
-        var connectionName = typeNameWithoutBraces + "Connection";
+        var edgeName = typeNameWithoutBraces + "sEdge";
+        var connectionName = typeNameWithoutBraces + "sConnection";
         // Create the edge type
         var fieldEdge = new GraphQLObjectType({
             name: edgeName,
