@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3707ed53-0cb6-4a3b-b952-2e97fd698b1c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="polaris.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,11 +75,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
               <caret line="30" column="23" lean-forward="true" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="6" lean-forward="true" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -151,8 +160,8 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="392" />
-    <option name="y" value="81" />
+    <option name="x" value="419" />
+    <option name="y" value="187" />
     <option name="width" value="1444" />
     <option name="height" value="876" />
   </component>
@@ -334,7 +343,7 @@
       <workItem from="1522303949439" duration="2179000" />
       <workItem from="1522306146863" duration="753000" />
       <workItem from="1522326305036" duration="873000" />
-      <workItem from="1522355129034" duration="1121000" />
+      <workItem from="1522355129034" duration="1294000" />
     </task>
     <task id="LOCAL-00001" summary="update version">
       <created>1522063686223</created>
@@ -469,14 +478,21 @@
       <option name="project" value="LOCAL" />
       <updated>1522355363540</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="add dependencies">
+      <created>1522356303578</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1522356303578</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29588000" />
+    <option name="totallyTimeSpent" value="29761000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="392" y="81" width="1444" height="876" extended-state="0" />
+    <frame x="419" y="187" width="1444" height="876" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21763869" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -526,7 +542,8 @@
     <MESSAGE value="add s" />
     <MESSAGE value="change project name" />
     <MESSAGE value="description" />
-    <option name="LAST_COMMIT_MESSAGE" value="description" />
+    <MESSAGE value="add dependencies" />
+    <option name="LAST_COMMIT_MESSAGE" value="add dependencies" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -593,13 +610,6 @@
     <entry file="file://$PROJECT_DIR$/server/voyager/index.jsx" />
     <entry file="file://$PROJECT_DIR$/server/voyager/index.html" />
     <entry file="file://$PROJECT_DIR$/server/voyager/README.md" />
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="6" lean-forward="false" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/voyager/webpack-example/index.html" />
     <entry file="file://$PROJECT_DIR$/server/voyager/node_modules/express-graphql/dist/index.js" />
     <entry file="file://$PROJECT_DIR$/server/voyager/schema.js" />
@@ -691,6 +701,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="30" column="23" lean-forward="true" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="6" lean-forward="true" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
           <folding />
         </state>
       </provider>
