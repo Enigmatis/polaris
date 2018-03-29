@@ -14,7 +14,7 @@ function startGraphQLServer(schemaObject, port) {
     app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
     app.get('/voyager', function (req, res) {
         res.sendFile(path.join(__dirname, '/voyager/index.html'))
-    }, cors());
+    });
 
 // run server
     app.listen(port, () => {
