@@ -19,6 +19,6 @@ class UpperCaseDirective extends SchemaDirectiveVisitor {
     };
 }
 
-let upperCaseWrapper = new PolarisTypeWrapper([definition], new PolarisDirectiveWrapper('upper', UpperCaseDirective));
+let UpperCaseWrapper = new PolarisTypeWrapper([definition],null, new PolarisDirectiveWrapper('upper', UpperCaseDirective).toDirective());
 
-export {upperCaseWrapper};
+export {UpperCaseWrapper};

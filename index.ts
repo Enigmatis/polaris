@@ -1,7 +1,10 @@
 import {startGraphQLServer} from './server/server.configurations';
-import CommonEntities = require('./api/common/commonEntities');
+import * as CommonEntities from './api/common/commonEntities';
+import {PolarisTypeWrapper, PolarisDirectiveWrapper}  from './common/polarisTypeWrapper';
 
-module.exports = {
-    RunGraphQLServer: startGraphQLServer,
-    CommonEntities: CommonEntities,
+export {
+    startGraphQLServer as RunGraphQLServer,
+    CommonEntities as CommonEntities,
+    PolarisTypeWrapper,
+    PolarisDirectiveWrapper
 };

@@ -49,6 +49,6 @@ class ConnectionDirective extends SchemaDirectiveVisitor {
     }
 }
 
-let connectionDirectiveWrapper: PolarisTypeWrapper = new PolarisTypeWrapper([typeDefinitions], new PolarisDirectiveWrapper("connection", ConnectionDirective));
+let ConnectionDirectiveWrapper: PolarisTypeWrapper = new PolarisTypeWrapper([typeDefinitions],null, new PolarisDirectiveWrapper("connection", ConnectionDirective).toDirective());
 
-export {connectionDirectiveWrapper};
+export {ConnectionDirectiveWrapper};

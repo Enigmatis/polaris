@@ -3,8 +3,8 @@
     "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
-    "outDir": "./built",
-    "allowJs": true
+//    "outDir": "./built",
+    "allowJs": false
   },
   "exclude": [
     "node_modules"

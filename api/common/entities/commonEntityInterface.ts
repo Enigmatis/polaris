@@ -5,6 +5,6 @@ let CommonEntityInterfaceDefinition = `interface CommonEntity{
         lastUpdateDate: String,
         dataVersion: Int!}`;
 
-let commonEntityInterfaceWrapper: PolarisTypeWrapper = new PolarisTypeWrapper([CommonEntityInterfaceDefinition]);
+let CommonEntityInterfaceWrapper: PolarisTypeWrapper = new PolarisTypeWrapper([CommonEntityInterfaceDefinition]);
 
-export {commonEntityInterfaceWrapper};
+export {CommonEntityInterfaceWrapper};
