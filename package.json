@@ -31,5 +31,9 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "webpack": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.4",
+    "@types/graphql": "^0.13.1"
   }
 }
