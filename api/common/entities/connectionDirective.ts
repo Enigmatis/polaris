@@ -1,6 +1,7 @@
 import {SchemaDirectiveVisitor} from "graphql-tools";
 import {GraphQLFieldConfig, GraphQLFieldConfigMap, GraphQLObjectType, GraphQLString} from 'graphql';
-import {PolarisDirectiveWrapper, PolarisTypeWrapper} from "../../../common/polarisTypeWrapper";
+import PolarisTypeWrapper = require("../../../common/polarisTypeWrapper");
+import PolarisDirectiveWrapper = require("../../../common/polarisDirectiveWrapper");
 
 let typeDefinitions: string = `
     directive @connection on FIELD_DEFINITION    
@@ -49,6 +50,6 @@ class ConnectionDirective extends SchemaDirectiveVisitor {
     }
 }
 
-let ConnectionDirectiveWrapper: PolarisTypeWrapper = new PolarisTypeWrapper([typeDefinitions],null, new PolarisDirectiveWrapper("connection", ConnectionDirective).toDirective());
+let ConnectionDirectiveWrapper: PolarisTypeWrapper = new PolarisTypeWrapper([typeDefinitions], null, new PolarisDirectiveWrapper("connection", ConnectionDirective).toDirective());
 
 export {ConnectionDirectiveWrapper};

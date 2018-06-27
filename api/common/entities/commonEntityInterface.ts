@@ -1,4 +1,4 @@
-import {PolarisTypeWrapper} from "../../../common/polarisTypeWrapper";
+import PolarisTypeWrapper = require("../../../common/polarisTypeWrapper");
 let CommonEntityInterfaceDefinition = `interface CommonEntity{
         id: ID!
         creationDate: String,

@@ -1,31 +1,6 @@
 import {IExecutableSchemaDefinition, SchemaDirectiveVisitor} from "graphql-tools";
-export class PolarisDirectiveWrapper {
-    private _directiveName: string;
-    private _directiveClass: any;
 
-
-    constructor(directiveName: string, directiveClass: any) {
-        this._directiveName = directiveName;
-        this._directiveClass = directiveClass;
-    }
-
-
-    get directiveName(): string {
-        return this._directiveName;
-    }
-
-    get directiveClass(): any {
-        return this._directiveClass;
-    }
-
-    toDirective(): {
-        [name: string]: typeof SchemaDirectiveVisitor;
-    } {
-        return {[this.directiveName]: this.directiveClass};
-    }
-}
-
-export class PolarisTypeWrapper implements IExecutableSchemaDefinition {
+class PolarisTypeWrapper implements IExecutableSchemaDefinition {
     private _typeDefs: string[];
     private _resolvers?: any;
     private _schemaDirectives?: {
@@ -55,4 +30,4 @@ export class PolarisTypeWrapper implements IExecutableSchemaDefinition {
     }
 }
 
-// export {PolarisTypeWrapper, PolarisDirectiveWrapper};
+export = PolarisTypeWrapper

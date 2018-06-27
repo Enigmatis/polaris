@@ -1,6 +1,7 @@
 import {SchemaDirectiveVisitor} from "graphql-tools";
 import {defaultFieldResolver} from "graphql";
-import {PolarisDirectiveWrapper, PolarisTypeWrapper} from "../../../common/polarisTypeWrapper";
+import PolarisTypeWrapper = require("../../../common/polarisTypeWrapper");
+import PolarisDirectiveWrapper = require("../../../common/polarisDirectiveWrapper");
 
 let definition = `
     directive @upper on FIELD_DEFINITION
