@@ -1,7 +1,12 @@
 steps:
 - name: 'gcr.io/cloud-builders/npm'
+  args: ['install', '-g', 'typescript']
+  timeout: '30s'
+  id: 'typescript'
+- name: 'gcr.io/cloud-builders/npm'
   args: ['install']
   timeout: '60s'
+  waitFor: ['typescript']
   id: 'install'
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'tsbuild']
