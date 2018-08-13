@@ -146,5 +146,8 @@ modules.xml
 .idea/misc.xml
 *.ipr
 
+# Compiled js
+dist/
+
 
 # End of https://www.gitignore.io/api/node,webstorm+iml
