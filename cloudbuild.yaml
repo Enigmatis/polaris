@@ -6,6 +6,6 @@ steps:
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'tsbuild']
   id: 'build'
-  waitFor: 'install'
+  waitFor: ['install']
   timeout: '60s'
 timeout: '200s'
