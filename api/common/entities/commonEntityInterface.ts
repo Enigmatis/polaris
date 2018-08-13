@@ -7,4 +7,4 @@ let CommonEntityInterfaceDefinition = `interface CommonEntity{
 
 let CommonEntityInterfaceWrapper: PolarisTypeWrapper = new PolarisTypeWrapper([CommonEntityInterfaceDefinition]);
 
-export {CommonEntityInterfaceWrapper};
+export default CommonEntityInterfaceWrapper;
