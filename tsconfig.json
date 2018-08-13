@@ -4,7 +4,12 @@
     "target": "es5",
     "sourceMap": true,
     "outDir": "./dist",
-    "allowJs": false
+    "allowJs": false,
+    "lib": [
+      "es2017",
+      "dom",
+      "esnext"
+    ]
   },
   "exclude": [
     "node_modules"
