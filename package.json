@@ -2,9 +2,10 @@
   "name": "@enigmatis/polaris",
   "version": "0.0.2",
   "description": "An express graphql js engine",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "tsbuild": "tsc"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,8 @@
     "isomorphic-fetch": "latest",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "webpack": "^4.2.0"
+    "webpack": "^4.2.0",
+    "typescript": "^3.0.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.4",

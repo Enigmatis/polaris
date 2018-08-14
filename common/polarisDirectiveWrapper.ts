@@ -1,7 +1,7 @@
 import {SchemaDirectiveVisitor} from "graphql-tools";
 class PolarisDirectiveWrapper {
-    private _directiveName: string;
-    private _directiveClass: any;
+    private readonly _directiveName: string;
+    private readonly _directiveClass: any;
 
 
     constructor(directiveName: string, directiveClass: any) {

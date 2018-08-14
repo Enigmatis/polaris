@@ -22,4 +22,4 @@ class UpperCaseDirective extends SchemaDirectiveVisitor {
 
 let UpperCaseWrapper = new PolarisTypeWrapper([definition],null, new PolarisDirectiveWrapper('upper', UpperCaseDirective).toDirective());
 
-export {UpperCaseWrapper};
+export default UpperCaseWrapper;

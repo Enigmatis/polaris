@@ -1,9 +1,9 @@
 import {IExecutableSchemaDefinition, SchemaDirectiveVisitor} from "graphql-tools";
 
 class PolarisTypeWrapper implements IExecutableSchemaDefinition {
-    private _typeDefs: string[];
-    private _resolvers?: any;
-    private _schemaDirectives?: {
+    private readonly _typeDefs: string[];
+    private readonly _resolvers?: any;
+    private readonly _schemaDirectives?: {
         [name: string]: typeof SchemaDirectiveVisitor;
     };
 

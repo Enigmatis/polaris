@@ -1,5 +1,4 @@
 import express = require('express');
-import bodyParser = require('body-parser');
 import {makeExecutableSchema} from 'graphql-tools';
 
 import {GraphQLServer} from './graphql.server';
