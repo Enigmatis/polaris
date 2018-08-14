@@ -28,11 +28,14 @@
     "graphql": "^0.13.2",
     "graphql-tools": "^2.23.1",
     "graphql-voyager": "^1.0.0-rc.15",
+    "inversify": "^4.13.0",
+    "inversify-binding-decorators": "^4.0.0",
     "isomorphic-fetch": "latest",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "webpack": "^4.2.0",
-    "typescript": "^3.0.1"
+    "reflect-metadata": "^0.1.12",
+    "typescript": "^3.0.1",
+    "webpack": "^4.2.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.4",

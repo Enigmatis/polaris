@@ -5,7 +5,11 @@
     "sourceMap": true,
     "outDir": "./dist",
     "allowJs": false,
+    "types": ["reflect-metadata"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "lib": [
+      "es6",
       "es2017",
       "dom",
       "esnext"

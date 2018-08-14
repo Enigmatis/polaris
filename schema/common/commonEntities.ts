@@ -1,9 +1,9 @@
-import CommonEntityInterfaceWrapper from './entities/commonEntityInterface';
+import CommonEntityInterface from './entities/commonEntityInterface';
 import UpperCaseWrapper from './entities/upperCaseDirective';
 import ConnectionDirectiveWrapper from './entities/connectionDirective';
 
 export {
-    CommonEntityInterfaceWrapper as commonEntityInterface,
+    CommonEntityInterface as commonEntityInterface,
     UpperCaseWrapper as upperCaseDirective,
     ConnectionDirectiveWrapper as connectionDirective
 };
