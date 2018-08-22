@@ -1,11 +1,10 @@
 import {Express} from "express";
-import {IExecutableSchemaDefinition} from "graphql-tools";
 import {graphiqlExpress, graphqlExpress} from "apollo-server-express";
 import * as bodyParser from "body-parser";
 import * as path from "path";
-import cors = require('cors');
-import {GraphQLOptions} from "apollo-server-core/dist";
 import {GraphQLSchema} from "graphql";
+import cors = require('cors');
+import PolarisPropertiesReader = require("../common/polarisPropertiesReader");
 
 class GraphQLServer {
     private _app: Express;
@@ -41,10 +40,13 @@ class GraphQLServer {
                 res.sendFile(path.join(__dirname, '/voyager/index.html'))
             });
         }
-
+        PolarisPropertiesReader.readPropertiesFromFile("properties.json");
     }
 
     listen(): void {
+        console.log('The following properties have been loaded:');
+        PolarisPropertiesReader.printProperties();
+        console.log('----------------------------------------------------------');
         this._app.listen(this._port, () => {
             console.log('POLARIS graphql server is now running');
             console.log('----------------------------------------------------------');
@@ -60,7 +62,6 @@ class GraphQLServer {
             }
         });
     }
-
 }
 
 export {GraphQLServer as GraphQLServer};
