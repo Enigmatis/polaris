@@ -23,17 +23,10 @@
   },
   "homepage": "https://github.com/yarinvak/polaris#readme",
   "dependencies": {
-    "apollo-server-express": "^1.3.4",
     "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "graphql": "^0.13.2",
-    "graphql-tools": "^2.23.1",
-    "graphql-voyager": "^1.0.0-rc.15",
-    "isomorphic-fetch": "latest",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "typescript": "^3.0.1",
-    "webpack": "^4.2.0"
+    "graphql-tools": "^3.1.1",
+    "graphql-yoga": "^1.16.1",
+    "typescript": "^3.0.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.4",
