@@ -1,13 +1,12 @@
 import {SchemaDirectiveVisitor} from "graphql-tools";
 import {defaultFieldResolver} from "graphql";
-import PolarisTypeWrapper = require("../../../common/polarisTypeWrapper");
 import PolarisDirectiveWrapper = require("../../../common/polarisDirectiveWrapper");
 
 let definition = `
     directive @upper on FIELD_DEFINITION
 `;
 
-class UpperCaseDirective extends SchemaDirectiveVisitor {
+export class UpperCaseDirective extends SchemaDirectiveVisitor {
     visitFieldDefinition(field) {
         const {resolve = defaultFieldResolver} = field;
         field.resolve = function (...args) {
@@ -19,7 +18,3 @@ class UpperCaseDirective extends SchemaDirectiveVisitor {
         }
     };
 }
-
-let UpperCaseWrapper = new PolarisTypeWrapper([definition],null, new PolarisDirectiveWrapper('upper', UpperCaseDirective).toDirective());
-
-export default UpperCaseWrapper;
