@@ -1,3 +1,6 @@
+let path = require('path');
+let fs = require('fs');
+
 class PolarisPropertiesReader {
     private static _properties: object;
 
@@ -6,8 +9,7 @@ class PolarisPropertiesReader {
     }
 
     static readPropertiesFromFile(filePath: string) {
-        let propertiesPath = '../' + filePath;
-        let fs = require('fs');
+        let propertiesPath = path.join('../', filePath);
         this._properties = JSON.parse(fs.readFileSync(propertiesPath, 'utf8'));
     }
 
