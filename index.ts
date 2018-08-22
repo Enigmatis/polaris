@@ -1,10 +1,8 @@
-import {startGraphQLServer} from './server/server.configurations';
 import * as CommonEntities from './api/common/commonEntities';
-import PolarisTypeWrapper = require('./common/polarisTypeWrapper');
+import {PolarisGraphQLServer} from './server/graphql.server';
 
 // noinspection JSUnusedGlobalSymbols
 export {
-    startGraphQLServer as RunGraphQLServer,
     CommonEntities,
-    PolarisTypeWrapper
+    PolarisGraphQLServer
 };
