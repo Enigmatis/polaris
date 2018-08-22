@@ -4,11 +4,11 @@ import {provide} from "inversify-binding-decorators";
 import {Container, inject, multiInject} from "inversify";
 import {buildProviderModule} from "inversify-binding-decorators";
 import {merge} from 'lodash';
-import PolarisTypeWrapper = require("../../common/polarisTypeWrapper");
 import {InjectableResolver, InjectableType} from "../../common/injectableInterfaces";
+import {IResolvers} from "graphql-yoga/dist/types";
 
 export interface ISchemaCreator {
-    generateSchema(): PolarisTypeWrapper;
+    generateSchema(): { def: string[], resolvers: IResolvers };
 }
 
 @provide("ISchemaCreator")
@@ -22,22 +22,27 @@ export class SchemaCreator implements ISchemaCreator {
         this.resolvers = resolvers;
     };
 
-    generateSchema(): PolarisTypeWrapper {
+    generateSchema(): { def: string[], resolvers: IResolvers } {
         let schemaDefinition = `schema {query: Query, mutation: Mutation}`;
         let definitions = [schemaDefinition, ...this.types.map<string>(x => x.definition())];
-        let resolvers = merge(this.resolvers.map(x =>
+        let resolverObjects = this.resolvers.map(x =>
             x.resolver()
-        ));
+        );
 
-        return new PolarisTypeWrapper(definitions, resolvers);
+        let resolvers = this.mergeObjectsArray(resolverObjects);
+
+        return {def: definitions, resolvers: resolvers};
     }
 
-    private requireAllInFolder(pathToDir: string): void {
-        let files = glob.sync(pathToDir);
-        files.forEach(function (file) {
-            file = file.replace(/\.[^/.]+$/, "");
-            require(file);
-        });
+    private mergeObjectsArray(objects: IResolvers[]): IResolvers {
+        let merged = {};
+        for (let i = 0; i < objects.length; i++) {
+            Object.keys(objects[i]).forEach((key) => {
+                merged[key] = objects[i][key];
+            });
+        }
+
+        return merged;
     }
 }
 
