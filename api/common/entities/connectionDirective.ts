@@ -1,9 +1,8 @@
 import {SchemaDirectiveVisitor} from "graphql-tools";
 import {GraphQLFieldConfig, GraphQLFieldConfigMap, GraphQLObjectType, GraphQLString} from 'graphql';
-import PolarisTypeWrapper = require("../../../common/polarisTypeWrapper");
 import PolarisDirectiveWrapper = require("../../../common/polarisDirectiveWrapper");
 
-let typeDefinitions: string = `
+export let typeDefinitions: string = `
     directive @connection on FIELD_DEFINITION    
     
     type PageInfo{
@@ -14,7 +13,7 @@ let typeDefinitions: string = `
     }
 `;
 
-class ConnectionDirective extends SchemaDirectiveVisitor {
+export class ConnectionDirective extends SchemaDirectiveVisitor {
     visitFieldDefinition(field) {
         let typeNameWithoutBraces = field.type.toString().replace(/\]|\[/g, '');
         let edgeName = typeNameWithoutBraces + "sEdge";
@@ -49,7 +48,3 @@ class ConnectionDirective extends SchemaDirectiveVisitor {
         field.type = fieldConnection;
     }
 }
-
-let ConnectionDirectiveWrapper: PolarisTypeWrapper = new PolarisTypeWrapper([typeDefinitions], null, new PolarisDirectiveWrapper("connection", ConnectionDirective).toDirective());
-
-export default ConnectionDirectiveWrapper;
