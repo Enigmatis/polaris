@@ -4,7 +4,6 @@ import PolarisTypeWrapper = require('./common/polarisTypeWrapper');
 import {InjectableType, InjectableResolver} from './common/injectableInterfaces';
 import {ISchemaCreator, SchemaCreator} from './schema/utils/schema.creator';
 
-// noinspection JSUnusedGlobalSymbols
 export {
     startGraphQLServer as RunGraphQLServer,
     CommonEntities,
