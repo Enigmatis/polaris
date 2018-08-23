@@ -13,10 +13,11 @@ export class PolarisGraphQLServer {
             options = {};
         }
         options.cors = PolarisGraphQLServer.getCors();
-        this.server.start(options, ({port}) => {
+        this.server.start(options, ({port, endpoint}) => {
                 console.log(`
                 --------
-                Polaris server is started on port ${port}                
+                Polaris server is started on port ${port}
+                http://localhost:${port}${endpoint}                
                 / Developed by @enigmatis team /
                 `
                 );
