@@ -1,23 +1,28 @@
 import {GraphQLServer, Options} from 'graphql-yoga'
 import {Props} from 'graphql-yoga/dist/types';
-import PolarisPropertiesReader = require("../properties/propertiesReader");
-import PolarisProperties = require("../properties/polarisProperties");
+import {PropertiesHolder} from '../properties/propertiesHolder';
+import {PolarisProperties} from '../properties/polarisProperties';
+
+let path = require('path');
 
 export class PolarisGraphQLServer {
     private server: GraphQLServer;
     private _polarisProperties: PolarisProperties;
 
     constructor(props: Props) {
-        PolarisPropertiesReader.readPropertiesFromFile("properties.json");
-        this.initializePolarisProperties(PolarisPropertiesReader.properties);
+        let propertiesPath = path.join('../', "properties.json");
+        PropertiesHolder.loadPropertiesFromFile(propertiesPath);
+        this.initializePolarisProperties(PropertiesHolder.properties);
         this.server = new GraphQLServer(props);
     }
 
     public start(options: Options): void {
         if (options == null) {
             options = {};
-            options.port = this._polarisProperties.port;
         }
+        if (this._polarisProperties.port !== undefined) options.port = this._polarisProperties.port;
+        if (this._polarisProperties.endpoint !== undefined) options.endpoint = this._polarisProperties.endpoint;
+        if (this._polarisProperties.playground !== undefined) options.playground = this._polarisProperties.playground;
         options.cors = this.getCors();
         this.server.start(options, ({port}) =>
             console.log(
@@ -38,7 +43,8 @@ export class PolarisGraphQLServer {
 
     initializePolarisProperties(properties: object): void {
         let port = properties['port'];
-        let yogaProperties = properties['yogaProperties'];
-        this._polarisProperties = new PolarisProperties(port, yogaProperties)
+        let endpoint = properties['endpoint'];
+        let playground = properties['playground'];
+        this._polarisProperties = new PolarisProperties(port, endpoint, playground)
     }
 }
