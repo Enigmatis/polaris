@@ -1,10 +1,8 @@
 import {GraphQLServer, Options} from 'graphql-yoga'
-import {GraphQLSchema} from 'graphql/type';
 import {Props} from 'graphql-yoga/dist/types';
 
 export class PolarisGraphQLServer {
-    private server: GraphQLServer
-
+    private server: GraphQLServer;
 
     constructor(props: Props) {
         this.server = new GraphQLServer(props);
@@ -14,16 +12,20 @@ export class PolarisGraphQLServer {
         if (options == null) {
             options = {};
         }
-        options.cors = this.getCors();
-        this.server.start(options, ({ port }) =>
-            console.log(
-                `Server started, listening on port ${port}`,
-            ),
+        options.cors = PolarisGraphQLServer.getCors();
+        this.server.start(options, ({port, endpoint}) => {
+                console.log(`
+                --------
+                Polaris server is started on port ${port}
+                http://localhost:${port}${endpoint}                
+                / Developed by @enigmatis team /
+                `
+                );
+            }
         );
-
     }
 
-    private getCors() {
+    private static getCors() {
         return {
             "origin": "*",
             "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -31,4 +33,4 @@ export class PolarisGraphQLServer {
             "optionsSuccessStatus": 204
         };
     }
-};
+}
