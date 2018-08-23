@@ -20,6 +20,16 @@ export class PolarisGraphQLServer {
         if (options == null) {
             options = {};
         }
+        options.cors = PolarisGraphQLServer.getCors();
+        this.server.start(options, ({port, endpoint}) => {
+                console.log(`
+                --------
+                Polaris server is started on port ${port}
+                http://localhost:${port}${endpoint}                
+                / Developed by @enigmatis team /
+                `
+                );
+            }
         if (this._polarisProperties.port !== undefined) options.port = this._polarisProperties.port;
         if (this._polarisProperties.endpoint !== undefined) options.endpoint = this._polarisProperties.endpoint;
         if (this._polarisProperties.playground !== undefined) options.playground = this._polarisProperties.playground;
@@ -29,10 +39,9 @@ export class PolarisGraphQLServer {
                 `Server started, listening on port ${port}`,
             ),
         );
-
     }
 
-    private getCors() {
+    private static getCors() {
         return {
             "origin": "*",
             "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
