@@ -5,24 +5,29 @@ import {Container, inject, multiInject} from "inversify";
 import {buildProviderModule} from "inversify-binding-decorators";
 import {merge} from 'lodash';
 import {InjectableResolver, InjectableType} from "../../common/injectableInterfaces";
-import {IResolvers} from "graphql-yoga/dist/types";
+import {IResolvers} from "graphql-yoga/dist/types"
+import {ITypeDefinitions} from 'graphql-tools';
 
 export interface ISchemaCreator {
-    generateSchema(): { def: string[], resolvers: IResolvers };
+    generateSchema(): { def: ITypeDefinitions, resolvers: IResolvers };
 }
 
 @provide("ISchemaCreator")
+// @ts-ignore
 export class SchemaCreator implements ISchemaCreator {
     private types: InjectableType[];
     private resolvers: InjectableResolver[];
 
-    public constructor(@multiInject("InjectableType") types: InjectableType[],
-                       @multiInject("InjectableResolver") resolvers: InjectableResolver[]) {
+    public constructor(
+        // @ts-ignore
+        @multiInject("InjectableType") types: InjectableType[],
+        // @ts-ignore
+        @multiInject("InjectableResolver") resolvers: InjectableResolver[]) {
         this.types = types;
         this.resolvers = resolvers;
     };
 
-    generateSchema(): { def: string[], resolvers: IResolvers } {
+    generateSchema(): { def: ITypeDefinitions, resolvers: IResolvers } {
         let schemaDefinition = `schema {query: Query, mutation: Mutation}`;
         let definitions = [schemaDefinition, ...this.types.map<string>(x => x.definition())];
         let resolverObjects = this.resolvers.map(x =>

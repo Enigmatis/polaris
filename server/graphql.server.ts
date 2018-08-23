@@ -21,10 +21,7 @@ export class PolarisGraphQLServer {
                 `
                 );
             }
-            ,
-        )
-        ;
-
+        );
     }
 
     private static getCors() {

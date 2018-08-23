@@ -3,7 +3,8 @@ import {InjectableType} from "../../../common/injectableInterfaces";
 import {provide} from "inversify-binding-decorators";
 
 @provide("InjectableType")
-export default class CommonEntityInterface implements InjectableType {
+// @ts-ignore
+export class CommonEntityInterface implements InjectableType {
     definition(): string {
         return `interface CommonEntity{
         id: ID!

@@ -1,6 +1,6 @@
 import {UpperCaseDirective} from './entities/upperCaseDirective';
 import {ConnectionDirective} from './entities/connectionDirective';
-import CommonEntityInterface from './entities/commonEntityInterface';
+import {CommonEntityInterface} from './entities/commonEntityInterface';
 
 export {
     CommonEntityInterface as commonEntityInterface,
