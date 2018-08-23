@@ -31,11 +31,7 @@
     "graphql-voyager": "^1.0.0-rc.15",
     "inversify": "^4.13.0",
     "inversify-binding-decorators": "^4.0.0",
-    "isomorphic-fetch": "latest",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "reflect-metadata": "^0.1.12",
-    "webpack": "^4.2.0"
+    "reflect-metadata": "^0.1.12"
   },
   "devDependencies": {
     "@types/cors": "^2.8.4",
