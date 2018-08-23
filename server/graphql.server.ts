@@ -21,24 +21,18 @@ export class PolarisGraphQLServer {
             options = {};
         }
         options.cors = PolarisGraphQLServer.getCors();
+        if (this._polarisProperties.port !== undefined) options.port = this._polarisProperties.port;
+        if (this._polarisProperties.endpoint !== undefined) options.endpoint = this._polarisProperties.endpoint;
+        if (this._polarisProperties.playground !== undefined) options.playground = this._polarisProperties.playground;
         this.server.start(options, ({port, endpoint}) => {
-                console.log(`
+            console.log(`
                 --------
                 Polaris server is started on port ${port}
                 http://localhost:${port}${endpoint}                
                 / Developed by @enigmatis team /
                 `
-                );
-            }
-        if (this._polarisProperties.port !== undefined) options.port = this._polarisProperties.port;
-        if (this._polarisProperties.endpoint !== undefined) options.endpoint = this._polarisProperties.endpoint;
-        if (this._polarisProperties.playground !== undefined) options.playground = this._polarisProperties.playground;
-        options.cors = this.getCors();
-        this.server.start(options, ({port}) =>
-            console.log(
-                `Server started, listening on port ${port}`,
-            ),
-        );
+            );
+        });
     }
 
     private static getCors() {
@@ -54,6 +48,6 @@ export class PolarisGraphQLServer {
         let port = properties['port'];
         let endpoint = properties['endpoint'];
         let playground = properties['playground'];
-        this._polarisProperties = new PolarisProperties(port, endpoint, playground)
+        this._polarisProperties = new PolarisProperties(port, endpoint, playground);
     }
 }
