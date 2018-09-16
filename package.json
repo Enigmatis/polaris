@@ -6,6 +6,7 @@
   "scripts": {
     "test": "test",
     "tsbuild": "tsc",
+    "buildDependents": "npm i && tsc && npm link",
     "clean": "rimraf dist"
   },
   "repository": {
@@ -23,19 +24,16 @@
   },
   "homepage": "https://github.com/yarinvak/polaris#readme",
   "dependencies": {
+    "apollo-server": "^2.0.5",
     "cors": "^2.8.4",
-    "graphql-tools": "^3.1.1",
-    "graphql-yoga": "^1.16.1",
-    "typescript": "^3.0.1",
     "glob": "^7.1.2",
     "graphql": "^0.13.2",
-    "graphql-voyager": "^1.0.0-rc.15",
     "inversify": "^4.13.0",
     "inversify-binding-decorators": "^4.0.0",
-    "reflect-metadata": "^0.1.12"
+    "reflect-metadata": "^0.1.12",
+    "typescript": "^3.0.1"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.4",
-    "@types/graphql": "^0.13.1"
+    "@types/cors": "^2.8.4"
   }
 }

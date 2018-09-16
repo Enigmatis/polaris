@@ -1,4 +1,4 @@
-import {IResolvers} from "graphql-yoga/dist/types";
+import {IResolvers} from 'graphql-tools';
 
 export interface InjectableType {
     definition(): string;
