@@ -1,8 +1,11 @@
 import {PropertiesHolder} from '../properties/propertiesHolder';
 import {PolarisProperties} from '../properties/polarisProperties';
-import {ApolloServer, Config, makeExecutableSchema, ServerInfo} from 'apollo-server';
+import {Config, makeExecutableSchema} from 'apollo-server';
+import {ApolloServer} from 'apollo-server-express';
 
-let path = require('path');
+const path = require('path');
+const express = require('express');
+const app = express();
 
 export class PolarisGraphQLServer {
     private server: ApolloServer;
@@ -15,17 +18,20 @@ export class PolarisGraphQLServer {
         this.initializePolarisProperties(PropertiesHolder.properties);
         let options = {schema: executableSchema, cors: PolarisGraphQLServer.getCors()};
         this.server = new ApolloServer(options);
+        if (this._polarisProperties.endpoint !== undefined) {
+            this.server.applyMiddleware({app, path: this._polarisProperties.endpoint});
+        } else {
+            this.server.applyMiddleware({app});
+        }
     }
 
-    public start(): Promise<ServerInfo> {
+    public start() {
         let options = {};
         if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
-        //if (this._polarisProperties.endpoint !== undefined) this.server.setGraphQLPath(this._polarisProperties.endpoint);
 
-        return this.server.listen(options).then((value => {
-            console.log("Server started on: " + value.url);
-            return value;
-        }))
+        app.listen(options, () => {
+            console.log(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
+        });
     }
 
     private static getCors() {
@@ -40,7 +46,6 @@ export class PolarisGraphQLServer {
     initializePolarisProperties(properties: object): void {
         let port = properties['port'];
         let endpoint = properties['endpoint'];
-        let playground = properties['playground'];
-        this._polarisProperties = new PolarisProperties(port, endpoint, playground);
+        this._polarisProperties = new PolarisProperties(port, endpoint);
     }
 }
