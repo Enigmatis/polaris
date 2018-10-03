@@ -16,7 +16,13 @@ export class PolarisGraphQLServer {
         let propertiesPath = path.join('../', "properties.json");
         PropertiesHolder.loadPropertiesFromFile(propertiesPath);
         this.initializePolarisProperties(PropertiesHolder.properties);
-        let options = {schema: executableSchema, cors: PolarisGraphQLServer.getCors()};
+        let options = {
+            schema: executableSchema,
+            cors: PolarisGraphQLServer.getCors(),
+            context: ({req}) => ({
+                headers: req.headers
+            })
+        };
         this.server = new ApolloServer(options);
         if (this._polarisProperties.endpoint !== undefined) {
             this.server.applyMiddleware({app, path: this._polarisProperties.endpoint});
