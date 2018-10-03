@@ -1,37 +1,36 @@
-import {GraphQLServer, Options} from 'graphql-yoga'
-import {Props} from 'graphql-yoga/dist/types';
 import {PropertiesHolder} from '../properties/propertiesHolder';
 import {PolarisProperties} from '../properties/polarisProperties';
+import {Config, makeExecutableSchema} from 'apollo-server';
+import {ApolloServer} from 'apollo-server-express';
 
-let path = require('path');
+const path = require('path');
+const express = require('express');
+const app = express();
 
 export class PolarisGraphQLServer {
-    private server: GraphQLServer;
+    private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
 
-    constructor(props: Props) {
+    constructor(config: Config) {
+        let executableSchema = makeExecutableSchema(config.schema);
         let propertiesPath = path.join('../', "properties.json");
         PropertiesHolder.loadPropertiesFromFile(propertiesPath);
         this.initializePolarisProperties(PropertiesHolder.properties);
-        this.server = new GraphQLServer(props);
+        let options = {schema: executableSchema, cors: PolarisGraphQLServer.getCors()};
+        this.server = new ApolloServer(options);
+        if (this._polarisProperties.endpoint !== undefined) {
+            this.server.applyMiddleware({app, path: this._polarisProperties.endpoint});
+        } else {
+            this.server.applyMiddleware({app});
+        }
     }
 
-    public start(options: Options): void {
-        if (options == null) {
-            options = {};
-        }
-        options.cors = PolarisGraphQLServer.getCors();
-        if (this._polarisProperties.port !== undefined) options.port = this._polarisProperties.port;
-        if (this._polarisProperties.endpoint !== undefined) options.endpoint = this._polarisProperties.endpoint;
-        if (this._polarisProperties.playground !== undefined) options.playground = this._polarisProperties.playground;
-        this.server.start(options, ({port, endpoint}) => {
-            console.log(`
-                --------
-                Polaris server is started on port ${port}
-                http://localhost:${port}${endpoint}                
-                / Developed by @enigmatis team /
-                `
-            );
+    public start() {
+        let options = {};
+        if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
+
+        app.listen(options, () => {
+            console.log(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
         });
     }
 
@@ -47,7 +46,6 @@ export class PolarisGraphQLServer {
     initializePolarisProperties(properties: object): void {
         let port = properties['port'];
         let endpoint = properties['endpoint'];
-        let playground = properties['playground'];
-        this._polarisProperties = new PolarisProperties(port, endpoint, playground);
+        this._polarisProperties = new PolarisProperties(port, endpoint);
     }
 }

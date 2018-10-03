@@ -1,12 +1,9 @@
-import glob = require('glob');
 import "reflect-metadata";
-import {provide} from "inversify-binding-decorators";
-import {Container, inject, multiInject} from "inversify";
-import {buildProviderModule} from "inversify-binding-decorators";
+import {buildProviderModule, provide} from "inversify-binding-decorators";
+import {Container, multiInject} from "inversify";
 import {merge} from 'lodash';
 import {InjectableResolver, InjectableType} from "../../common/injectableInterfaces";
-import {IResolvers} from "graphql-yoga/dist/types"
-import {ITypeDefinitions} from 'graphql-tools';
+import {IResolvers, ITypeDefinitions} from 'graphql-tools';
 
 export interface ISchemaCreator {
     generateSchema(): { def: ITypeDefinitions, resolvers: IResolvers };
