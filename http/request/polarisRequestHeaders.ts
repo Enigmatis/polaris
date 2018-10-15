@@ -1,3 +1,5 @@
+import {HeaderNames} from "../headerNames";
+
 export class PolarisRequestHeaders {
     private readonly _dataVersion: number;
     private readonly _isSnapshot: boolean;
@@ -11,18 +13,18 @@ export class PolarisRequestHeaders {
     private readonly _requestingSystemId: string;
     private readonly _requestingSystemName: string;
 
-    constructor(dataVersion: number, isSnapshot: boolean, includeLinkedOperation: boolean, snapshotPageSize: number, isPolling: boolean, requestId: string, upn: string, eventKind: string, realityId: number, requestingSystemId: string, requestingSystemName: string) {
-        this._dataVersion = dataVersion;
-        this._isSnapshot = isSnapshot;
-        this._includeLinkedOperation = includeLinkedOperation;
-        this._snapshotPageSize = snapshotPageSize;
-        this._isPolling = isPolling;
-        this._requestId = requestId;
-        this._upn = upn;
-        this._eventKind = eventKind;
-        this._realityId = realityId;
-        this._requestingSystemId = requestingSystemId;
-        this._requestingSystemName = requestingSystemName;
+    constructor(headers: object) {
+        this._dataVersion = headers[HeaderNames.DATA_VERSION];
+        this._isSnapshot = headers[HeaderNames.SNAPSHOT];
+        this._includeLinkedOperation = headers[HeaderNames.INCLUDE_LINKED_OPER];
+        this._snapshotPageSize = headers[HeaderNames.SNAPSHOT_PAGE_SIZE];
+        this._isPolling = headers[HeaderNames.POLLING];
+        this._requestId = headers[HeaderNames.REQUEST_ID];
+        this._upn = headers[HeaderNames.UPN];
+        this._eventKind = headers[HeaderNames.EVENT_KIND];
+        this._realityId = headers[HeaderNames.REALITY_ID];
+        this._requestingSystemId = headers[HeaderNames.REQUESTING_SYS];
+        this._requestingSystemName = headers[HeaderNames.REQUESTING_SYS_NAME];
     }
 
     get dataVersion(): number {

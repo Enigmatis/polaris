@@ -3,7 +3,6 @@ import {PolarisProperties} from '../properties/polarisProperties';
 import {Config, makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
-import {HeaderNames} from "../http/headerNames";
 
 const path = require('path');
 const express = require('express');
@@ -22,11 +21,7 @@ export class PolarisGraphQLServer {
             schema: executableSchema,
             cors: PolarisGraphQLServer.getCors(),
             context: ({req}) => ({
-                headers: new PolarisRequestHeaders(req.headers[HeaderNames.DATA_VERSION], req.headers[HeaderNames.SNAPSHOT],
-                    req.headers[HeaderNames.INCLUDE_LINKED_OPER], req.headers[HeaderNames.SNAPSHOT_PAGE_SIZE],
-                    req.headers[HeaderNames.POLLING], req.headers[HeaderNames.REQUEST_ID], req.headers[HeaderNames.UPN],
-                    req.headers[HeaderNames.EVENT_KIND], req.headers[HeaderNames.REALITY_ID],
-                    req.headers[HeaderNames.REQUESTING_SYS], req.headers[HeaderNames.REQUESTING_SYS_NAME])
+                headers: new PolarisRequestHeaders(req.headers)
             })
         };
         this.server = new ApolloServer(options);
