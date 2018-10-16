@@ -2,6 +2,7 @@ import {PropertiesHolder} from '../properties/propertiesHolder';
 import {PolarisProperties} from '../properties/polarisProperties';
 import {Config, makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
+import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
 
 const path = require('path');
 const express = require('express');
@@ -16,7 +17,13 @@ export class PolarisGraphQLServer {
         let propertiesPath = path.join('../', "properties.json");
         PropertiesHolder.loadPropertiesFromFile(propertiesPath);
         this.initializePolarisProperties(PropertiesHolder.properties);
-        let options = {schema: executableSchema, cors: PolarisGraphQLServer.getCors()};
+        let options = {
+            schema: executableSchema,
+            cors: PolarisGraphQLServer.getCors(),
+            context: ({req}) => ({
+                headers: new PolarisRequestHeaders(req.headers)
+            })
+        };
         this.server = new ApolloServer(options);
         if (this._polarisProperties.endpoint !== undefined) {
             this.server.applyMiddleware({app, path: this._polarisProperties.endpoint});
