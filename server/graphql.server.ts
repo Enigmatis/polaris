@@ -12,8 +12,9 @@ export class PolarisGraphQLServer {
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
 
-    constructor(config: Config) {
-        let executableSchema = makeExecutableSchema(config.schema);
+    constructor(config: any) {
+        let executableSchemaDefinition: { typeDefs: any, resolvers: any } = { typeDefs: config.typeDefs, resolvers: config.resolvers };
+        let executableSchema = makeExecutableSchema(executableSchemaDefinition);
         let propertiesPath = path.join('../', "properties.json");
         PropertiesHolder.loadPropertiesFromFile(propertiesPath);
         this.initializePolarisProperties(PropertiesHolder.properties);
