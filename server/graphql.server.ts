@@ -16,8 +16,6 @@ export class PolarisGraphQLServer {
 
     constructor(config: any) {
         this.polarisLogger = new PolarisLogger(null, this.getApplicationProperties(config.applicationLogProperties)) ;
-        let polarisProperties = new PolarisLogProperties(config.applicationLogProperties);
-        this.polarisLogger.info(polarisProperties);        
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = { typeDefs: config.typeDefs, resolvers: config.resolvers };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
         let propertiesPath = path.join('./', "properties.json");
