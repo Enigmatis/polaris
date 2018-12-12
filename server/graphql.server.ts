@@ -1,8 +1,9 @@
 import {PropertiesHolder} from '../properties/propertiesHolder';
 import {PolarisProperties} from '../properties/polarisProperties';
-import {Config, makeExecutableSchema} from 'apollo-server';
+import {makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
+import {PolarisLogProperties, PolarisLogger, ApplicationLogProperties} from "@enigmatis/polaris-logs"
 
 const path = require('path');
 const express = require('express');
@@ -11,11 +12,13 @@ const app = express();
 export class PolarisGraphQLServer {
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
+    private polarisLogger: PolarisLogger;
 
     constructor(config: any) {
+        this.polarisLogger = new PolarisLogger(null, this.getApplicationProperties(config.applicationProperties)) ;        
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = { typeDefs: config.typeDefs, resolvers: config.resolvers };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
-        let propertiesPath = path.join('../', "properties.json");
+        let propertiesPath = path.join('./', "properties.json");
         PropertiesHolder.loadPropertiesFromFile(propertiesPath);
         this.initializePolarisProperties(PropertiesHolder.properties);
         let options = {
@@ -38,7 +41,8 @@ export class PolarisGraphQLServer {
         if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
 
         app.listen(options, () => {
-            console.log(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
+            let polarisProperties = new PolarisLogProperties(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
+            this.polarisLogger.info(polarisProperties);
         });
     }
 
@@ -55,5 +59,16 @@ export class PolarisGraphQLServer {
         let port = properties['port'];
         let endpoint = properties['endpoint'];
         this._polarisProperties = new PolarisProperties(port, endpoint);
+    }
+
+    public getApplicationProperties(applicationProperties):ApplicationLogProperties{
+        if (applicationProperties!= null)
+            return new ApplicationLogProperties(applicationProperties.id, applicationProperties.name,
+                 applicationProperties.repositoryVersion, applicationProperties.environment,applicationProperties.component);
+        return new ApplicationLogProperties("p01aris-10gs", "polaris-logs", "v1", "dev", "component");
+    }
+    
+    public getLogger(){
+        return this.polarisLogger;
     }
 }
