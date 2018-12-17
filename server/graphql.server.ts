@@ -15,7 +15,7 @@ export class PolarisGraphQLServer {
     private polarisLogger: PolarisLogger;
 
     constructor(config: any) {
-        this.polarisLogger = new PolarisLogger(null, this.getApplicationProperties(config.applicationLogProperties)) ;
+        this.polarisLogger = new PolarisLogger(null, this.getApplicationProperties(config.applicationLogProperties), this.getLogPath(config.logPath)) ;
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = { typeDefs: config.typeDefs, resolvers: config.resolvers };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
         let propertiesPath = path.join('./', "properties.json");
@@ -62,13 +62,20 @@ export class PolarisGraphQLServer {
     }
 
     public getApplicationProperties(applicationProperties):ApplicationLogProperties{
-        console.log(applicationProperties);
         if (applicationProperties!= null)
             return new ApplicationLogProperties(applicationProperties.id, applicationProperties.name,
                  applicationProperties.repositoryVersion, applicationProperties.environment,applicationProperties.component);
         return new ApplicationLogProperties("p01aris-10gs", "polaris-logs", "v1", "dev", "component");
     }
-    
+
+    public getLogPath(logPath:string):string{
+        console.log(logPath);
+        if (logPath != null)
+            return logPath;
+        else
+            return "log-file.log";
+    }
+
     public getLogger(){
         return this.polarisLogger;
     }
