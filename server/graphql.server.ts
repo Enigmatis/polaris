@@ -5,7 +5,7 @@ import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
 import {PolarisLogger, ApplicationLogProperties} from "@enigmatis/polaris-logs"
 import {GraphQLLogProperties} from "../logs/GraphQLLogProperties";
-import {GraphQLLogger} from "../logs/GraphQLLogger";
+import {InjectableLogger} from "../logs/GraphQLLogger";
 import {LogProperties} from "../properties/LogProperties";
 
 const path = require('path');
@@ -16,7 +16,7 @@ export class PolarisGraphQLServer {
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
     private _logProperties: LogProperties;
-    private polarisLogger: PolarisLogger;
+    private polarisLogger: InjectableLogger;
 
     constructor(config: any) {
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
@@ -25,16 +25,14 @@ export class PolarisGraphQLServer {
         };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
-        let polarisPropertiesPath = path.join('./', "properties.json");
+        let polarisPropertiesPath = path.join('./polaris-example/', "properties.json");
         PropertiesHolder.loadPropertiesFromFile(polarisPropertiesPath);
         this.initializePolarisProperties(PropertiesHolder.properties);
 
-        let logPropertiesPath = path.join('./', "log-configuration.json");
+        let logPropertiesPath = path.join('./polaris-example/', "log-configuration.json");
         PropertiesHolder.loadPropertiesFromFile(logPropertiesPath);
         this.initializeLogProperties(PropertiesHolder.properties);
 
-        this.polarisLogger = new GraphQLLogger(this.getApplicationProperties(), this._logProperties.loggerLevel,
-            this._logProperties.logstashHost, this._logProperties.logstashPort);
         let options = {
             schema: executableSchema,
             cors: PolarisGraphQLServer.getCors(),
@@ -55,7 +53,7 @@ export class PolarisGraphQLServer {
         if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
         app.listen(options, () => {
             let polarisProperties = new GraphQLLogProperties(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
-            this.polarisLogger.info(polarisProperties);
+            //this.polarisLogger.info(polarisProperties);
         });
     }
 
@@ -68,7 +66,7 @@ export class PolarisGraphQLServer {
         };
     }
 
-    initializePolarisProperties(properties: object): void {
+    private initializePolarisProperties(properties: object): void {
         let port = properties['port'];
         let endpoint = properties['endpoint'];
         let applicationId = properties['applicationId'];
@@ -80,23 +78,19 @@ export class PolarisGraphQLServer {
             repositoryVersion, environment, component);
     }
 
-    initializeLogProperties(properties: object): void {
+    private initializeLogProperties(properties: object): void {
         let loggerLevel = properties['loggerLevel'];
         let logstashHost = properties['logstashHost'];
         let logstashPort = properties['logstashPort'];
         this._logProperties = new LogProperties(loggerLevel, logstashHost, logstashPort);
     }
 
-    public getApplicationProperties(): ApplicationLogProperties {
+    private getApplicationProperties(): ApplicationLogProperties {
         let applicationId = this._polarisProperties['applicationId'];
         let applicationName = this._polarisProperties['applicationName'];
         let repositoryVersion = this._polarisProperties['repositoryVersion'];
         let environment = this._polarisProperties['environment'];
         let component = this._polarisProperties['component'];
         return new ApplicationLogProperties(applicationId, applicationName, repositoryVersion, environment, component);
-    }
-
-    public getLogger() {
-        return this.polarisLogger;
     }
 }

@@ -10,15 +10,12 @@ export interface ISchemaCreator {
 }
 
 @provide("ISchemaCreator")
-// @ts-ignore
 export class SchemaCreator implements ISchemaCreator {
     private types: InjectableType[];
     private resolvers: InjectableResolver[];
 
     public constructor(
-        // @ts-ignore
         @multiInject("InjectableType") types: InjectableType[],
-        // @ts-ignore
         @multiInject("InjectableResolver") resolvers: InjectableResolver[]) {
         this.types = types;
         this.resolvers = resolvers;
