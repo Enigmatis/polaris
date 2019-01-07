@@ -63,6 +63,7 @@ export class PolarisGraphQLServer {
     }
 
     public start() {
+        console.log("server start")
         let options = {};
         if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
         app.listen(options, () => {
