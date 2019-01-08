@@ -4,8 +4,8 @@ import {makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
 import {ApplicationLogProperties} from "@enigmatis/polaris-logs"
-import {GraphQLLogProperties} from "../logs/GraphQLLogProperties";
-import {InjectableLogger} from "../logs/GraphQLLogger";
+import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
+import {InjectableLogger} from "../logging/GraphQLLogger";
 import {LogProperties} from "../properties/LogProperties";
 import {provide, buildProviderModule} from "inversify-binding-decorators";
 import {Container, inject} from "inversify";
