@@ -44,6 +44,3 @@ export class SchemaCreator implements ISchemaCreator {
         return merged;
     }
 }
-
-let container = new Container();
-container.load(buildProviderModule());

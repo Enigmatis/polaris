@@ -3,12 +3,13 @@ import {PolarisProperties} from '../properties/polarisProperties';
 import {makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
-import {PolarisLogger, ApplicationLogProperties} from "@enigmatis/polaris-logs"
+import {ApplicationLogProperties} from "@enigmatis/polaris-logs"
 import {GraphQLLogProperties} from "../logs/GraphQLLogProperties";
 import {InjectableLogger} from "../logs/GraphQLLogger";
 import {LogProperties} from "../properties/LogProperties";
 import {provide, buildProviderModule} from "inversify-binding-decorators";
-import {Container} from "inversify";
+import {Container, inject} from "inversify";
+import {ISchemaCreator} from "../schema/utils/schema.creator";
 
 const path = require('path');
 const express = require('express');
@@ -25,7 +26,16 @@ export class PolarisGraphQLServer {
     private _logProperties: LogProperties;
     private polarisLogger: InjectableLogger;
 
-    constructor() {
+    constructor(//@inject("InjectableLogger")polarisLogger :InjectableLogger,
+               // @inject("ISchemaCreator")creator :ISchemaCreator
+    ) {/*
+            //this.polarisLogger = polarisLogger;
+            let schema = creator.generateSchema()
+            let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
+                typeDefs: schema.def,
+                resolvers: schema.resolvers
+            };
+            let executableSchema = makeExecutableSchema(executableSchemaDefinition);*/
         let config = { typeDefs:
                 [ 'schema {query: Query, mutation: Mutation}',
                     'type Query {\n                    books: [Book] }',
@@ -37,7 +47,8 @@ export class PolarisGraphQLServer {
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
             typeDefs: config.typeDefs,
             resolvers: config.resolvers
-        };let executableSchema = makeExecutableSchema(executableSchemaDefinition);
+        };
+        let executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
         let polarisPropertiesPath = path.join('./polaris-example/', "properties.json");
         PropertiesHolder.loadPropertiesFromFile(polarisPropertiesPath);
@@ -110,5 +121,6 @@ export class PolarisGraphQLServer {
     }
 }
 
-let container = new Container();
+let container = new Container({skipBaseClassChecks: true});
 container.load(buildProviderModule());
+export {container}
