@@ -1,6 +1,5 @@
 import "reflect-metadata";
-import {buildProviderModule, provide} from "inversify-binding-decorators";
-import {Container, multiInject} from "inversify";
+import {injectable, multiInject} from "inversify";
 import {merge} from 'lodash';
 import {InjectableResolver, InjectableType} from "../../common/injectableInterfaces";
 import {IResolvers, ITypeDefinitions} from 'graphql-tools';
@@ -9,7 +8,7 @@ export interface ISchemaCreator {
     generateSchema(): { def: ITypeDefinitions, resolvers: IResolvers };
 }
 
-@provide("ISchemaCreator")
+@injectable()
 export class SchemaCreator implements ISchemaCreator {
     private types: InjectableType[];
     private resolvers: InjectableResolver[];

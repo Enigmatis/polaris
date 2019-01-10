@@ -7,8 +7,7 @@ import {ApplicationLogProperties} from "@enigmatis/polaris-logs"
 import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
 import {InjectableLogger} from "../logging/GraphQLLogger";
 import {LogProperties} from "../properties/LogProperties";
-import {provide, buildProviderModule} from "inversify-binding-decorators";
-import {Container, inject} from "inversify";
+import {inject, injectable} from "inversify";
 import {ISchemaCreator} from "../schema/utils/schema.creator";
 
 const path = require('path');
@@ -19,42 +18,26 @@ export interface IPolarisGraphQLServer {
     start();
 }
 
-@provide("IPolarisGraphQLServer")
-export class PolarisGraphQLServer {
+@injectable()
+export class PolarisGraphQLServer implements IPolarisGraphQLServer{
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
     private _logProperties: LogProperties;
-    private polarisLogger: InjectableLogger;
+    @inject("InjectableLogger")polarisLogger :InjectableLogger;
 
-    constructor(//@inject("InjectableLogger")polarisLogger :InjectableLogger,
-               // @inject("ISchemaCreator")creator :ISchemaCreator
-    ) {/*
-            //this.polarisLogger = polarisLogger;
-            let schema = creator.generateSchema()
-            let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
-                typeDefs: schema.def,
-                resolvers: schema.resolvers
-            };
-            let executableSchema = makeExecutableSchema(executableSchemaDefinition);*/
-        let config = { typeDefs:
-                [ 'schema {query: Query, mutation: Mutation}',
-                    'type Query {\n                    books: [Book] }',
-                    '\n             type Book implements CommonEntity {\n                 id: ID!\n                 creationDate: String,\n                 lastUpdateDate: String,\n                 dataVersion: Int!,\n                 title: String @upper,\n                 author: String,\n                 otherBook: Book\n             }\n         ',
-                    '\n             type Mutation {\n                 updateBook(book: BookInput!): Book \n             }',
-                    'input BookInput{\n                     id: ID!        \n                     title: String,\n                     author: String\n                 }',
-                    'interface CommonEntity{\n        id: ID!\n        creationDate: String,\n        lastUpdateDate: String,\n        dataVersion: Int!}' ] , resolvers: [] };
-
+    constructor(@inject("ISchemaCreator")creator :ISchemaCreator) {
+        let schema = creator.generateSchema()
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
-            typeDefs: config.typeDefs,
-            resolvers: config.resolvers
+            typeDefs: schema.def,
+            resolvers: schema.resolvers
         };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
-        let polarisPropertiesPath = path.join('./polaris-example/', "properties.json");
+        let polarisPropertiesPath = path.join(__dirname, "../../../polaris-example/properties.json");
         PropertiesHolder.loadPropertiesFromFile(polarisPropertiesPath);
         this.initializePolarisProperties(PropertiesHolder.properties);
 
-        let logPropertiesPath = path.join('./polaris-example/', "log-configuration.json");
+        let logPropertiesPath = path.join(__dirname, "../../../polaris-example/log-configuration.json");
         PropertiesHolder.loadPropertiesFromFile(logPropertiesPath);
         this.initializeLogProperties(PropertiesHolder.properties);
 
@@ -79,7 +62,7 @@ export class PolarisGraphQLServer {
         if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
         app.listen(options, () => {
             let polarisProperties = new GraphQLLogProperties(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
-            //this.polarisLogger.info(polarisProperties);
+            this.polarisLogger.info(polarisProperties);
         });
     }
 
@@ -120,7 +103,3 @@ export class PolarisGraphQLServer {
         return new ApplicationLogProperties(applicationId, applicationName, repositoryVersion, environment, component);
     }
 }
-
-let container = new Container({skipBaseClassChecks: true});
-container.load(buildProviderModule());
-export {container}
