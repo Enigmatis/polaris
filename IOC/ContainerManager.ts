@@ -12,10 +12,10 @@ import {
     PolarisLogger
 } from "@enigmatis/polaris-logs";
 
-decorate(injectable(), PolarisLogger)
+decorate(injectable(), PolarisLogger);
 let container = new Container({skipBaseClassChecks: true});
-container.bind<IPolarisGraphQLServer>("IPolarisGraphQLServer").to(PolarisGraphQLServer)
-container.bind<ISchemaCreator>("ISchemaCreator").to(SchemaCreator)
-container.bind<InjectableLogger>("InjectableLogger").to(GraphQLLogger)
+container.bind<IPolarisGraphQLServer>("IPolarisGraphQLServer").to(PolarisGraphQLServer);
+container.bind<ISchemaCreator>("ISchemaCreator").to(SchemaCreator);
+container.bind<InjectableLogger>("InjectableLogger").to(GraphQLLogger);
 
 export {container}
