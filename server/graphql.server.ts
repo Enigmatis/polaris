@@ -1,15 +1,13 @@
-import {PropertiesHolder} from '../properties/propertiesHolder';
 import {PolarisProperties} from '../properties/polarisProperties';
 import {makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
-import {ApplicationLogProperties} from "@enigmatis/polaris-logs"
+import {LoggerConfiguration} from "@enigmatis/polaris-logs"
 import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
 import {InjectableLogger} from "../logging/GraphQLLogger";
-import {LogProperties} from "../properties/LogProperties";
 import {inject, injectable} from "inversify";
 import {ISchemaCreator} from "../schema/utils/schema.creator";
-import {IConfig} from '../common/injectableInterfaces';
+import {ILogConfig,IPropertiesConfig} from '../common/injectableInterfaces';
 
 
 const path = require('path');
@@ -24,11 +22,12 @@ export interface IPolarisGraphQLServer {
 export class PolarisGraphQLServer implements IPolarisGraphQLServer{
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
-    private _logProperties: LogProperties;
+    private _logProperties: LoggerConfiguration;
     @inject("InjectableLogger")polarisLogger :InjectableLogger;
 
     constructor(@inject("ISchemaCreator")creator :ISchemaCreator,
-                @inject("IConfig") config: IConfig) {
+                @inject("ILogConfig") logConfig: ILogConfig,
+                @inject("IPropertiesConfig") propertiesConfig: IPropertiesConfig) {
         let schema = creator.generateSchema();
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
             typeDefs: schema.def,
@@ -36,8 +35,8 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
         };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
-        this._logProperties = config.getLogProperties();
-        this._polarisProperties = config.getPolarisProperties()
+        this._logProperties = logConfig.getLogConfiguration();
+        this._polarisProperties = propertiesConfig.getPolarisProperties()
         let options = {
             schema: executableSchema,
             cors: PolarisGraphQLServer.getCors(),
@@ -55,7 +54,9 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
 
     public start() {
         let options = {};
-        if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
+        if (this._polarisProperties.port !== undefined) {
+            options['port'] = this._polarisProperties.port;
+        }
         app.listen(options, () => {
             let polarisProperties = new GraphQLLogProperties(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
             this.polarisLogger.info(polarisProperties);

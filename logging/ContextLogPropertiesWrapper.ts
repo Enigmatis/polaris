@@ -9,7 +9,7 @@ export class ContextLogPropertiesWrapper implements LogPropertiesWrapper{
     }
     wrapLogProperties(polarisLogProperties:GraphQLLogProperties):PolarisLogProperties{
 
-        polarisLogProperties.setOperationName("info");
+        //polarisLogProperties.setOperationName("info");
         return polarisLogProperties;
     }
     handleContextProperties(){
