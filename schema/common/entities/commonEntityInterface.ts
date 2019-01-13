@@ -1,7 +1,7 @@
 import {InjectableType} from "../../../common/injectableInterfaces";
-import {provide} from "inversify-binding-decorators";
+import {injectable} from "inversify";
 
-@provide("InjectableType")
+@injectable()
 export class CommonEntityInterface implements InjectableType {
     definition(): string {
         return `interface CommonEntity{
