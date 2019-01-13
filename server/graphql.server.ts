@@ -7,7 +7,7 @@ import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
 import {InjectableLogger} from "../logging/GraphQLLogger";
 import {inject, injectable} from "inversify";
 import {ISchemaCreator} from "../schema/utils/schema.creator";
-import {ILogConfig,IPropertiesConfig} from '../common/injectableInterfaces';
+import {ILogConfig,IPolarisServerConfig} from '../common/injectableInterfaces';
 
 
 const path = require('path');
@@ -27,7 +27,7 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
 
     constructor(@inject("ISchemaCreator")creator :ISchemaCreator,
                 @inject("ILogConfig") logConfig: ILogConfig,
-                @inject("IPropertiesConfig") propertiesConfig: IPropertiesConfig) {
+                @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig) {
         let schema = creator.generateSchema();
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
             typeDefs: schema.def,

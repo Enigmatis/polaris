@@ -13,7 +13,7 @@ export interface InjectableResolver {
 export interface ILogConfig {
     getLogConfiguration(): LoggerConfiguration;
 }
-export interface IPropertiesConfig {
+export interface IPolarisServerConfig {
     getPolarisProperties(): PolarisProperties;
     getApplicationLogProperties(): ApplicationLogProperties;
 }

@@ -1,6 +1,6 @@
 import {LogPropertiesWrapper, PolarisLogger} from "@enigmatis/polaris-logs";
 import {inject, injectable, named} from "inversify";
-import {ILogConfig, IPropertiesConfig} from "..";
+import {ILogConfig, IPolarisServerConfig} from "..";
 
 export interface InjectableLogger {
     fatal(PolarisLogProperties);
@@ -15,7 +15,7 @@ export interface InjectableLogger {
 export class GraphQLLogger extends PolarisLogger {
     constructor(@inject("LogPropertiesWrapper") @named("GraphQLLogger") logPropertiesWrapper: LogPropertiesWrapper,
                 @inject("ILogConfig") logConfig: ILogConfig,
-                @inject("IPropertiesConfig") propertiesConfig: IPropertiesConfig
+                @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig
     ) {
         super(logPropertiesWrapper, propertiesConfig.getApplicationLogProperties(), logConfig.getLogConfiguration());
     }
