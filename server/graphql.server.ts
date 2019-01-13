@@ -36,9 +36,8 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
         };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
-        this.initializePolarisProperties(config.getProperties());
-        this.initializeLogProperties(config.getLogConfiguration());
-
+        this._logProperties = config.getLogProperties();
+        this._polarisProperties = config.getPolarisProperties()
         let options = {
             schema: executableSchema,
             cors: PolarisGraphQLServer.getCors(),
@@ -72,31 +71,5 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
         };
     }
 
-    private initializePolarisProperties(properties: object): void {
-        let port = properties['port'];
-        let endpoint = properties['endpoint'];
-        let applicationId = properties['applicationId'];
-        let applicationName = properties['applicationName'];
-        let repositoryVersion = properties['repositoryVersion'];
-        let environment = properties['environment'];
-        let component = properties['component'];
-        this._polarisProperties = new PolarisProperties(port, endpoint, applicationId, applicationName,
-            repositoryVersion, environment, component);
-    }
 
-    private initializeLogProperties(properties: object): void {
-        let loggerLevel = properties['loggerLevel'];
-        let logstashHost = properties['logstashHost'];
-        let logstashPort = properties['logstashPort'];
-        this._logProperties = new LogProperties(loggerLevel, logstashHost, logstashPort);
-    }
-
-    private getApplicationProperties(): ApplicationLogProperties {
-        let applicationId = this._polarisProperties['applicationId'];
-        let applicationName = this._polarisProperties['applicationName'];
-        let repositoryVersion = this._polarisProperties['repositoryVersion'];
-        let environment = this._polarisProperties['environment'];
-        let component = this._polarisProperties['component'];
-        return new ApplicationLogProperties(applicationId, applicationName, repositoryVersion, environment, component);
-    }
 }
