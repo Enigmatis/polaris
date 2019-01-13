@@ -9,6 +9,8 @@ import {InjectableLogger} from "../logging/GraphQLLogger";
 import {LogProperties} from "../properties/LogProperties";
 import {inject, injectable} from "inversify";
 import {ISchemaCreator} from "../schema/utils/schema.creator";
+import {IConfig} from '../common/injectableInterfaces';
+
 
 const path = require('path');
 const express = require('express');
@@ -25,21 +27,17 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
     private _logProperties: LogProperties;
     @inject("InjectableLogger")polarisLogger :InjectableLogger;
 
-    constructor(@inject("ISchemaCreator")creator :ISchemaCreator) {
-        let schema = creator.generateSchema()
+    constructor(@inject("ISchemaCreator")creator :ISchemaCreator,
+                @inject("IConfig") config: IConfig) {
+        let schema = creator.generateSchema();
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
             typeDefs: schema.def,
             resolvers: schema.resolvers
         };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
-        let polarisPropertiesPath = path.join(__dirname, "../../../polaris-example/properties.json");
-        PropertiesHolder.loadPropertiesFromFile(polarisPropertiesPath);
-        this.initializePolarisProperties(PropertiesHolder.properties);
-
-        let logPropertiesPath = path.join(__dirname, "../../../polaris-example/log-configuration.json");
-        PropertiesHolder.loadPropertiesFromFile(logPropertiesPath);
-        this.initializeLogProperties(PropertiesHolder.properties);
+        this.initializePolarisProperties(config.getProperties());
+        this.initializeLogProperties(config.getLogConfiguration());
 
         let options = {
             schema: executableSchema,
@@ -57,7 +55,6 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
     }
 
     public start() {
-        console.log("server start")
         let options = {};
         if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
         app.listen(options, () => {

@@ -1,6 +1,6 @@
 import * as CommonEntities from './schema/common/commonEntities';
 import {PolarisGraphQLServer, IPolarisGraphQLServer} from './server/graphql.server';
-import {InjectableType, InjectableResolver} from './common/injectableInterfaces';
+import {InjectableType, InjectableResolver, IConfig} from './common/injectableInterfaces';
 import {ISchemaCreator, SchemaCreator} from './schema/utils/schema.creator';
 import {InjectableLogger, GraphQLLogger} from './logging/GraphQLLogger';
 import {container} from './IOC/ContainerManager';
@@ -17,5 +17,6 @@ export {
     ISchemaCreator,
     SchemaCreator,
     IPolarisGraphQLServer,
+    IConfig,
     container
 };

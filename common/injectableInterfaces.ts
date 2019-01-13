@@ -7,3 +7,8 @@ export interface InjectableType {
 export interface InjectableResolver {
     resolver(): IResolvers;
 }
+
+export interface IConfig {
+    getProperties();
+    getLogConfiguration();
+}
