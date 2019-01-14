@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import {InjectableType} from "../../../common/injectableInterfaces";
 import {injectable} from "inversify";
 
