@@ -58,8 +58,10 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
             options['port'] = this._polarisProperties.port;
         }
         app.listen(options, () => {
-            let polarisProperties = new GraphQLLogProperties(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
-            this.polarisLogger.info(polarisProperties);
+            let polarisProperties :GraphQLLogProperties = {
+                operationName:'info'
+            };
+            this.polarisLogger.info(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`, polarisProperties);
         });
     }
 
