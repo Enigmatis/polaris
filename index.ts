@@ -6,7 +6,6 @@ import {InjectableLogger, GraphQLLogger} from './logging/GraphQLLogger';
 import {polarisContainer} from './IOC/ContainerManager';
 import {CommonEntityInterface} from './schema/common/entities/commonEntityInterface';
 import {PolarisProperties} from './properties/polarisProperties';
-import {readJsonFromFile} from './utils/FileReader'
 
 export {
     CommonEntityInterface,
@@ -22,6 +21,5 @@ export {
     ILogConfig,
     IPolarisServerConfig,
     PolarisProperties,
-    readJsonFromFile,
     polarisContainer
 };
