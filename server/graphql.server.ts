@@ -1,26 +1,42 @@
-import {PropertiesHolder} from '../properties/propertiesHolder';
 import {PolarisProperties} from '../properties/polarisProperties';
 import {makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
-import {PolarisLogProperties, PolarisLogger, ApplicationLogProperties} from "@enigmatis/polaris-logs"
+import {LoggerConfiguration} from "@enigmatis/polaris-logs"
+import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
+import {InjectableLogger} from "../logging/GraphQLLogger";
+import {inject, injectable} from "inversify";
+import {ISchemaCreator} from "../schema/utils/schema.creator";
+import {ILogConfig,IPolarisServerConfig} from '../common/injectableInterfaces';
+
 
 const path = require('path');
 const express = require('express');
 const app = express();
 
-export class PolarisGraphQLServer {
+export interface IPolarisGraphQLServer {
+    start();
+}
+
+@injectable()
+export class PolarisGraphQLServer implements IPolarisGraphQLServer{
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
-    private polarisLogger: PolarisLogger;
+    private _logProperties: LoggerConfiguration;
+    @inject("InjectableLogger")polarisLogger :InjectableLogger;
 
-    constructor(config: any) {
-        this.polarisLogger = new PolarisLogger(null, this.getApplicationProperties(config.applicationLogProperties), this.getLogPath(config.logPath)) ;
-        let executableSchemaDefinition: { typeDefs: any, resolvers: any } = { typeDefs: config.typeDefs, resolvers: config.resolvers };
+    constructor(@inject("ISchemaCreator")creator :ISchemaCreator,
+                @inject("ILogConfig") logConfig: ILogConfig,
+                @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig) {
+        let schema = creator.generateSchema();
+        let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
+            typeDefs: schema.def,
+            resolvers: schema.resolvers
+        };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
-        let propertiesPath = path.join('./', "properties.json");
-        PropertiesHolder.loadPropertiesFromFile(propertiesPath);
-        this.initializePolarisProperties(PropertiesHolder.properties);
+
+        this._logProperties = logConfig.getLogConfiguration();
+        this._polarisProperties = propertiesConfig.getPolarisProperties()
         let options = {
             schema: executableSchema,
             cors: PolarisGraphQLServer.getCors(),
@@ -38,11 +54,14 @@ export class PolarisGraphQLServer {
 
     public start() {
         let options = {};
-        if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
-
+        if (this._polarisProperties.port !== undefined) {
+            options['port'] = this._polarisProperties.port;
+        }
         app.listen(options, () => {
-            let polarisProperties = new PolarisLogProperties(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
-            this.polarisLogger.info(polarisProperties);
+            let polarisProperties :GraphQLLogProperties = {
+                operationName:'info'
+            };
+            this.polarisLogger.info(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`, polarisProperties);
         });
     }
 
@@ -55,28 +74,5 @@ export class PolarisGraphQLServer {
         };
     }
 
-    initializePolarisProperties(properties: object): void {
-        let port = properties['port'];
-        let endpoint = properties['endpoint'];
-        this._polarisProperties = new PolarisProperties(port, endpoint);
-    }
 
-    public getApplicationProperties(applicationProperties):ApplicationLogProperties{
-        if (applicationProperties!= null)
-            return new ApplicationLogProperties(applicationProperties.id, applicationProperties.name,
-                 applicationProperties.repositoryVersion, applicationProperties.environment,applicationProperties.component);
-        return new ApplicationLogProperties("p01aris-10gs", "polaris-logs", "v1", "dev", "component");
-    }
-
-    public getLogPath(logPath:string):string{
-        console.log(logPath);
-        if (logPath != null)
-            return logPath;
-        else
-            return "log-file.log";
-    }
-
-    public getLogger(){
-        return this.polarisLogger;
-    }
 }

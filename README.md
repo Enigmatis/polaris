@@ -12,7 +12,7 @@ The schema is a "polaris" entity by itself.
 
 In order to run the server, you can use the following code:
 ```JavaScript
-const {RunGraphQLServer} = require('@vulcan/polaris');
+const {RunGraphQLServer} = require('@enigmatis/polaris');
 const Schema = require('./schema/schema');
 RunGraphQLServer(Schema, 3000);
 ```
