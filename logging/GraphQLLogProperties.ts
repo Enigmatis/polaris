@@ -4,23 +4,6 @@ import {RealityLogProperty} from "@enigmatis/polaris-logs/dist/src/entities/real
 import {RequestLogProperty} from "@enigmatis/polaris-logs/dist/src/entities/request-log-property";
 import {SystemLogProperty} from "@enigmatis/polaris-logs/dist/src/entities/system-log-property";
 
-export class GraphQLLogProperties implements PolarisLogProperties {
-    throwable?: object;
-    elapsedTime?: number;
-    logId?: string;
-    customProperties?: object;
-    requestId?: string;
-    upn?: string;
-    response?: object;
-    repositoryVersion?: string;
-    environment?: string;
-    component?: string;
-    isTraceable?: boolean;
-    recordId?: string;
-    eventKind?: string;
-    eventKindDescription?: EventKindDescriptionLogProperty;
-    reality?: RealityLogProperty;
-    request?: RequestLogProperty;
-    system?: SystemLogProperty;
+export interface GraphQLLogProperties extends PolarisLogProperties {
     operationName?: string;
 }
