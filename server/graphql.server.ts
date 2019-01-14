@@ -1,22 +1,42 @@
-import {PropertiesHolder} from '../properties/propertiesHolder';
 import {PolarisProperties} from '../properties/polarisProperties';
-import {Config, makeExecutableSchema} from 'apollo-server';
+import {makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
+import {LoggerConfiguration} from "@enigmatis/polaris-logs"
+import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
+import {InjectableLogger} from "../logging/GraphQLLogger";
+import {inject, injectable} from "inversify";
+import {ISchemaCreator} from "../schema/utils/schema.creator";
+import {ILogConfig,IPolarisServerConfig} from '../common/injectableInterfaces';
+
 
 const path = require('path');
 const express = require('express');
 const app = express();
 
-export class PolarisGraphQLServer {
+export interface IPolarisGraphQLServer {
+    start();
+}
+
+@injectable()
+export class PolarisGraphQLServer implements IPolarisGraphQLServer{
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
+    private _logProperties: LoggerConfiguration;
+    @inject("InjectableLogger")polarisLogger :InjectableLogger;
 
-    constructor(config: Config) {
-        let executableSchema = makeExecutableSchema(config.schema);
-        let propertiesPath = path.join('../', "properties.json");
-        PropertiesHolder.loadPropertiesFromFile(propertiesPath);
-        this.initializePolarisProperties(PropertiesHolder.properties);
+    constructor(@inject("ISchemaCreator")creator :ISchemaCreator,
+                @inject("ILogConfig") logConfig: ILogConfig,
+                @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig) {
+        let schema = creator.generateSchema();
+        let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
+            typeDefs: schema.def,
+            resolvers: schema.resolvers
+        };
+        let executableSchema = makeExecutableSchema(executableSchemaDefinition);
+
+        this._logProperties = logConfig.getLogConfiguration();
+        this._polarisProperties = propertiesConfig.getPolarisProperties()
         let options = {
             schema: executableSchema,
             cors: PolarisGraphQLServer.getCors(),
@@ -34,10 +54,14 @@ export class PolarisGraphQLServer {
 
     public start() {
         let options = {};
-        if (this._polarisProperties.port !== undefined) options['port'] = this._polarisProperties.port;
-
+        if (this._polarisProperties.port !== undefined) {
+            options['port'] = this._polarisProperties.port;
+        }
         app.listen(options, () => {
-            console.log(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
+            let polarisProperties :GraphQLLogProperties = {
+                operationName:'info'
+            };
+            this.polarisLogger.info(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`, polarisProperties);
         });
     }
 
@@ -50,9 +74,5 @@ export class PolarisGraphQLServer {
         };
     }
 
-    initializePolarisProperties(properties: object): void {
-        let port = properties['port'];
-        let endpoint = properties['endpoint'];
-        this._polarisProperties = new PolarisProperties(port, endpoint);
-    }
+
 }

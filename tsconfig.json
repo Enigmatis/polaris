@@ -8,11 +8,14 @@
     "types": ["reflect-metadata"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "lib": [
       "es6",
       "es2017",
       "dom",
-      "esnext"
+      "esnext",
+      "esnext.asynciterable"
     ]
   },
   "exclude": [
