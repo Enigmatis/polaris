@@ -7,8 +7,10 @@ import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
 import {InjectableLogger} from "../logging/GraphQLLogger";
 import {inject, injectable} from "inversify";
 import {ISchemaCreator} from "../schema/utils/schema.creator";
-import {ILogConfig,IPolarisServerConfig} from '../common/injectableInterfaces';
-
+import {ILogConfig, IPolarisServerConfig} from '../common/injectableInterfaces';
+import {applyMiddleware} from 'graphql-middleware'
+import {LoggerMiddleware} from "../middlewares/logger-middleware";
+import {createMiddleware} from "../middlewares/polaris-middleware-creator";
 
 const path = require('path');
 const express = require('express');
@@ -19,13 +21,13 @@ export interface IPolarisGraphQLServer {
 }
 
 @injectable()
-export class PolarisGraphQLServer implements IPolarisGraphQLServer{
+export class PolarisGraphQLServer implements IPolarisGraphQLServer {
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
     private _logProperties: LoggerConfiguration;
-    @inject("InjectableLogger")polarisLogger :InjectableLogger;
+    @inject("InjectableLogger") polarisLogger: InjectableLogger;
 
-    constructor(@inject("ISchemaCreator")creator :ISchemaCreator,
+    constructor(@inject("ISchemaCreator")creator: ISchemaCreator,
                 @inject("ILogConfig") logConfig: ILogConfig,
                 @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig) {
         let schema = creator.generateSchema();
@@ -35,10 +37,14 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
         };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
+        const schemaWithMiddleware = applyMiddleware(
+            executableSchema,
+            createMiddleware(new LoggerMiddleware())
+        )
         this._logProperties = logConfig.getLogConfiguration();
         this._polarisProperties = propertiesConfig.getPolarisProperties()
         let options = {
-            schema: executableSchema,
+            schema: schemaWithMiddleware,
             cors: PolarisGraphQLServer.getCors(),
             context: ({req}) => ({
                 headers: new PolarisRequestHeaders(req.headers)
@@ -58,8 +64,8 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
             options['port'] = this._polarisProperties.port;
         }
         app.listen(options, () => {
-            let polarisProperties :GraphQLLogProperties = {
-                operationName:'info'
+            let polarisProperties: GraphQLLogProperties = {
+                operationName: 'info'
             };
             this.polarisLogger.info(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`, polarisProperties);
         });
