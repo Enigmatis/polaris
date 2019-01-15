@@ -1,11 +1,17 @@
-import {PolarisMiddlewareInterface} from "./polaris-middleware-interface";
+import {PolarisMiddleware} from "./polaris-middleware";
+import {inject, injectable} from "inversify";
+import {PolarisLogger} from "@enigmatis/polaris-logs/dist/src/polaris-logger";
+import {InjectableLogger} from "..";
 
-export class LoggerMiddleware implements PolarisMiddlewareInterface{
+@injectable()
+export class LoggerMiddleware implements PolarisMiddleware {
+    @inject("InjectableLogger") polarisLogger: InjectableLogger;
+
     preResolve(resolve, root, args, context, info) {
-        console.log(`before resolver, args: ${JSON.stringify(args)}`);
+        this.polarisLogger.info(`before resolver, args: ${JSON.stringify(args)}`);
     }
 
     postResolve(root: any, args: any, context: any, info: any, result) {
-        console.log(`after resolver, result: ${JSON.stringify(result)}`);
+        this.polarisLogger.info(`after resolver, result: ${JSON.stringify(result)}`);
     }
 }

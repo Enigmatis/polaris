@@ -5,12 +5,12 @@ import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
 import {LoggerConfiguration} from "@enigmatis/polaris-logs"
 import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
 import {InjectableLogger} from "../logging/GraphQLLogger";
-import {inject, injectable} from "inversify";
+import {inject, injectable, multiInject} from "inversify";
 import {ISchemaCreator} from "../schema/utils/schema.creator";
 import {ILogConfig, IPolarisServerConfig} from '../common/injectableInterfaces';
 import {applyMiddleware} from 'graphql-middleware'
-import {LoggerMiddleware} from "../middlewares/logger-middleware";
 import {createMiddleware} from "../middlewares/polaris-middleware-creator";
+import {PolarisMiddleware} from "../middlewares/polaris-middleware";
 
 const path = require('path');
 const express = require('express');
@@ -27,9 +27,12 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer {
     private _logProperties: LoggerConfiguration;
     @inject("InjectableLogger") polarisLogger: InjectableLogger;
 
-    constructor(@inject("ISchemaCreator")creator: ISchemaCreator,
-                @inject("ILogConfig") logConfig: ILogConfig,
-                @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig) {
+    constructor(
+        @inject("ISchemaCreator")creator: ISchemaCreator,
+        @inject("ILogConfig") logConfig: ILogConfig,
+        @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig,
+        @multiInject("PolarisMiddleware") middlewares: PolarisMiddleware[]
+    ) {
         let schema = creator.generateSchema();
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
             typeDefs: schema.def,
@@ -39,7 +42,7 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer {
 
         const schemaWithMiddleware = applyMiddleware(
             executableSchema,
-            createMiddleware(new LoggerMiddleware())
+            ...middlewares.map((value) => createMiddleware(value))
         )
         this._logProperties = logConfig.getLogConfiguration();
         this._polarisProperties = propertiesConfig.getPolarisProperties()
