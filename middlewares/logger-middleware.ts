@@ -13,7 +13,7 @@ const graphqlFields = require('graphql-fields');
 export class LoggerMiddleware implements PolarisMiddleware {
     @inject("InjectableLogger") polarisLogger: InjectableLogger;
 
-    initReqProperties(root, args, context, info: GraphQLResolveInfo): GraphQLLogProperties {
+    private initReqProperties(root, args, context, info: GraphQLResolveInfo): GraphQLLogProperties {
         let fieldsWithSubFieldsArgs = graphqlFields(info, {}, {processArguments: true});
         let body = {}
         body[info.fieldName] = fieldsWithSubFieldsArgs;
@@ -32,22 +32,22 @@ export class LoggerMiddleware implements PolarisMiddleware {
     preResolve(root:any, args:{ [argName: string]: any }, context:any, info:GraphQLResolveInfo) {
         if (!root) {
             let props: GraphQLLogProperties = this.initReqProperties(root, args, context, info);
-            this.polarisLogger.debug('Resolver of ' + props.operationName +
-                ' began execution. Arguments received:' + props.request.requestQuery.body, props);
+            this.polarisLogger.debug( `Resolver of ${props.operationName}
+             began execution. Arguments received: ${props.request.requestQuery.body}` ,props);
         } else {
             let props: GraphQLLogProperties = this.initReqProperties(root, args, context, info);
-            this.polarisLogger.debug('field "' + info.fieldName + '" began execution.', props);
+            this.polarisLogger.debug(`field ${info.fieldName} began execution.`, props);
         }
     }
 
     postResolve(root:any, args:{ [argName: string]: any }, context:any, info:GraphQLResolveInfo, result:string) {
         if (!root) {
             let props: GraphQLLogProperties = this.initReqProperties(root, args, context, info);
-            this.polarisLogger.debug('Resolver of ' + props.operationName +
-                ' finished execution. Arguments received:' + props.request.requestQuery.body, props);
+            this.polarisLogger.debug(`Resolver of ${props.operationName} finished execution. Arguments received:
+             ${props.request.requestQuery.body}`, props);
         } else {
             let props: GraphQLLogProperties = this.initReqProperties(root, args, context, info);
-            this.polarisLogger.debug('field "' +  info.fieldName + '" finished execution. Result is:'+ result, props);
+            this.polarisLogger.debug(`field ${info.fieldName} finished execution. Result is: ${result}`, props);
         }
     }
 }
