@@ -3,12 +3,13 @@ import {makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
 import {LoggerConfiguration} from "@enigmatis/polaris-logs"
-import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
 import {InjectableLogger} from "../logging/GraphQLLogger";
-import {inject, injectable} from "inversify";
+import {inject, injectable, multiInject} from "inversify";
 import {ISchemaCreator} from "../schema/utils/schema.creator";
-import {ILogConfig,IPolarisServerConfig} from '../common/injectableInterfaces';
-
+import {ILogConfig, IPolarisServerConfig} from '../common/injectableInterfaces';
+import {applyMiddleware} from 'graphql-middleware'
+import {createMiddleware} from "../middlewares/polaris-middleware-creator";
+import {PolarisMiddleware} from "../middlewares/polaris-middleware";
 
 const path = require('path');
 const express = require('express');
@@ -19,15 +20,18 @@ export interface IPolarisGraphQLServer {
 }
 
 @injectable()
-export class PolarisGraphQLServer implements IPolarisGraphQLServer{
+export class PolarisGraphQLServer implements IPolarisGraphQLServer {
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
     private _logProperties: LoggerConfiguration;
-    @inject("InjectableLogger")polarisLogger :InjectableLogger;
+    @inject("InjectableLogger") polarisLogger: InjectableLogger;
 
-    constructor(@inject("ISchemaCreator")creator :ISchemaCreator,
-                @inject("ILogConfig") logConfig: ILogConfig,
-                @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig) {
+    constructor(
+        @inject("ISchemaCreator")creator: ISchemaCreator,
+        @inject("ILogConfig") logConfig: ILogConfig,
+        @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig,
+        @multiInject("PolarisMiddleware") middlewares: PolarisMiddleware[]
+    ) {
         let schema = creator.generateSchema();
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
             typeDefs: schema.def,
@@ -35,10 +39,14 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
         };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
+        const executableSchemaWithMiddlewares = applyMiddleware(
+            executableSchema,
+            ...middlewares.map(createMiddleware)
+        )
         this._logProperties = logConfig.getLogConfiguration();
         this._polarisProperties = propertiesConfig.getPolarisProperties()
         let options = {
-            schema: executableSchema,
+            schema: executableSchemaWithMiddlewares,
             cors: PolarisGraphQLServer.getCors(),
             context: ({req}) => ({
                 headers: new PolarisRequestHeaders(req.headers)
@@ -58,10 +66,7 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer{
             options['port'] = this._polarisProperties.port;
         }
         app.listen(options, () => {
-            let polarisProperties :GraphQLLogProperties = {
-                operationName:'info'
-            };
-            this.polarisLogger.info(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`, polarisProperties);
+            this.polarisLogger.info(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
         });
     }
 
