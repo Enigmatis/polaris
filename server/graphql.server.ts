@@ -3,7 +3,6 @@ import {makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
 import {LoggerConfiguration} from "@enigmatis/polaris-logs"
-import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
 import {InjectableLogger} from "../logging/GraphQLLogger";
 import {inject, injectable, multiInject} from "inversify";
 import {ISchemaCreator} from "../schema/utils/schema.creator";
@@ -40,14 +39,14 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer {
         };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
-        const schemaWithMiddleware = applyMiddleware(
+        const executableSchemaWithMiddlewares = applyMiddleware(
             executableSchema,
-            ...middlewares.map((value) => createMiddleware(value))
+            ...middlewares.map(createMiddleware)
         )
         this._logProperties = logConfig.getLogConfiguration();
         this._polarisProperties = propertiesConfig.getPolarisProperties()
         let options = {
-            schema: schemaWithMiddleware,
+            schema: executableSchemaWithMiddlewares,
             cors: PolarisGraphQLServer.getCors(),
             context: ({req}) => ({
                 headers: new PolarisRequestHeaders(req.headers)
@@ -67,10 +66,7 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer {
             options['port'] = this._polarisProperties.port;
         }
         app.listen(options, () => {
-            let polarisProperties: GraphQLLogProperties = {
-                operationName: 'info'
-            };
-            this.polarisLogger.info(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`, polarisProperties);
+            this.polarisLogger.info(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
         });
     }
 
