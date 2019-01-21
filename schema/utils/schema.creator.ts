@@ -3,6 +3,7 @@ import {injectable, multiInject} from "inversify";
 import {merge} from 'lodash';
 import {InjectableResolver, InjectableType} from "../../common/injectableInterfaces";
 import {IResolvers, ITypeDefinitions} from 'graphql-tools';
+import POLARIS_TYPES from '../../inversion-of-control/polaris-types';
 
 export interface ISchemaCreator {
     generateSchema(): { def: ITypeDefinitions, resolvers: IResolvers };
@@ -14,8 +15,8 @@ export class SchemaCreator implements ISchemaCreator {
     private resolvers: InjectableResolver[];
 
     public constructor(
-        @multiInject("InjectableType") types: InjectableType[],
-        @multiInject("InjectableResolver") resolvers: InjectableResolver[]) {
+        @multiInject(POLARIS_TYPES.InjectableType) types: InjectableType[],
+        @multiInject(POLARIS_TYPES.InjectableResolver) resolvers: InjectableResolver[]) {
         this.types = types;
         this.resolvers = resolvers;
     };
