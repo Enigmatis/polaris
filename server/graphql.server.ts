@@ -10,6 +10,7 @@ import {ILogConfig, IPolarisServerConfig} from '../common/injectableInterfaces';
 import {applyMiddleware} from 'graphql-middleware'
 import {createMiddleware} from "../middlewares/polaris-middleware-creator";
 import {PolarisMiddleware} from "../middlewares/polaris-middleware";
+import POLARIS_TYPES from '../inversion-of-control/polaris-types';
 
 const path = require('path');
 const express = require('express');
@@ -24,13 +25,13 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer {
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
     private _logProperties: LoggerConfiguration;
-    @inject("InjectableLogger") polarisLogger: InjectableLogger;
+    @inject(POLARIS_TYPES.InjectableLogger) polarisLogger: InjectableLogger;
 
     constructor(
-        @inject("ISchemaCreator")creator: ISchemaCreator,
-        @inject("ILogConfig") logConfig: ILogConfig,
-        @inject("IPolarisServerConfig") propertiesConfig: IPolarisServerConfig,
-        @multiInject("PolarisMiddleware") middlewares: PolarisMiddleware[]
+        @inject(POLARIS_TYPES.ISchemaCreator)creator: ISchemaCreator,
+        @inject(POLARIS_TYPES.ILogConfig) logConfig: ILogConfig,
+        @inject(POLARIS_TYPES.IPolarisServerConfig) propertiesConfig: IPolarisServerConfig,
+        @multiInject(POLARIS_TYPES.PolarisMiddleware) middlewares: PolarisMiddleware[]
     ) {
         let schema = creator.generateSchema();
         let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {

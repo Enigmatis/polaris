@@ -6,12 +6,13 @@ import {GraphQLResolveInfo} from "graphql";
 import {GraphQLLogProperties} from "../logging/GraphQLLogProperties";
 import {RequestLogProperty} from "@enigmatis/polaris-logs/dist/src/entities/request-log-property";
 import {PolarisLogProperties} from "@enigmatis/polaris-logs/dist/src/polaris-log-properties";
+import POLARIS_TYPES from '../inversion-of-control/polaris-types';
 
 const graphqlFields = require('graphql-fields');
 
 @injectable()
 export class LoggerMiddleware implements PolarisMiddleware {
-    @inject("InjectableLogger") polarisLogger: InjectableLogger;
+    @inject(POLARIS_TYPES.InjectableLogger) polarisLogger: InjectableLogger;
 
     private initReqProperties(root, args, context, info: GraphQLResolveInfo): GraphQLLogProperties {
         let fieldsWithSubFieldsArgs = graphqlFields(info, {}, {processArguments: true});
