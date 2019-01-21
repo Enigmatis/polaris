@@ -15,7 +15,8 @@ let POLARIS_TYPES = {
     IPolarisServerConfig: Symbol("IPolarisServerConfig"),
     ILogConfig: Symbol("ILogConfig"),
     InjectableType: Symbol("InjectableType"),
-    InjectableResolver: Symbol("InjectableResolver")
+    InjectableResolver: Symbol("InjectableResolver"),
+    CommonEntityInterface: Symbol("CommonEntityInterface")
 };
 
 export default POLARIS_TYPES;
