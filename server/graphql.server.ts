@@ -1,5 +1,5 @@
 import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
-import { makeExecutableSchema, Config } from 'apollo-server';
+import { Config, makeExecutableSchema } from 'apollo-server';
 import { ApolloServer } from 'apollo-server-express';
 import * as express from 'express';
 import { applyMiddleware } from 'graphql-middleware';
