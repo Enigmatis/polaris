@@ -2,8 +2,7 @@ import {PolarisProperties} from '../properties/polarisProperties';
 import {makeExecutableSchema} from 'apollo-server';
 import {ApolloServer} from 'apollo-server-express';
 import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
-import {LoggerConfiguration} from "@enigmatis/polaris-logs"
-import {InjectableLogger} from "../logging/GraphQLLogger";
+import {LoggerConfiguration, PolarisLogger} from '@enigmatis/polaris-logs';
 import {inject, injectable, multiInject} from "inversify";
 import {ISchemaCreator} from "../schema/utils/schema.creator";
 import {ILogConfig, IPolarisServerConfig} from '../common/injectableInterfaces';
@@ -15,6 +14,7 @@ import POLARIS_TYPES from '../inversion-of-control/polaris-types';
 const path = require('path');
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 
 export interface IPolarisGraphQLServer {
     start();
@@ -25,7 +25,7 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer {
     private server: ApolloServer;
     private _polarisProperties: PolarisProperties;
     private _logProperties: LoggerConfiguration;
-    @inject(POLARIS_TYPES.InjectableLogger) polarisLogger: InjectableLogger;
+    @inject(POLARIS_TYPES.PolarisLogger) polarisLogger: PolarisLogger;
 
     constructor(
         @inject(POLARIS_TYPES.ISchemaCreator)creator: ISchemaCreator,
@@ -39,18 +39,23 @@ export class PolarisGraphQLServer implements IPolarisGraphQLServer {
             resolvers: schema.resolvers
         };
         let executableSchema = makeExecutableSchema(executableSchemaDefinition);
-
         const executableSchemaWithMiddlewares = applyMiddleware(
             executableSchema,
-            ...middlewares.map(createMiddleware)
-        )
+            ...middlewares.map(createMiddleware),
+        );
         this._logProperties = logConfig.getLogConfiguration();
-        this._polarisProperties = propertiesConfig.getPolarisProperties()
+        this._polarisProperties = propertiesConfig.getPolarisProperties();
+
+        app.use(bodyParser.json()); // for parsing application/json
+        app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
         let options = {
             schema: executableSchemaWithMiddlewares,
             cors: PolarisGraphQLServer.getCors(),
             context: ({req}) => ({
-                headers: new PolarisRequestHeaders(req.headers)
+                headers: new PolarisRequestHeaders(req.headers),
+                body: req.body,
+                response: req.res
             })
         };
         this.server = new ApolloServer(options);

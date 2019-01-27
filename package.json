@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/yarinvak/polaris#readme",
   "dependencies": {
-    "@enigmatis/polaris-logs": "file:../polaris-logs",
+    "@enigmatis/polaris-logs": "^2.1.0",
     "@types/graphql": "^14.0.3",
     "@types/node": "10.12.12",
     "apollo-server": "^2.0.5",
@@ -36,6 +36,7 @@
     "inversify": "^5.0.1",
     "inversify-binding-decorators": "^4.0.0",
     "reflect-metadata": "^0.1.12",
+    "ts-stopwatch": "0.0.4",
     "typescript": "^3.0.1"
   },
   "devDependencies": {

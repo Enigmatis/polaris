@@ -1,5 +1,4 @@
 import {
-    InjectableLogger,
     InjectableResolver,
     IPolarisGraphQLServer,
     IPolarisServerConfig,
@@ -10,7 +9,7 @@ import {
 let POLARIS_TYPES = {
     IPolarisGraphQLServer: Symbol("IPolarisGraphQLServer"),
     ISchemaCreator: Symbol("ISchemaCreator"),
-    InjectableLogger: Symbol("InjectableLogger"),
+    PolarisLogger: Symbol("PolarisLogger"),
     PolarisMiddleware: Symbol("PolarisMiddleware"),
     IPolarisServerConfig: Symbol("IPolarisServerConfig"),
     ILogConfig: Symbol("ILogConfig"),
