@@ -1,13 +1,20 @@
-import * as CommonEntities from './schema/common/commonEntities';
-import {PolarisGraphQLServer, IPolarisGraphQLServer} from './server/graphql.server';
-import {InjectableType, InjectableResolver, ILogConfig, IPolarisServerConfig} from './common/injectableInterfaces';
-import {ISchemaCreator, SchemaCreator} from './schema/utils/schema.creator';
-import {InjectableLogger, GraphQLLogger} from './logging/GraphQLLogger';
-import {polarisContainer} from './inversion-of-control/ContainerManager';
-import {CommonEntityInterface} from './schema/common/entities/commonEntityInterface';
-import {PolarisProperties} from './properties/polarisProperties';
-import {PolarisMiddleware} from './middlewares/polaris-middleware';
+import { PolarisLogger } from '@enigmatis/polaris-logs';
+
+import {
+    InjectableResolver,
+    InjectableType,
+    LogConfig,
+    PolarisServerConfig,
+} from './common/injectable-interfaces';
+import { polarisContainer } from './inversion-of-control/container-manager';
 import POLARIS_TYPES from './inversion-of-control/polaris-types';
+import { GraphqlLogger } from './logging/graphql-logger';
+import { PolarisMiddleware } from './middlewares/polaris-middleware';
+import { PolarisProperties } from './properties/polaris-properties';
+import * as CommonEntities from './schema/common/common-entities';
+import { CommonEntityInterface } from './schema/common/entities/common-entity-interface';
+import { PolarisSchemaCreator, SchemaCreator } from './schema/utils/schema.creator';
+import { GraphQLServer, PolarisGraphQLServer } from './server/graphql.server';
 
 export {
     CommonEntityInterface,
@@ -15,13 +22,13 @@ export {
     PolarisGraphQLServer,
     InjectableType,
     InjectableResolver,
-    InjectableLogger,
-    GraphQLLogger,
-    ISchemaCreator,
+    PolarisLogger,
+    GraphqlLogger,
     SchemaCreator,
-    IPolarisGraphQLServer,
-    ILogConfig,
-    IPolarisServerConfig,
+    PolarisSchemaCreator,
+    GraphQLServer,
+    LogConfig,
+    PolarisServerConfig,
     PolarisProperties,
     polarisContainer,
     PolarisMiddleware,

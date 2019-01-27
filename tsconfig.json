@@ -4,18 +4,19 @@
     "target": "es5",
     "sourceMap": true,
     "outDir": "./dist",
-    "allowJs": false,
-    "types": ["reflect-metadata"],
+    "strict": true,
+    "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": [
+      "src/type-declarations"
+    ],
+    "declaration": true,
     "lib": [
       "es6",
       "es2017",
-      "dom",
-      "esnext",
-      "esnext.asynciterable"
+      "esnext"
     ]
   },
   "exclude": [

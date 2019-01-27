@@ -1,22 +1,24 @@
+import { PolarisLogger } from '@enigmatis/polaris-logs';
 import {
-    InjectableLogger,
     InjectableResolver,
-    IPolarisGraphQLServer,
-    IPolarisServerConfig,
-    ISchemaCreator,
-    PolarisMiddleware,
-} from '..';
+    InjectableType,
+    LogConfig,
+    PolarisServerConfig,
+} from '../common/injectable-interfaces';
+import { PolarisMiddleware } from '../middlewares/polaris-middleware';
+import { SchemaCreator } from '../schema/utils/schema.creator';
+import { GraphQLServer } from '../server/graphql.server';
 
-let POLARIS_TYPES = {
-    IPolarisGraphQLServer: Symbol("IPolarisGraphQLServer"),
-    ISchemaCreator: Symbol("ISchemaCreator"),
-    InjectableLogger: Symbol("InjectableLogger"),
-    PolarisMiddleware: Symbol("PolarisMiddleware"),
-    IPolarisServerConfig: Symbol("IPolarisServerConfig"),
-    ILogConfig: Symbol("ILogConfig"),
-    InjectableType: Symbol("InjectableType"),
-    InjectableResolver: Symbol("InjectableResolver"),
-    CommonEntityInterface: Symbol("CommonEntityInterface")
+const POLARIS_TYPES = {
+    GraphQLServer: Symbol('GraphQLServer'),
+    SchemaCreator: Symbol('SchemaCreator'),
+    PolarisLogger: Symbol('PolarisLogger'),
+    PolarisMiddleware: Symbol('PolarisMiddleware'),
+    PolarisServerConfig: Symbol('PolarisServerConfig'),
+    LogConfig: Symbol('LogConfig'),
+    InjectableType: Symbol('InjectableType'),
+    InjectableResolver: Symbol('InjectableResolver'),
+    CommonEntityInterface: Symbol('CommonEntityInterface`'),
 };
 
 export default POLARIS_TYPES;

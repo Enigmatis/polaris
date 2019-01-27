@@ -1,10 +1,10 @@
-import "reflect-metadata";
-import {InjectableType} from "../../../common/injectableInterfaces";
-import {injectable} from "inversify";
+import { injectable } from 'inversify';
+import 'reflect-metadata';
+import { InjectableType } from '../../../common/injectable-interfaces';
 
 @injectable()
 export class CommonEntityInterface implements InjectableType {
-    definition(): string {
+    public definition(): string {
         return `interface CommonEntity{
         id: ID!
         creationDate: String,

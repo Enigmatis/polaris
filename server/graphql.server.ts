@@ -1,84 +1,81 @@
-import {PolarisProperties} from '../properties/polarisProperties';
-import {makeExecutableSchema} from 'apollo-server';
-import {ApolloServer} from 'apollo-server-express';
-import {PolarisRequestHeaders} from "../http/request/polarisRequestHeaders";
-import {LoggerConfiguration} from "@enigmatis/polaris-logs"
-import {InjectableLogger} from "../logging/GraphQLLogger";
-import {inject, injectable, multiInject} from "inversify";
-import {ISchemaCreator} from "../schema/utils/schema.creator";
-import {ILogConfig, IPolarisServerConfig} from '../common/injectableInterfaces';
-import {applyMiddleware} from 'graphql-middleware'
-import {createMiddleware} from "../middlewares/polaris-middleware-creator";
-import {PolarisMiddleware} from "../middlewares/polaris-middleware";
+import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
+import { makeExecutableSchema } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
+import * as express from 'express';
+import { applyMiddleware } from 'graphql-middleware';
+import { inject, injectable, multiInject } from 'inversify';
+import { LogConfig, PolarisServerConfig } from '../common/injectable-interfaces';
+import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
 import POLARIS_TYPES from '../inversion-of-control/polaris-types';
+import { PolarisMiddleware } from '../middlewares/polaris-middleware';
+import { createMiddleware } from '../middlewares/polaris-middleware-creator';
+import { PolarisProperties } from '../properties/polaris-properties';
+import { SchemaCreator } from '../schema/utils/schema.creator';
 
-const path = require('path');
-const express = require('express');
 const app = express();
 
-export interface IPolarisGraphQLServer {
-    start();
+export interface GraphQLServer {
+    start(): void;
 }
 
 @injectable()
-export class PolarisGraphQLServer implements IPolarisGraphQLServer {
+export class PolarisGraphQLServer implements GraphQLServer {
+    private static getCors() {
+        return {
+            origin: '*',
+            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            preflightContinue: false,
+            optionsSuccessStatus: 204,
+        };
+    }
+    @inject(POLARIS_TYPES.PolarisLogger) public polarisLogger!: PolarisLogger;
     private server: ApolloServer;
-    private _polarisProperties: PolarisProperties;
-    private _logProperties: LoggerConfiguration;
-    @inject(POLARIS_TYPES.InjectableLogger) polarisLogger: InjectableLogger;
+    private polarisProperties: PolarisProperties;
+    private logProperties: LoggerConfiguration;
 
     constructor(
-        @inject(POLARIS_TYPES.ISchemaCreator)creator: ISchemaCreator,
-        @inject(POLARIS_TYPES.ILogConfig) logConfig: ILogConfig,
-        @inject(POLARIS_TYPES.IPolarisServerConfig) propertiesConfig: IPolarisServerConfig,
-        @multiInject(POLARIS_TYPES.PolarisMiddleware) middlewares: PolarisMiddleware[]
+        @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
+        @inject(POLARIS_TYPES.LogConfig) logConfig: LogConfig,
+        @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
+        @multiInject(POLARIS_TYPES.PolarisMiddleware) middlewares: PolarisMiddleware[],
     ) {
-        let schema = creator.generateSchema();
-        let executableSchemaDefinition: { typeDefs: any, resolvers: any } = {
+        const schema = creator.generateSchema();
+        const executableSchemaDefinition: { typeDefs: any; resolvers: any } = {
             typeDefs: schema.def,
-            resolvers: schema.resolvers
+            resolvers: schema.resolvers,
         };
-        let executableSchema = makeExecutableSchema(executableSchemaDefinition);
+        const executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
         const executableSchemaWithMiddlewares = applyMiddleware(
             executableSchema,
-            ...middlewares.map(createMiddleware)
-        )
-        this._logProperties = logConfig.getLogConfiguration();
-        this._polarisProperties = propertiesConfig.getPolarisProperties()
-        let options = {
+            ...middlewares.map(createMiddleware),
+        );
+        this.logProperties = logConfig.getLogConfiguration();
+        this.polarisProperties = propertiesConfig.getPolarisProperties();
+        const options = {
             schema: executableSchemaWithMiddlewares,
             cors: PolarisGraphQLServer.getCors(),
-            context: ({req}) => ({
-                headers: new PolarisRequestHeaders(req.headers)
-            })
+            context: ({ req }: { req: any }) => ({
+                headers: new PolarisRequestHeaders(req.headers),
+            }),
         };
         this.server = new ApolloServer(options);
-        if (this._polarisProperties.endpoint !== undefined) {
-            this.server.applyMiddleware({app, path: this._polarisProperties.endpoint});
+        if (this.polarisProperties.endpoint !== undefined) {
+            this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
         } else {
-            this.server.applyMiddleware({app});
+            this.server.applyMiddleware({ app });
         }
     }
 
     public start() {
-        let options = {};
-        if (this._polarisProperties.port !== undefined) {
-            options['port'] = this._polarisProperties.port;
+        const options = {} as any;
+        if (this.polarisProperties.port !== undefined) {
+            options.port = this.polarisProperties.port;
         }
         app.listen(options, () => {
-            this.polarisLogger.info(`🚀 Server ready at http://localhost:${options['port']}${this.server.graphqlPath}`);
+            this.polarisLogger.info(
+                `🚀 Server ready at http://localhost:${options.port}${this.server.graphqlPath}`,
+            );
         });
     }
-
-    private static getCors() {
-        return {
-            "origin": "*",
-            "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-            "preflightContinue": false,
-            "optionsSuccessStatus": 204
-        };
-    }
-
-
 }
