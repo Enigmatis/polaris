@@ -1,6 +1,6 @@
 import { PolarisLogger, RequestLogProperty } from '@enigmatis/polaris-logs';
 import { GraphQLResolveInfo } from 'graphql';
-import graphqlFields from 'graphql-fields';
+import * as graphqlFields from 'graphql-fields';
 import { inject, injectable } from 'inversify';
 import POLARIS_TYPES from '../inversion-of-control/polaris-types';
 import { GraphqlLogProperties } from '../logging/graphql-log-properties';

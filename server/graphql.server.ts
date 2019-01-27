@@ -1,5 +1,5 @@
 import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
-import { makeExecutableSchema } from 'apollo-server';
+import { makeExecutableSchema, Config } from 'apollo-server';
 import { ApolloServer } from 'apollo-server-express';
 import * as express from 'express';
 import { applyMiddleware } from 'graphql-middleware';
@@ -20,14 +20,6 @@ export interface GraphQLServer {
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
-    private static getCors() {
-        return {
-            origin: '*',
-            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-            preflightContinue: false,
-            optionsSuccessStatus: 204,
-        };
-    }
     @inject(POLARIS_TYPES.PolarisLogger) public polarisLogger!: PolarisLogger;
     private server: ApolloServer;
     private polarisProperties: PolarisProperties;
@@ -52,19 +44,28 @@ export class PolarisGraphQLServer implements GraphQLServer {
         );
         this.logProperties = logConfig.getLogConfiguration();
         this.polarisProperties = propertiesConfig.getPolarisProperties();
-        const options = {
+        const config: Config = {
             schema: executableSchemaWithMiddlewares,
-            cors: PolarisGraphQLServer.getCors(),
+            // cors: PolarisGraphQLServer.getCors(),
             context: ({ req }: { req: any }) => ({
                 headers: new PolarisRequestHeaders(req.headers),
             }),
         };
-        this.server = new ApolloServer(options);
+        this.server = new ApolloServer(config);
         if (this.polarisProperties.endpoint !== undefined) {
             this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
         } else {
             this.server.applyMiddleware({ app });
         }
+    }
+
+    private static getCors() {
+        return {
+            origin: '*',
+            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            preflightContinue: false,
+            optionsSuccessStatus: 204,
+        };
     }
 
     public start() {
