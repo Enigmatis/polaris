@@ -1,12 +1,23 @@
 import { PolarisLogger } from '@enigmatis/polaris-logs';
 import { GraphQLResolveInfo } from 'graphql';
 import { inject, injectable } from 'inversify';
-import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
+import { POLARIS_TYPES } from '..';
 import { GraphqlLogProperties } from '../logging/graphql-log-properties';
 import { PolarisMiddleware } from './polaris-middleware';
 
 @injectable()
 export class LoggerMiddleware implements PolarisMiddleware {
+    public static buildProps(context: any): GraphqlLogProperties {
+        return {
+            operationName: context.body.operationName,
+            request: {
+                requestQuery: {
+                    body: context.body.query,
+                },
+            },
+        };
+    }
+
     @inject(POLARIS_TYPES.PolarisLogger) public polarisLogger!: PolarisLogger;
 
     public preResolve(
@@ -15,13 +26,11 @@ export class LoggerMiddleware implements PolarisMiddleware {
         context: any,
         info: GraphQLResolveInfo,
     ) {
-        const props: GraphqlLogProperties = this.buildProps(context);
+        const props: GraphqlLogProperties = LoggerMiddleware.buildProps(context);
         if (!root) {
             this.polarisLogger.debug(
-                `Resolver of ${props.operationName}
-             began execution. Query is: ${context.body.query}. Arguments given:${JSON.stringify(
-                    args,
-                )}`,
+                `Resolver of ${props.operationName} began execution. Action is:
+                    \n${context.body.query}Arguments given:${JSON.stringify(args)}`,
                 props,
             );
         } else {
@@ -35,25 +44,14 @@ export class LoggerMiddleware implements PolarisMiddleware {
         context: any,
         info: GraphQLResolveInfo,
         result: string,
-    ) {
-        const props: GraphqlLogProperties = this.buildProps(context);
+    ): string {
+        const props: GraphqlLogProperties = LoggerMiddleware.buildProps(context);
         if (root) {
             this.polarisLogger.debug(
-                `Field fetching of ${info.fieldName} finished execution. Result is:${result}`,
+                `Field fetching of ${info.fieldName} finished execution. Result is: ${result}`,
                 props,
             );
         }
         return result;
-    }
-
-    private buildProps(context: any): GraphqlLogProperties {
-        return {
-            operationName: context.body.operationName,
-            request: {
-                requestQuery: {
-                    body: context.body.query,
-                },
-            },
-        };
     }
 }
