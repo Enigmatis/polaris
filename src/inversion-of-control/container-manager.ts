@@ -1,15 +1,11 @@
 import { PolarisLogger } from '@enigmatis/polaris-logs';
 import { Container, decorate, injectable } from 'inversify';
 import 'reflect-metadata';
-import {
-    GraphqlLogger,
-    GraphQLServer,
-    PolarisGraphQLServer,
-    PolarisMiddleware,
-    PolarisSchemaCreator,
-    SchemaCreator,
-} from '..';
+import { GraphqlLogger } from '../logging/graphql-logger';
 import { LoggerMiddleware } from '../middlewares/logger-middleware';
+import { PolarisMiddleware } from '../middlewares/polaris-middleware';
+import { PolarisSchemaCreator, SchemaCreator } from '../schema/utils/schema.creator';
+import { GraphQLServer, PolarisGraphQLServer } from '../server/graphql.server';
 import { POLARIS_TYPES } from './polaris-types';
 
 decorate(injectable(), PolarisLogger);

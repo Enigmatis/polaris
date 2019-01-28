@@ -4,16 +4,14 @@ import { ApolloServer } from 'apollo-server-express';
 import * as express from 'express';
 import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
-import {
-    LogConfig,
-    POLARIS_TYPES,
-    PolarisMiddleware,
-    PolarisProperties,
-    PolarisServerConfig,
-    SchemaCreator,
-} from '..';
+import { LogConfig, PolarisServerConfig } from '../common/injectable-interfaces';
 import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
+import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
+import { PolarisMiddleware } from '../middlewares/polaris-middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
+import { PolarisProperties } from '../properties/polaris-properties';
+import { SchemaCreator } from '../schema/utils/schema.creator';
+
 const app = express();
 
 export interface GraphQLServer {
