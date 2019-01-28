@@ -2,7 +2,7 @@ import { IResolvers, ITypeDefinitions } from 'graphql-tools';
 import { injectable, multiInject } from 'inversify';
 import 'reflect-metadata';
 import { InjectableResolver, InjectableType } from '../../common/injectable-interfaces';
-import POLARIS_TYPES from '../../inversion-of-control/polaris-types';
+import { POLARIS_TYPES } from '../../inversion-of-control/polaris-types';
 
 export interface SchemaCreator {
     generateSchema(): { def: ITypeDefinitions; resolvers: IResolvers };
@@ -13,7 +13,7 @@ export class PolarisSchemaCreator implements SchemaCreator {
     private types: InjectableType[];
     private resolvers: InjectableResolver[];
 
-    public constructor(
+    constructor(
         @multiInject(POLARIS_TYPES.InjectableType) types: InjectableType[],
         @multiInject(POLARIS_TYPES.InjectableResolver) resolvers: InjectableResolver[],
     ) {
@@ -26,12 +26,6 @@ export class PolarisSchemaCreator implements SchemaCreator {
         const definitions = [schemaDefinition, ...this.types.map<string>(x => x.definition())];
         const resolverObjects = this.resolvers.map(x => x.resolver());
 
-        const resolvers = this.mergeObjectsArray(resolverObjects);
-
-        return { def: definitions, resolvers };
-    }
-
-    private mergeObjectsArray(objects: IResolvers[]): IResolvers {
-        return Object.assign({}, ...objects);
+        return { def: definitions, resolvers: Object.assign({}, ...resolverObjects) };
     }
 }

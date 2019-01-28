@@ -1,7 +1,7 @@
 import { PolarisLogger } from '@enigmatis/polaris-logs';
 import { inject, injectable } from 'inversify';
 import { LogConfig, PolarisServerConfig } from '../common/injectable-interfaces';
-import POLARIS_TYPES from '../inversion-of-control/polaris-types';
+import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 
 @injectable()
 export class GraphqlLogger extends PolarisLogger {

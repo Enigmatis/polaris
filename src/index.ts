@@ -1,36 +1,17 @@
-import { PolarisLogger } from '@enigmatis/polaris-logs';
-
-import {
+export { PolarisLogger } from '@enigmatis/polaris-logs';
+export {
     InjectableResolver,
     InjectableType,
     LogConfig,
     PolarisServerConfig,
 } from './common/injectable-interfaces';
-import { polarisContainer } from './inversion-of-control/container-manager';
-import POLARIS_TYPES from './inversion-of-control/polaris-types';
-import { GraphqlLogger } from './logging/graphql-logger';
-import { PolarisMiddleware } from './middlewares/polaris-middleware';
-import { PolarisProperties } from './properties/polaris-properties';
-import * as CommonEntities from './schema/common/common-entities';
-import { CommonEntityInterface } from './schema/common/entities/common-entity-interface';
-import { PolarisSchemaCreator, SchemaCreator } from './schema/utils/schema.creator';
-import { GraphQLServer, PolarisGraphQLServer } from './server/graphql.server';
+export { polarisContainer } from './inversion-of-control/container-manager';
+export { POLARIS_TYPES } from './inversion-of-control/polaris-types';
+export { GraphqlLogger } from './logging/graphql-logger';
+export { PolarisMiddleware } from './middlewares/polaris-middleware';
+export { PolarisProperties } from './properties/polaris-properties';
+export { CommonEntities } from './schema/common/common-entities';
 
-export {
-    CommonEntityInterface,
-    CommonEntities,
-    PolarisGraphQLServer,
-    InjectableType,
-    InjectableResolver,
-    PolarisLogger,
-    GraphqlLogger,
-    SchemaCreator,
-    PolarisSchemaCreator,
-    GraphQLServer,
-    LogConfig,
-    PolarisServerConfig,
-    PolarisProperties,
-    polarisContainer,
-    PolarisMiddleware,
-    POLARIS_TYPES,
-};
+export { CommonEntityInterface } from './schema/common/entities/common-entity-interface';
+export { PolarisSchemaCreator, SchemaCreator } from './schema/utils/schema.creator';
+export { GraphQLServer, PolarisGraphQLServer } from './server/graphql.server';

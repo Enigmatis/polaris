@@ -9,7 +9,7 @@ import { PolarisMiddleware } from '../middlewares/polaris-middleware';
 import { SchemaCreator } from '../schema/utils/schema.creator';
 import { GraphQLServer } from '../server/graphql.server';
 
-const POLARIS_TYPES = {
+export const POLARIS_TYPES = {
     GraphQLServer: Symbol('GraphQLServer'),
     SchemaCreator: Symbol('SchemaCreator'),
     PolarisLogger: Symbol('PolarisLogger'),
@@ -20,5 +20,3 @@ const POLARIS_TYPES = {
     InjectableResolver: Symbol('InjectableResolver'),
     CommonEntityInterface: Symbol('CommonEntityInterface`'),
 };
-
-export default POLARIS_TYPES;

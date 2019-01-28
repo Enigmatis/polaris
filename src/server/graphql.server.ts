@@ -6,7 +6,7 @@ import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
 import { LogConfig, PolarisServerConfig } from '../common/injectable-interfaces';
 import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
-import POLARIS_TYPES from '../inversion-of-control/polaris-types';
+import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { PolarisMiddleware } from '../middlewares/polaris-middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
@@ -46,7 +46,6 @@ export class PolarisGraphQLServer implements GraphQLServer {
         this.polarisProperties = propertiesConfig.getPolarisProperties();
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
-            // cors: PolarisGraphQLServer.getCors(),
             context: ({ req }: { req: any }) => ({
                 headers: new PolarisRequestHeaders(req.headers),
             }),
@@ -57,15 +56,6 @@ export class PolarisGraphQLServer implements GraphQLServer {
         } else {
             this.server.applyMiddleware({ app });
         }
-    }
-
-    private static getCors() {
-        return {
-            origin: '*',
-            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-            preflightContinue: false,
-            optionsSuccessStatus: 204,
-        };
     }
 
     public start() {
