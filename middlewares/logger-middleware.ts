@@ -26,8 +26,8 @@ export class LoggerMiddleware implements PolarisMiddleware {
     preResolve(root:any, args:{ [argName: string]: any }, context:any, info:GraphQLResolveInfo) {
         let props: GraphQLLogProperties = this.buildProps(context);
         if (!root) {
-            this.polarisLogger.debug( `Resolver of ${props.operationName} began execution. Query is: ${JSON.stringify(
-                props.request.requestQuery.body)}. Arguments given:${JSON.stringify(args)}` ,props);
+            this.polarisLogger.debug( `Resolver of ${props.operationName} began execution. Query is: ${
+                props.request.requestQuery.body}. Arguments given:${JSON.stringify(args)}` ,props);
         } else {
             this.polarisLogger.debug( `Field fetching of ${info.fieldName} began execution.`,props);
         }
@@ -39,6 +39,7 @@ export class LoggerMiddleware implements PolarisMiddleware {
             this.polarisLogger.debug( `Field fetching of ${info.fieldName} finished execution. Result is:${result}`,
                 props);
         }
+        return result;
     }
 
 }

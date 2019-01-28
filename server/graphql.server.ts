@@ -10,6 +10,7 @@ import {applyMiddleware} from 'graphql-middleware'
 import {createMiddleware} from "../middlewares/polaris-middleware-creator";
 import {PolarisMiddleware} from "../middlewares/polaris-middleware";
 import POLARIS_TYPES from '../inversion-of-control/polaris-types';
+import {FilterDataVersionMiddleware} from '../middlewares/filter-data-version';
 
 const path = require('path');
 const express = require('express');

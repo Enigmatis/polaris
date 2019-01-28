@@ -4,6 +4,7 @@ import {merge} from 'lodash';
 import {InjectableResolver, InjectableType} from "../../common/injectableInterfaces";
 import {IResolvers, ITypeDefinitions} from 'graphql-tools';
 import POLARIS_TYPES from '../../inversion-of-control/polaris-types';
+import {IResolverObject} from 'graphql-middleware/dist/types';
 
 export interface ISchemaCreator {
     generateSchema(): { def: ITypeDefinitions, resolvers: IResolvers };
@@ -27,7 +28,6 @@ export class SchemaCreator implements ISchemaCreator {
         let resolverObjects = this.resolvers.map(x =>
             x.resolver()
         );
-
         let resolvers = this.mergeObjectsArray(resolverObjects);
 
         return {def: definitions, resolvers: resolvers};
