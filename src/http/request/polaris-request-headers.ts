@@ -1,17 +1,17 @@
 import { HeaderNames } from '../header-names';
 
 export class PolarisRequestHeaders {
-    public readonly dataVersion: number;
-    public readonly isSnapshot: boolean;
-    public readonly includeLinkedOperation: boolean;
-    public readonly snapshotPageSize: number;
-    public readonly isPolling: boolean;
-    public readonly requestId: string;
-    public readonly upn: string;
-    public readonly eventKind: string;
-    public readonly realityId: number;
-    public readonly requestingSystemId: string;
-    public readonly requestingSystemName: string;
+    readonly dataVersion: number;
+    readonly isSnapshot: boolean;
+    readonly includeLinkedOperation: boolean;
+    readonly snapshotPageSize: number;
+    readonly isPolling: boolean;
+    readonly requestId: string;
+    readonly upn: string;
+    readonly eventKind: string;
+    readonly realityId: number;
+    readonly requestingSystemId: string;
+    readonly requestingSystemName: string;
 
     constructor(headers: any) {
         this.dataVersion = headers[HeaderNames.DATA_VERSION];
