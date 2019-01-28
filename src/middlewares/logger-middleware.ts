@@ -1,23 +1,22 @@
-import { PolarisLogger, RequestLogProperty } from '@enigmatis/polaris-logs';
-import { GraphQLResolveInfo } from 'graphql';
+import { PolarisLogger } from '@enigmatis/polaris-logs';
 import * as graphqlFields from 'graphql-fields';
 import { inject, injectable } from 'inversify';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { GraphqlLogProperties } from '../logging/graphql-log-properties';
-import { PolarisMiddleware } from './polaris-middleware';
+import { MiddlewareParams, PolarisMiddleware, PostMiddlewareParams } from './polaris-middleware';
 
 @injectable()
-export class LoggerMiddleware implements PolarisMiddleware {
-    @inject(POLARIS_TYPES.PolarisLogger) public polarisLogger!: PolarisLogger;
+export class LoggerMiddleware<TContext = any> implements PolarisMiddleware<TContext> {
+    @inject(POLARIS_TYPES.PolarisLogger) polarisLogger!: PolarisLogger;
 
-    public preResolve(
-        root: any,
-        args: { [argName: string]: any },
-        context: any,
-        info: GraphQLResolveInfo,
-    ) {
+    preResolve({ root, args, context, info }: MiddlewareParams<TContext>) {
         if (!root) {
-            const props: GraphqlLogProperties = this.initReqProperties(root, args, context, info);
+            const props: GraphqlLogProperties = this.initReqProperties({
+                root,
+                args,
+                context,
+                info,
+            });
             this.polarisLogger.debug(
                 `Resolver of ${props.operationName}
              began execution. Arguments received: ${props.request &&
@@ -26,27 +25,36 @@ export class LoggerMiddleware implements PolarisMiddleware {
                 props,
             );
         } else {
-            const props: GraphqlLogProperties = this.initReqProperties(root, args, context, info);
+            const props: GraphqlLogProperties = this.initReqProperties({
+                root,
+                args,
+                context,
+                info,
+            });
             this.polarisLogger.debug(`field ${info.fieldName} began execution.`, props);
         }
     }
 
-    public postResolve(
-        root: any,
-        args: { [argName: string]: any },
-        context: any,
-        info: GraphQLResolveInfo,
-        result: string,
-    ) {
+    postResolve({ root, args, context, info, result }: PostMiddlewareParams<TContext>) {
         if (!root) {
-            const props: GraphqlLogProperties = this.initReqProperties(root, args, context, info);
+            const props: GraphqlLogProperties = this.initReqProperties({
+                root,
+                args,
+                context,
+                info,
+            });
             this.polarisLogger.debug(
                 `Resolver of ${props.operationName} finished execution. Arguments received:
              ${props.request && props.request.requestQuery && props.request.requestQuery.body}`,
                 props,
             );
         } else {
-            const props: GraphqlLogProperties = this.initReqProperties(root, args, context, info);
+            const props: GraphqlLogProperties = this.initReqProperties({
+                root,
+                args,
+                context,
+                info,
+            });
             this.polarisLogger.debug(
                 `field ${info.fieldName} finished execution. Result is: ${result}`,
                 props,
@@ -54,24 +62,17 @@ export class LoggerMiddleware implements PolarisMiddleware {
         }
     }
 
-    private initReqProperties(
-        root: any,
-        args: any,
-        context: any,
-        info: GraphQLResolveInfo,
-    ): GraphqlLogProperties {
+    private initReqProperties({ info }: MiddlewareParams<TContext>): GraphqlLogProperties {
         const fieldsWithSubFieldsArgs = graphqlFields(info, {}, { processArguments: true });
         const body = {} as any;
         body[info.fieldName] = fieldsWithSubFieldsArgs;
-        const req: RequestLogProperty = {
-            requestQuery: {
-                body: JSON.stringify(body).replace(/:{}/g, ''),
+        return {
+            operationName: info.operation && info.operation.name && info.operation.name.value,
+            request: {
+                requestQuery: {
+                    body: JSON.stringify(body).replace(/:{}/g, ''),
+                },
             },
         };
-        const prop: GraphqlLogProperties = {
-            operationName: info.operation && info.operation.name && info.operation.name.value,
-            request: req,
-        };
-        return prop;
     }
 }

@@ -1,11 +1,11 @@
 import {
+    GraphQLField,
     GraphQLFieldConfig,
     GraphQLFieldConfigMap,
     GraphQLObjectType,
     GraphQLString,
 } from 'graphql';
 import { SchemaDirectiveVisitor } from 'graphql-tools';
-import PolarisDirectiveWrapper = require('../../../common/polaris-directive-wrapper');
 
 export let typeDefinitions: string = `
     directive @connection on FIELD_DEFINITION    
@@ -19,8 +19,8 @@ export let typeDefinitions: string = `
 `;
 
 export class ConnectionDirective extends SchemaDirectiveVisitor {
-    public visitFieldDefinition(field: any) {
-        const typeNameWithoutBraces = field.type.toString().replace(/\]|\[/g, '');
+    visitFieldDefinition(field: GraphQLField<any, any>) {
+        const typeNameWithoutBraces = field.type.toString().replace(/]/g, '');
         const edgeName = typeNameWithoutBraces + 'sEdge';
         const connectionName = typeNameWithoutBraces + 'sConnection';
         // Create the edge type
@@ -33,20 +33,14 @@ export class ConnectionDirective extends SchemaDirectiveVisitor {
         });
 
         // Create the connection type
-
-        const edgesField: GraphQLFieldConfig<any, any> = { type: fieldEdge };
-        const pageInfoField: GraphQLFieldConfig<any, any> = {
-            type: this.schema.getType('PageInfo') as GraphQLObjectType,
-        };
-
-        const fields: GraphQLFieldConfigMap<any, any> = {
-            edges: edgesField,
-            pageInfo: pageInfoField,
-        };
-
         const fieldConnection = new GraphQLObjectType({
             name: connectionName,
-            fields,
+            fields: {
+                edges: { type: fieldEdge },
+                pageInfo: {
+                    type: this.schema.getType('PageInfo') as GraphQLObjectType,
+                },
+            },
         });
 
         this.schema.getTypeMap()[connectionName] = fieldConnection;
