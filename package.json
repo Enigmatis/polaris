@@ -2,8 +2,8 @@
   "name": "@enigmatis/polaris",
   "version": "0.0.0-development",
   "description": "An express graphql js engine",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "publishConfig": {
     "access": "public"
   },

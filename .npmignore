@@ -13,7 +13,7 @@ typings.json
 typings
 dist/test
 .idea
-index.ts
+main.ts
 .travis.yml
 .nojekyll
 .npmignore
