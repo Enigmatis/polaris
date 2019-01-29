@@ -20,7 +20,7 @@ export let typeDefinitions: string = `
 
 export class ConnectionDirective extends SchemaDirectiveVisitor {
     visitFieldDefinition(field: GraphQLField<any, any>) {
-        const typeNameWithoutBraces = field.type.toString().replace(/]/g, '');
+        const typeNameWithoutBraces = field.type.toString().replace(/\]|\[/g, '');
         const edgeName = typeNameWithoutBraces + 'sEdge';
         const connectionName = typeNameWithoutBraces + 'sConnection';
         // Create the edge type
