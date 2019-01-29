@@ -1,18 +1,18 @@
 import { GraphQLResolveInfo } from 'graphql';
 
-export interface PolarisMiddleware {
-    preResolve(
-        root: any,
-        args: { [argName: string]: any },
-        context: any,
-        info: GraphQLResolveInfo,
-    ): void;
+export interface PolarisMiddleware<TContext = any> {
+    preResolve(params: MiddlewareParams<TContext>): void;
 
-    postResolve(
-        root: any,
-        args: { [argName: string]: any },
-        context: any,
-        info: GraphQLResolveInfo,
-        result: string,
-    ): void;
+    postResolve(params: PostMiddlewareParams<TContext>): void;
+}
+
+export interface MiddlewareParams<TContext = any> {
+    root: any;
+    args: { [argName: string]: any };
+    context: TContext;
+    info: GraphQLResolveInfo;
+}
+
+export interface PostMiddlewareParams<TContext = any> extends MiddlewareParams<TContext> {
+    result: string;
 }

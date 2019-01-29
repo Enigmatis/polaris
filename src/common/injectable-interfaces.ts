@@ -3,7 +3,7 @@ import { IResolvers } from 'graphql-tools';
 import { PolarisProperties } from '../properties/polaris-properties';
 
 export interface InjectableType {
-    definition(): string;
+    definition: string;
 }
 
 export interface InjectableResolver {
