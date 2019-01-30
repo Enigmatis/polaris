@@ -20,7 +20,7 @@ export interface GraphQLServer {
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
-    @inject(POLARIS_TYPES.PolarisLogger) public polarisLogger!: PolarisLogger;
+    @inject(POLARIS_TYPES.PolarisLogger) polarisLogger!: PolarisLogger;
     private server: ApolloServer;
     private polarisProperties: PolarisProperties;
     private logProperties: LoggerConfiguration;
@@ -40,7 +40,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
 
         const executableSchemaWithMiddlewares = applyMiddleware(
             executableSchema,
-            ...middlewares.map(createMiddleware),
+            ...(middlewares.map(createMiddleware) as any),
         );
         this.logProperties = logConfig.getLogConfiguration();
         this.polarisProperties = propertiesConfig.getPolarisProperties();
@@ -52,21 +52,18 @@ export class PolarisGraphQLServer implements GraphQLServer {
             }),
         };
         this.server = new ApolloServer(config);
-        if (this.polarisProperties.endpoint !== undefined) {
+        if (!this.polarisProperties.endpoint) {
             this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
         } else {
             this.server.applyMiddleware({ app });
         }
     }
 
-    public start() {
-        const options = {} as any;
-        if (this.polarisProperties.port !== undefined) {
-            options.port = this.polarisProperties.port;
-        }
-        app.listen(options, () => {
+    start() {
+        const port = this.polarisProperties.port;
+        app.listen(port, () => {
             this.polarisLogger.info(
-                `🚀 Server ready at http://localhost:${options.port}${this.server.graphqlPath}`,
+                `🚀 Server ready at http://localhost:${port}${this.server.graphqlPath}`,
             );
         });
     }

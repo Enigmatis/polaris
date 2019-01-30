@@ -1,3 +1,5 @@
+export { PostMiddlewareParams } from './middlewares/polaris-middleware';
+export { MiddlewareParams } from './middlewares/polaris-middleware';
 export { PolarisLogger } from '@enigmatis/polaris-logs';
 export {
     InjectableResolver,
