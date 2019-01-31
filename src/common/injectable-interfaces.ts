@@ -10,10 +10,10 @@ export interface InjectableResolver {
     resolver(): IResolvers;
 }
 
-export interface LogConfig {
+export interface LoggerConfig {
     getLogConfiguration(): LoggerConfiguration;
 }
 export interface PolarisServerConfig {
     getPolarisProperties(): PolarisProperties;
-    getApplicationLogProperties(): ApplicationLogProperties;
+    getPropertiesForLog(): ApplicationLogProperties;
 }

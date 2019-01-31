@@ -5,7 +5,7 @@ import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
 
-import { LogConfig, PolarisServerConfig } from '../common/injectable-interfaces';
+import { LoggerConfig, PolarisServerConfig } from '../common/injectable-interfaces';
 import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { PolarisMiddleware } from '../middlewares/polaris-middleware';
@@ -30,7 +30,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
 
     constructor(
         @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
-        @inject(POLARIS_TYPES.LogConfig) logConfig: LogConfig,
+        @inject(POLARIS_TYPES.LoggerConfig) logConfig: LoggerConfig,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.PolarisMiddleware) middlewares: PolarisMiddleware[],
     ) {

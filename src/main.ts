@@ -4,7 +4,7 @@ export { PolarisLogger } from '@enigmatis/polaris-logs';
 export {
     InjectableResolver,
     InjectableType,
-    LogConfig,
+    LoggerConfig,
     PolarisServerConfig,
 } from './common/injectable-interfaces';
 export { polarisContainer } from './inversion-of-control/container-manager';

@@ -1,7 +1,7 @@
 import {
     InjectableResolver,
     InjectableType,
-    LogConfig,
+    LoggerConfig,
     PolarisServerConfig,
 } from '../common/injectable-interfaces';
 import { GraphqlLogger } from '../logging/graphql-logger';
@@ -15,7 +15,7 @@ export const POLARIS_TYPES = {
     GraphqlLogger: Symbol('GraphqlLogger'),
     PolarisMiddleware: Symbol('PolarisMiddleware'),
     PolarisServerConfig: Symbol('PolarisServerConfig'),
-    LogConfig: Symbol('LogConfig'),
+    LoggerConfig: Symbol('LoggerConfig'),
     InjectableType: Symbol('InjectableType'),
     InjectableResolver: Symbol('InjectableResolver'),
     CommonEntityInterface: Symbol('CommonEntityInterface`'),

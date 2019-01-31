@@ -1,6 +1,6 @@
 import { PolarisLogger, PolarisLogProperties } from '@enigmatis/polaris-logs';
 import { inject, injectable } from 'inversify';
-import { LogConfig, PolarisServerConfig } from '../common/injectable-interfaces';
+import { LoggerConfig, PolarisServerConfig } from '../common/injectable-interfaces';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { PolarisContext } from '../server/polaris-context';
 
@@ -9,12 +9,12 @@ export class GraphqlLogger<TContext extends PolarisContext = PolarisContext> {
     private polarisLogger: PolarisLogger;
 
     constructor(
-        @inject(POLARIS_TYPES.LogConfig) logConfig: LogConfig,
-        @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
+        @inject(POLARIS_TYPES.LoggerConfig) loggerConfig: LoggerConfig,
+        @inject(POLARIS_TYPES.PolarisServerConfig) polarisServerConfig: PolarisServerConfig,
     ) {
         this.polarisLogger = new PolarisLogger(
-            propertiesConfig.getApplicationLogProperties(),
-            logConfig.getLogConfiguration(),
+            polarisServerConfig.getPropertiesForLog(),
+            loggerConfig.getLogConfiguration(),
         );
     }
 
