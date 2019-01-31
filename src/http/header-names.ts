@@ -2,7 +2,6 @@ export enum HeaderNames {
     DATA_VERSION = 'data-version',
     SNAPSHOT = 'snap-request',
     SNAPSHOT_PAGE_SIZE = 'snap-page-size',
-    POLLING = 'polling-request',
     REQUEST_ID = 'request-id',
     EVENT_KIND = 'event-kind',
     UPN = 'upn',

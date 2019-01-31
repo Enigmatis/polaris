@@ -15,7 +15,6 @@
     "clean": "shx rm -rf node_modules/ dist/ docs/",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/",
     "posttypedoc": "shx cp .nojekyll docs/.nojekyll",
-    "buildDependents": "npm i && tsc && npm link",
     "prepare": "npm run lint:fix && npm run build",
     "lint": "npm run tslint-check && tslint -p .",
     "lint:fix": "npm run tslint-check && tslint -p . --fix",
