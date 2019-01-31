@@ -1,7 +1,10 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { PolarisContext } from '../server/polaris-context';
 import { PolarisMiddleware } from './polaris-middleware';
 
-export const createMiddleware = <TContext>(middleware: PolarisMiddleware<TContext>) => {
+export const createMiddleware = <TContext extends PolarisContext = PolarisContext>(
+    middleware: PolarisMiddleware<TContext>,
+) => {
     return async (
         resolve: (
             root: any,

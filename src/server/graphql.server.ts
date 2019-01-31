@@ -12,6 +12,7 @@ import { PolarisMiddleware } from '../middlewares/polaris-middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
 import { SchemaCreator } from '../schema/utils/schema.creator';
+import { PolarisContext } from './polaris-context';
 
 const app = new Koa();
 app.use(koaBody());
@@ -22,7 +23,7 @@ export interface GraphQLServer {
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
-    @inject(POLARIS_TYPES.PolarisLogger) polarisLogger!: PolarisLogger;
+    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: PolarisLogger;
     private server: ApolloServer;
     private polarisProperties: PolarisProperties;
     private logProperties: LoggerConfiguration;
@@ -48,7 +49,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         this.polarisProperties = propertiesConfig.getPolarisProperties();
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
-            context: ({ ctx }: { ctx: Koa.Context }) => ({
+            context: ({ ctx }: { ctx: Koa.Context }): PolarisContext => ({
                 headers: new PolarisRequestHeaders(ctx.request.headers),
             }),
             formatError: (error: Error) => {
