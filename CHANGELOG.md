@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/Enigmatis/polaris/compare/v1.2.1...v1.3.0) (2019-01-31)
+
+
+### Features
+
+* **log:** print headers to log ([3b304a4](https://github.com/Enigmatis/polaris/commit/3b304a4))
+* **log:** print headers to log ([a431bd9](https://github.com/Enigmatis/polaris/commit/a431bd9))
+
 ## [1.2.1](https://github.com/Enigmatis/polaris/compare/v1.2.0...v1.2.1) (2019-01-31)
 
 
