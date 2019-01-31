@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/Enigmatis/polaris/compare/v1.2.0...v1.2.1) (2019-01-31)
+
+
+### Bug Fixes
+
+* jest configuration standard fixes ([2fcf134](https://github.com/Enigmatis/polaris/commit/2fcf134))
+* pre-commit changes ([932b74b](https://github.com/Enigmatis/polaris/commit/932b74b))
+* removed tsx and transform in jest config ([c91fb78](https://github.com/Enigmatis/polaris/commit/c91fb78))
+
 # [1.2.0](https://github.com/Enigmatis/polaris/compare/v1.1.0...v1.2.0) (2019-01-30)
 
 

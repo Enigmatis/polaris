@@ -1,6 +1,6 @@
 {
   "name": "@enigmatis/polaris",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An express graphql js engine",
   "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
