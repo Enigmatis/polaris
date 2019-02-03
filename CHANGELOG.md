@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Enigmatis/polaris/compare/v1.1.0...v1.2.0) (2019-01-30)
+
+
+### Features
+
+* **http-server:** change from express to kao as http server ([5ffce7d](https://github.com/Enigmatis/polaris/commit/5ffce7d))
+
 # [1.1.0](https://github.com/Enigmatis/polaris/compare/v1.0.0...v1.1.0) (2019-01-29)
 
 

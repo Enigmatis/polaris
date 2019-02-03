@@ -1,9 +1,10 @@
 import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
-import { Config, makeExecutableSchema } from 'apollo-server';
-import { ApolloServer } from 'apollo-server-express';
-import * as express from 'express';
+import { ApolloServer, Config, makeExecutableSchema } from 'apollo-server-koa';
 import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
+import * as Koa from 'koa';
+import * as koaBody from 'koa-bodyparser';
+
 import { LogConfig, PolarisServerConfig } from '../common/injectable-interfaces';
 import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
@@ -12,8 +13,8 @@ import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
 import { SchemaCreator } from '../schema/utils/schema.creator';
 
-const app = express();
-
+const app = new Koa();
+app.use(koaBody());
 export interface GraphQLServer {
     start(): void;
 }
@@ -46,10 +47,14 @@ export class PolarisGraphQLServer implements GraphQLServer {
         this.polarisProperties = propertiesConfig.getPolarisProperties();
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
-            context: ({ req }: { req: any }) => ({
-                headers: new PolarisRequestHeaders(req.headers),
-                body: req.body,
+            context: ({ ctx }: { ctx: Koa.Context }) => ({
+                headers: new PolarisRequestHeaders(ctx.request.headers),
+                body: ctx.request.body,
             }),
+            formatError: (error: Error) => {
+                this.polarisLogger.error('apollo server Error', { throwable: error });
+                return new Error('Internal server error');
+            },
         };
         this.server = new ApolloServer(config);
         if (!this.polarisProperties.endpoint) {

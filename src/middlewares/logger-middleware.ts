@@ -1,15 +1,16 @@
 import { PolarisLogger } from '@enigmatis/polaris-logs';
-import * as graphqlFields from 'graphql-fields';
-import { PolarisLogger } from '@enigmatis/polaris-logs';
 import { inject, injectable } from 'inversify';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { GraphqlLogProperties } from '../logging/graphql-log-properties';
-import { MiddlewareParams, PolarisMiddleware, PostMiddlewareParams } from './polaris-middleware';
+import {
+    PolarisMiddleware,
+    RequestMiddlewareParams,
+    ResponseMiddlewareParams,
+} from './polaris-middleware';
 
 @injectable()
-export class LoggerMiddleware<TContext = any> implements PolarisMiddleware<TContext> {
-
-    public static buildProps(context: any): GraphqlLogProperties {
+export class LoggerMiddleware implements PolarisMiddleware {
+    static buildProps(context: any): GraphqlLogProperties {
         return {
             operationName: context.body.operationName,
             request: {
@@ -20,9 +21,9 @@ export class LoggerMiddleware<TContext = any> implements PolarisMiddleware<TCont
         };
     }
 
-    @inject(POLARIS_TYPES.PolarisLogger) public polarisLogger!: PolarisLogger;
+    @inject(POLARIS_TYPES.PolarisLogger) polarisLogger!: PolarisLogger;
 
-    preResolve({ root, args, context, info }: MiddlewareParams<TContext>) {
+    preResolve({ root, args, context, info }: RequestMiddlewareParams) {
         const props: GraphqlLogProperties = LoggerMiddleware.buildProps(context);
         if (!root) {
             this.polarisLogger.debug(
@@ -35,7 +36,7 @@ export class LoggerMiddleware<TContext = any> implements PolarisMiddleware<TCont
         }
     }
 
-    postResolve({ root, args, context, info, result }: PostMiddlewareParams<TContext>) {
+    postResolve({ root, context, info, result }: ResponseMiddlewareParams): string | null {
         if (!root) {
             const props: GraphqlLogProperties = LoggerMiddleware.buildProps(context);
             this.polarisLogger.debug(
