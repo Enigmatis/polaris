@@ -1,9 +1,9 @@
 {
   "name": "@enigmatis/polaris",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "An express graphql js engine",
-  "main": "./dist/main.js",
-  "types": "./dist/main.d.ts",
+  "main": "./dist/src/main.js",
+  "types": "./dist/src/main.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -21,11 +21,8 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once",
-    "test": "npm run lint"
+    "test": "jest"
   },
-  "pre-commit": [
-    "lint:fix"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Enigmatis/polaris.git"
@@ -67,7 +64,7 @@
   },
   "homepage": "https://github.com/yarinvak/polaris#readme",
   "dependencies": {
-    "@enigmatis/polaris-logs": "^2.1.0",
+    "@enigmatis/polaris-logs": "file:../polaris-logs",
     "@types/graphql": "^14.0.5",
     "@types/graphql-fields": "^1.3.0",
     "@types/koa-router": "^7.0.39",
@@ -78,7 +75,6 @@
     "graphql-fields": "^2.0.1",
     "graphql-middleware": "^3.0.1",
     "graphql-tools": "^4.0.4",
-    "iana-tz-data": "^2018.5.0",
     "inversify": "^5.0.1",
     "inversify-binding-decorators": "^4.0.0",
     "joi": "^14.3.1",
@@ -93,14 +89,17 @@
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.8",
     "@types/cors": "^2.8.4",
+    "@types/jest": "^23.3.13",
     "commitizen": "^3.0.5",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.3.1",
+    "jest": "^23.6.0",
     "prettier": "^1.16.1",
     "rimraf": "^2.6.3",
     "semantic-release": "^15.13.3",
     "shx": "^0.3.2",
     "travis-deploy-once": "^5.0.11",
+    "ts-jest": "^23.10.5",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-consistent-codestyle": "^1.15.0",
@@ -116,8 +115,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint:fix",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run lint:fix && npm t"
     }
   }
 }

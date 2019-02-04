@@ -2,7 +2,8 @@ import { MiddlewareCondition, ResponseMiddlewareParams } from '../polaris-middle
 
 class FilterDataVersion implements MiddlewareCondition {
     shouldPass({ root, context }: ResponseMiddlewareParams): boolean {
-        return root.dataVersion > context.headers.dataVersion;
+        const dataVersionHeader: number | undefined = context.headers.dataVersion;
+        return !dataVersionHeader || root.dataVersion > dataVersionHeader;
     }
 }
 

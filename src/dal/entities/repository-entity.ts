@@ -6,7 +6,7 @@ export interface RepositoryEntity {
     creationDate: string;
     lastUpdateDate: string;
     dataVersion: number;
-    realityId: number;
+    realityId: string;
     classification?: string;
     secretGroups?: string[];
 }
@@ -21,7 +21,7 @@ export function isRepositoryEntity(object: any): boolean {
         creationDate: joi.string().required(),
         lastUpdateDate: joi.string().required(),
         dataVersion: joi.number().required(),
-        realityId: joi.number().required(),
+        realityId: joi.string().required(),
         classification: joi.string(),
         secretGroups: joi.array().items(joi.string()),
     });

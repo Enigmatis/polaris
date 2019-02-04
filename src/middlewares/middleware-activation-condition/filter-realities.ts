@@ -12,13 +12,15 @@ class FilterRealities implements MiddlewareCondition {
         }
         return level >= 3; // query, referenced entity, referenced entity property
     }
+
     shouldPass({ root, context, info }: ResponseMiddlewareParams): boolean {
         const headers: PolarisRequestHeaders = context.headers;
         const subEntity: boolean = FilterRealities.isSubEntity(info);
         const matchingRealities = root.realityId === headers.realityId;
         return (
+            !headers.realityId ||
             matchingRealities ||
-            (subEntity && headers.includeLinkedOperation && root.realityId === 0)
+            (subEntity && headers.includeLinkedOperation === true && root.realityId === 0)
         );
     }
 }

@@ -1,28 +1,24 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
-
-export interface PolarisMiddleware {
-    preResolve(params: RequestMiddlewareParams): void;
-
-    postResolve(params: ResponseMiddlewareParams): string | null;
-}
+import { PolarisContext } from '../server/polaris-context';
 
 export interface MiddlewareCondition {
     shouldPass(params: ResponseMiddlewareParams): boolean;
 }
 
-export interface PolarisContext {
-    headers: PolarisRequestHeaders;
-    body: any;
+export interface PolarisMiddleware<TContext extends PolarisContext = PolarisContext> {
+    preResolve(params: RequestMiddlewareParams<TContext>): void;
+
+    postResolve(params: ResponseMiddlewareParams<TContext>): void;
 }
 
-export interface RequestMiddlewareParams {
+export interface RequestMiddlewareParams<TContext extends PolarisContext = PolarisContext> {
     root: any;
     args: { [argName: string]: any };
-    context: PolarisContext;
+    context: TContext;
     info: GraphQLResolveInfo;
 }
 
-export interface ResponseMiddlewareParams extends RequestMiddlewareParams {
+export interface ResponseMiddlewareParams<TContext extends PolarisContext = PolarisContext>
+    extends RequestMiddlewareParams<TContext> {
     result: string | null;
 }

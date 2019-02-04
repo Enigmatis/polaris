@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
     "outDir": "./dist",
     "strict": true,
@@ -11,6 +11,9 @@
     "allowSyntheticDefaultImports": true,
     "typeRoots": [
       "src/type-declarations"
+    ],
+    "types": [
+      "jest"
     ],
     "declaration": true,
     "lib": [

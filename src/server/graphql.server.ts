@@ -1,17 +1,18 @@
-import {LoggerConfiguration, PolarisLogger} from '@enigmatis/polaris-logs';
-import {ApolloServer, Config, makeExecutableSchema} from 'apollo-server-koa';
-import {applyMiddleware} from 'graphql-middleware';
-import {inject, injectable, multiInject} from 'inversify';
+import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
+import { ApolloServer, Config, makeExecutableSchema } from 'apollo-server-koa';
+import { applyMiddleware } from 'graphql-middleware';
+import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
 
-import {LogConfig, PolarisServerConfig} from '../common/injectable-interfaces';
-import {PolarisRequestHeaders} from '../http/request/polaris-request-headers';
-import {POLARIS_TYPES} from '../inversion-of-control/polaris-types';
-import {PolarisMiddleware} from '../middlewares/polaris-middleware';
-import {createMiddleware} from '../middlewares/polaris-middleware-creator';
-import {PolarisProperties} from '../properties/polaris-properties';
-import {SchemaCreator} from '../schema/utils/schema.creator';
+import { LoggerConfig, PolarisServerConfig } from '../common/injectable-interfaces';
+import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
+import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
+import { PolarisMiddleware } from '../middlewares/polaris-middleware';
+import { createMiddleware } from '../middlewares/polaris-middleware-creator';
+import { PolarisProperties } from '../properties/polaris-properties';
+import { SchemaCreator } from '../schema/utils/schema.creator';
+import { PolarisContext } from './polaris-context';
 
 const app = new Koa();
 app.use(koaBody());
@@ -22,14 +23,14 @@ export interface GraphQLServer {
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
-    @inject(POLARIS_TYPES.PolarisLogger) polarisLogger!: PolarisLogger;
+    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: PolarisLogger;
     private server: ApolloServer;
     private polarisProperties: PolarisProperties;
     private logProperties: LoggerConfiguration;
 
     constructor(
         @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
-        @inject(POLARIS_TYPES.LogConfig) logConfig: LogConfig,
+        @inject(POLARIS_TYPES.LoggerConfig) logConfig: LoggerConfig,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.PolarisMiddleware) middlewares: PolarisMiddleware[],
     ) {
@@ -48,25 +49,25 @@ export class PolarisGraphQLServer implements GraphQLServer {
         this.polarisProperties = propertiesConfig.getPolarisProperties();
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
-            context: ({ctx}: { ctx: Koa.Context }) => ({
+            context: ({ ctx }: { ctx: Koa.Context }): PolarisContext => ({
                 headers: new PolarisRequestHeaders(ctx.request.headers),
                 body: ctx.request.body,
             }),
             formatError: (error: Error) => {
-                this.polarisLogger.error('apollo server Error', {throwable: error});
+                this.polarisLogger.error('apollo server Error', { throwable: error });
                 return new Error('Internal server error');
             },
             formatResponse: (response: any) => {
                 const omitEmpty = require('omit-empty');
                 const res = omitEmpty(response);
-                return Object.keys(res).length === 0 ? {data: {}} : res;
+                return Object.keys(res).length === 0 ? { data: {} } : res;
             },
         };
         this.server = new ApolloServer(config);
         if (!this.polarisProperties.endpoint) {
-            this.server.applyMiddleware({app, path: this.polarisProperties.endpoint});
+            this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
         } else {
-            this.server.applyMiddleware({app});
+            this.server.applyMiddleware({ app });
         }
     }
 

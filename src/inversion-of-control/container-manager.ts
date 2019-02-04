@@ -12,6 +12,6 @@ decorate(injectable(), PolarisLogger);
 export const polarisContainer = new Container();
 polarisContainer.bind(POLARIS_TYPES.GraphQLServer).to(PolarisGraphQLServer);
 polarisContainer.bind(POLARIS_TYPES.SchemaCreator).to(PolarisSchemaCreator);
-polarisContainer.bind(POLARIS_TYPES.PolarisLogger).to(GraphqlLogger);
+polarisContainer.bind(POLARIS_TYPES.GraphqlLogger).to(GraphqlLogger);
 polarisContainer.bind(POLARIS_TYPES.PolarisMiddleware).to(LoggerMiddleware);
 polarisContainer.bind(POLARIS_TYPES.PolarisMiddleware).to(HeadersMiddleware);
