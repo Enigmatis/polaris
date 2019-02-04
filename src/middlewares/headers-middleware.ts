@@ -31,13 +31,31 @@ export class HeadersMiddleware implements PolarisMiddleware {
                     DataVersionFilter.shouldPass(params)))
         );
     }
-    @inject(POLARIS_TYPES.HeaderConfig) headerConfig!: HeaderConfig;
+
+    private static getHeadersDefaults(
+        headersConfiguration: HeadersConfiguration,
+    ): HeadersConfiguration {
+        if (headersConfiguration.realityId === undefined) {
+            headersConfiguration.realityId = true;
+        }
+        if (headersConfiguration.dataVersion === undefined) {
+            headersConfiguration.dataVersion = true;
+        }
+        return headersConfiguration;
+    }
+    headersConfiguration: HeadersConfiguration;
+
+    constructor(@inject(POLARIS_TYPES.HeaderConfig) headerConfig: HeaderConfig) {
+        this.headersConfiguration = HeadersMiddleware.getHeadersDefaults(
+            headerConfig.getHeadersConfiguration(),
+        );
+    }
 
     postResolve(params: ResponseMiddlewareParams): string | null {
         return HeadersMiddleware.shouldPass(
             params,
             params.context.headers,
-            this.headerConfig.getHeadersConfiguration(),
+            this.headersConfiguration,
         )
             ? params.result
             : null;

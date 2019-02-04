@@ -35,6 +35,6 @@ export class PolarisRequestHeaders {
     }
 }
 export interface HeadersConfiguration {
-    dataVersion: boolean;
-    realityId: boolean;
+    dataVersion?: boolean;
+    realityId?: boolean;
 }
