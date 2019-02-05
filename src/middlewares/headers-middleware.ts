@@ -27,7 +27,7 @@ export class HeadersMiddleware implements PolarisMiddleware {
     headersConfiguration: HeadersConfiguration;
 
     constructor(@inject(POLARIS_TYPES.HeaderConfig) headerConfig: HeaderConfig) {
-        this.headersConfiguration = headerConfig.getHeadersConfiguration();
+        this.headersConfiguration = headerConfig.headersConfiguration;
     }
 
     postResolve(params: ResponseMiddlewareParams): string | null {

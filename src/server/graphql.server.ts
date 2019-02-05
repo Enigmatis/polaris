@@ -45,7 +45,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             executableSchema,
             ...(middlewares.map(createMiddleware) as any),
         );
-        this.logProperties = logConfig.getLogConfiguration();
+        this.logProperties = logConfig.loggerConfiguration;
         this.polarisProperties = propertiesConfig.getPolarisProperties();
         const config: Config = {
             schema: executableSchemaWithMiddlewares,

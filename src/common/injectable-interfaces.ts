@@ -12,10 +12,10 @@ export interface InjectableResolver {
 }
 
 export interface LoggerConfig {
-    getLogConfiguration(): LoggerConfiguration;
+    loggerConfiguration: LoggerConfiguration;
 }
 export interface HeaderConfig {
-    getHeadersConfiguration(): HeadersConfiguration;
+    headersConfiguration: HeadersConfiguration;
 }
 export interface PolarisServerConfig {
     getPolarisProperties(): PolarisProperties;

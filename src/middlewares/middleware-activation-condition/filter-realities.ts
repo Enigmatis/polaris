@@ -20,7 +20,7 @@ class FilterRealities implements MiddlewareCondition {
         return (
             !headers.realityId ||
             matchingRealities ||
-            (subEntity && headers.includeLinkedOperation === true && root.realityId === 0)
+            (subEntity && headers.includeLinkedOperation === true && root.realityId === '0')
         );
     }
 }

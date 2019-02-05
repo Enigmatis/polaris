@@ -14,24 +14,35 @@ export class PolarisRequestHeaders {
 
     constructor(headers: any) {
         const joi = require('joi');
-        this.dataVersion = joi.attempt(headers[HeaderNames.DATA_VERSION], joi.number());
-        this.isSnapshot = joi.attempt(headers[HeaderNames.SNAPSHOT], joi.boolean());
-        this.includeLinkedOperation = joi.attempt(
-            headers[HeaderNames.INCLUDE_LINKED_OPER],
-            joi.boolean(),
-        );
-        this.snapshotPageSize = joi.attempt(headers[HeaderNames.SNAPSHOT_PAGE_SIZE], joi.number());
-        this.requestId = joi.attempt(headers[HeaderNames.REQUEST_ID], joi.string());
-        this.upn = joi.attempt(headers[HeaderNames.UPN], joi.string());
-        this.eventKind = joi.attempt(headers[HeaderNames.EVENT_KIND], joi.string());
-        this.realityId = joi.attempt(headers[HeaderNames.REALITY_ID], joi.string());
-        this.requestingSystemId = joi.attempt(headers[HeaderNames.REQUESTING_SYS], joi.string());
-        this.requestingSystemName = joi.attempt(
-            headers[HeaderNames.REQUESTING_SYS_NAME],
-            joi.string(),
-        );
+        const schema = joi.object().keys({
+            'data-version': joi.number(),
+            'snap-request': joi.boolean(),
+            'include-linked-oper': joi.boolean(),
+            'snap-page-size': joi.boolean(),
+            'request-id': joi.string(),
+            upn: joi.string(),
+            'event-kind': joi.string(),
+            'reality-id': joi.string(),
+            'requesting-sys': joi.string(),
+            'requesting-sys-name': joi.string(),
+        });
+        const validHeaders = joi.validate(headers, schema, { stripUnknown: true });
+        if (!validHeaders.error) {
+            headers = validHeaders.value;
+            this.dataVersion = headers['data-version'];
+            this.isSnapshot = headers['snap-request'];
+            this.includeLinkedOperation = headers['include-linked-oper'];
+            this.snapshotPageSize = headers['snap-page-size'];
+            this.requestId = headers['request-id'];
+            this.upn = headers.upn;
+            this.eventKind = headers['event-kind'];
+            this.realityId = headers['reality-id'];
+            this.requestingSystemId = headers['requesting-sys'];
+            this.requestingSystemName = headers['requesting-sys-name'];
+        }
     }
 }
+
 export interface HeadersConfiguration {
     dataVersion?: boolean;
     realityId?: boolean;
