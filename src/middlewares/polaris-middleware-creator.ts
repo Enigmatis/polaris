@@ -1,9 +1,9 @@
 import { GraphQLResolveInfo } from 'graphql';
 import { PolarisContext } from '../server/polaris-context';
-import { PolarisMiddleware } from './polaris-middleware';
+import { Middleware } from './middleware';
 
 export const createMiddleware = <TContext extends PolarisContext = PolarisContext>(
-    middleware: PolarisMiddleware<TContext>,
+    middleware: Middleware<TContext>,
 ) => {
     return async (
         resolve: (
@@ -17,6 +17,7 @@ export const createMiddleware = <TContext extends PolarisContext = PolarisContex
         context: TContext,
         info: GraphQLResolveInfo,
     ) => {
+
         middleware.preResolve({ root, args, context, info });
         const result = await resolve(root, args, context, info);
         return middleware.postResolve({ root, args, context, info, result });

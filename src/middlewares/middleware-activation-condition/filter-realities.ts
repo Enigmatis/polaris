@@ -1,26 +1,16 @@
-import { GraphQLResolveInfo } from 'graphql';
 import { PolarisRequestHeaders } from '../../http/request/polaris-request-headers';
-import { MiddlewareCondition, ResponseMiddlewareParams } from '../polaris-middleware';
+import { ResponseMiddlewareParams } from '../middleware';
+import {isSubEntity, MiddlewareCondition} from "./filter-condition";
 
 class FilterRealities implements MiddlewareCondition {
-    private static isSubEntity(info: GraphQLResolveInfo) {
-        let path: any = info.path;
-        let level = 0;
-        while (path.prev) {
-            path = path.prev;
-            level++;
-        }
-        return level >= 3; // query, referenced entity, referenced entity property
-    }
 
-    shouldPass({ root, context, info }: ResponseMiddlewareParams): boolean {
+    shouldBeReturned({ root, context, info }: ResponseMiddlewareParams): boolean {
         const headers: PolarisRequestHeaders = context.headers;
-        const subEntity: boolean = FilterRealities.isSubEntity(info);
-        const matchingRealities = root.realityId === headers.realityId;
+        const isMatchingRealities: boolean = root.realityId === headers.realityId;
         return (
             !headers.realityId ||
-            matchingRealities ||
-            (subEntity && headers.includeLinkedOperation === true && root.realityId === '0')
+            isMatchingRealities ||
+            (isSubEntity(info) && headers.includeLinkedOperation === true && root.realityId === '0')
         );
     }
 }

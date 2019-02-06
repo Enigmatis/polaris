@@ -4,11 +4,10 @@ import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
-
 import { LoggerConfig, PolarisServerConfig } from '../common/injectable-interfaces';
 import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
-import { PolarisMiddleware } from '../middlewares/polaris-middleware';
+import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
 import { SchemaCreator } from '../schema/utils/schema.creator';
@@ -32,7 +31,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
         @inject(POLARIS_TYPES.LoggerConfig) logConfig: LoggerConfig,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
-        @multiInject(POLARIS_TYPES.PolarisMiddleware) middlewares: PolarisMiddleware[],
+        @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
     ) {
         const schema = creator.generateSchema();
         const executableSchemaDefinition: { typeDefs: any; resolvers: any } = {
@@ -46,7 +45,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             ...(middlewares.map(createMiddleware) as any),
         );
         this.logProperties = logConfig.loggerConfiguration;
-        this.polarisProperties = propertiesConfig.getPolarisProperties();
+        this.polarisProperties = propertiesConfig.polarisProperties;
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
             context: ({ ctx }: { ctx: Koa.Context }): PolarisContext => ({
@@ -57,11 +56,14 @@ export class PolarisGraphQLServer implements GraphQLServer {
                 this.polarisLogger.error('apollo server Error', { throwable: error });
                 return new Error('Internal server error');
             },
+
             formatResponse: (response: any) => {
                 const omitEmpty = require('omit-empty');
                 const res = omitEmpty(response);
-                return Object.keys(res).length === 0 ? { data: {} } : res;
-            },
+                const result = Object.keys(res).length === 0 ? { data: {} } : res;
+                this.polarisLogger.info(`Finished response, answer is ${JSON.stringify(result)}`);
+                return result;
+            }
         };
         this.server = new ApolloServer(config);
         if (!this.polarisProperties.endpoint) {
@@ -75,7 +77,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         const port = this.polarisProperties.port;
         app.listen(port, () => {
             this.polarisLogger.info(
-                `🚀 Server ready at http://localhost:${port}${this.server.graphqlPath}`,
+                `🚀 Server ready at http://localhost:${port}${this.server.graphqlPath}`
             );
         });
     }

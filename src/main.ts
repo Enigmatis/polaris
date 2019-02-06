@@ -1,5 +1,5 @@
-export { ResponseMiddlewareParams } from './middlewares/polaris-middleware';
-export { RequestMiddlewareParams } from './middlewares/polaris-middleware';
+export { ResponseMiddlewareParams } from './middlewares/middleware';
+export { RequestMiddlewareParams } from './middlewares/middleware';
 export { PolarisLogger } from '@enigmatis/polaris-logs';
 export {
     InjectableResolver,
@@ -11,7 +11,7 @@ export {
 export { polarisContainer } from './inversion-of-control/container-manager';
 export { POLARIS_TYPES } from './inversion-of-control/polaris-types';
 export { GraphqlLogger } from './logging/graphql-logger';
-export { PolarisMiddleware } from './middlewares/polaris-middleware';
+export { Middleware } from './middlewares/middleware';
 export { PolarisProperties } from './properties/polaris-properties';
 export { CommonEntities } from './schema/common/common-entities';
 export { RepositoryEntity } from './dal/entities/repository-entity';

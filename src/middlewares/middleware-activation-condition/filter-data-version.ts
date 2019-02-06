@@ -1,9 +1,10 @@
-import { MiddlewareCondition, ResponseMiddlewareParams } from '../polaris-middleware';
+import {ResponseMiddlewareParams} from '../middleware';
+import {isSubEntity, MiddlewareCondition} from "./filter-condition";
 
 class FilterDataVersion implements MiddlewareCondition {
-    shouldPass({ root, context }: ResponseMiddlewareParams): boolean {
+    shouldBeReturned({root, context, info}: ResponseMiddlewareParams): boolean {
         const dataVersionHeader: number | undefined = context.headers.dataVersion;
-        return !dataVersionHeader || root.dataVersion > dataVersionHeader;
+        return !dataVersionHeader || ((!isSubEntity(info)) && (root.dataVersion > dataVersionHeader));
     }
 }
 

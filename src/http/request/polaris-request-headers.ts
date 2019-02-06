@@ -1,4 +1,3 @@
-import { HeaderNames } from '../header-names';
 
 export class PolarisRequestHeaders {
     readonly dataVersion?: number;

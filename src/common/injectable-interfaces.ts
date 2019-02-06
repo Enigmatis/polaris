@@ -18,6 +18,6 @@ export interface HeaderConfig {
     headersConfiguration: HeadersConfiguration;
 }
 export interface PolarisServerConfig {
-    getPolarisProperties(): PolarisProperties;
-    getPropertiesForLog(): ApplicationLogProperties;
+    polarisProperties: PolarisProperties;
+    applicationLogProperties: ApplicationLogProperties;
 }
