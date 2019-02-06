@@ -1,17 +1,13 @@
-import {inject, injectable} from 'inversify';
-import {HeaderConfig} from '../common/injectable-interfaces';
-import {isRepositoryEntity} from '../dal/entities/repository-entity';
-import {HeadersConfiguration} from '../http/request/polaris-request-headers';
-import {POLARIS_TYPES} from '../inversion-of-control/polaris-types';
-import {DataVersionFilter} from './middleware-activation-condition/filter-data-version';
-import {RealityIdFilter} from './middleware-activation-condition/filter-realities';
-import {
-    Middleware,
-    RequestMiddlewareParams,
-    ResponseMiddlewareParams,
-} from './middleware';
-import {GraphqlLogProperties} from "../logging/graphql-log-properties";
-import {GraphqlLogger} from "../logging/graphql-logger";
+import { inject, injectable } from 'inversify';
+import { HeaderConfig } from '../common/injectable-interfaces';
+import { isRepositoryEntity } from '../dal/entities/repository-entity';
+import { HeadersConfiguration } from '../http/request/polaris-request-headers';
+import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
+import { GraphqlLogProperties } from '../logging/graphql-log-properties';
+import { GraphqlLogger } from '../logging/graphql-logger';
+import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from './middleware';
+import { DataVersionFilter } from './middleware-activation-condition/filter-data-version';
+import { RealityIdFilter } from './middleware-activation-condition/filter-realities';
 
 @injectable()
 export class PolarisMiddleware implements Middleware {
@@ -22,31 +18,39 @@ export class PolarisMiddleware implements Middleware {
         this.headersConfiguration = headerConfig.headersConfiguration;
     }
 
-    preResolve({root, info, context, args}: RequestMiddlewareParams): void {
+    preResolve({ root, info, context, args }: RequestMiddlewareParams): void {
         const polarisLogProperties: GraphqlLogProperties = this.buildProps(context);
-        if (root === undefined) {
-            const startMsg = `Resolver of ${polarisLogProperties.operationName} began execution. Action is:
+        if (!root) {
+            const startMsg = `Resolver of ${
+                polarisLogProperties.operationName
+            } began execution. Action is:
                     \n${context.body.query}\nArguments given:${JSON.stringify(args)}`;
-            this.polarisLogger.info(startMsg, {context, polarisLogProperties});
+            this.polarisLogger.info(startMsg, { context, polarisLogProperties });
         }
         const msg = `field fetching of ${info.fieldName} began execution.`;
-        this.polarisLogger.debug(msg, {context, polarisLogProperties});
+        this.polarisLogger.debug(msg, { context, polarisLogProperties });
     }
 
-    postResolve({root, args, context, info, result}: ResponseMiddlewareParams): string | null {
-        const resolveResult: string | null = this.shouldBeReturned({
-            root, args, context, info, result
-        }, this.headersConfiguration) ? result : null;
+    postResolve({ root, args, context, info, result }: ResponseMiddlewareParams): string | null {
+        const resolveResult: string | null = this.shouldBeReturned(
+            {
+                root,
+                args,
+                context,
+                info,
+                result,
+            },
+            this.headersConfiguration,
+        )
+            ? result
+            : null;
         const polarisLogProperties: GraphqlLogProperties = this.buildProps(context);
         const msg = `Field fetching of ${info.fieldName} finished execution. Result is: ${result}`;
-        this.polarisLogger.debug(msg, {context, polarisLogProperties});
+        this.polarisLogger.debug(msg, { context, polarisLogProperties });
         return resolveResult;
     }
 
-    shouldBeReturned(
-        params: ResponseMiddlewareParams,
-        headersConfig: HeadersConfiguration,
-    ) {
+    shouldBeReturned(params: ResponseMiddlewareParams, headersConfig: HeadersConfiguration) {
         return (
             !(params.root && isRepositoryEntity(params.root)) ||
             ((headersConfig.realityId === false || RealityIdFilter.shouldBeReturned(params)) &&

@@ -17,7 +17,6 @@ export const createMiddleware = <TContext extends PolarisContext = PolarisContex
         context: TContext,
         info: GraphQLResolveInfo,
     ) => {
-
         middleware.preResolve({ root, args, context, info });
         const result = await resolve(root, args, context, info);
         return middleware.postResolve({ root, args, context, info, result });

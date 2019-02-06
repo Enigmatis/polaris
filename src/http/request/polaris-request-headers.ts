@@ -1,18 +1,23 @@
+import * as joi from 'joi';
 
 export class PolarisRequestHeaders {
-    readonly dataVersion?: number;
-    readonly isSnapshot?: boolean;
-    readonly includeLinkedOperation?: boolean;
-    readonly snapshotPageSize?: number;
-    readonly requestId?: string;
-    readonly upn?: string;
-    readonly eventKind?: string;
-    readonly realityId?: string;
-    readonly requestingSystemId?: string;
-    readonly requestingSystemName?: string;
+    dataVersion?: number;
+    isSnapshot?: boolean;
+    includeLinkedOperation?: boolean;
+    snapshotPageSize?: number;
+    requestId?: string;
+    upn?: string;
+    eventKind?: string;
+    realityId?: string;
+    requestingSystemId?: string;
+    requestingSystemName?: string;
+    headers: any;
 
     constructor(headers: any) {
-        const joi = require('joi');
+        this.headers = headers;
+    }
+
+    validate(): joi.ValidationError | null {
         const schema = joi.object().keys({
             'data-version': joi.number(),
             'snap-request': joi.boolean(),
@@ -25,20 +30,21 @@ export class PolarisRequestHeaders {
             'requesting-sys': joi.string(),
             'requesting-sys-name': joi.string(),
         });
-        const validHeaders = joi.validate(headers, schema, { stripUnknown: true });
+        const validHeaders = joi.validate(this.headers, schema, { stripUnknown: true });
         if (!validHeaders.error) {
-            headers = validHeaders.value;
-            this.dataVersion = headers['data-version'];
-            this.isSnapshot = headers['snap-request'];
-            this.includeLinkedOperation = headers['include-linked-oper'];
-            this.snapshotPageSize = headers['snap-page-size'];
-            this.requestId = headers['request-id'];
-            this.upn = headers.upn;
-            this.eventKind = headers['event-kind'];
-            this.realityId = headers['reality-id'];
-            this.requestingSystemId = headers['requesting-sys'];
-            this.requestingSystemName = headers['requesting-sys-name'];
+            this.headers = validHeaders.value;
+            this.dataVersion = this.headers['data-version'];
+            this.isSnapshot = this.headers['snap-request'];
+            this.includeLinkedOperation = this.headers['include-linked-oper'];
+            this.snapshotPageSize = this.headers['snap-page-size'];
+            this.requestId = this.headers['request-id'];
+            this.upn = this.headers.upn;
+            this.eventKind = this.headers['event-kind'];
+            this.realityId = this.headers['reality-id'];
+            this.requestingSystemId = this.headers['requesting-sys'];
+            this.requestingSystemName = this.headers['requesting-sys-name'];
         }
+        return validHeaders.error;
     }
 }
 
