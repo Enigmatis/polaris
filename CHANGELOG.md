@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Enigmatis/polaris/compare/v1.3.0...v1.4.0) (2019-02-07)
+
+
+### Features
+
+* **db:** add interface for db-connection ([ea88c35](https://github.com/Enigmatis/polaris/commit/ea88c35))
+
 # [1.3.0](https://github.com/Enigmatis/polaris/compare/v1.2.1...v1.3.0) (2019-01-31)
 
 
