@@ -20,7 +20,7 @@ export class GraphqlLogger<TContext extends PolarisContext = PolarisContext> {
 
     fatal(
         message: string,
-        options: {
+        options?: {
             context?: TContext;
             polarisLogProperties?: PolarisLogProperties;
         },
@@ -33,7 +33,7 @@ export class GraphqlLogger<TContext extends PolarisContext = PolarisContext> {
 
     error(
         message: string,
-        options: {
+        options?: {
             context?: TContext;
             polarisLogProperties?: PolarisLogProperties;
         },
@@ -46,7 +46,7 @@ export class GraphqlLogger<TContext extends PolarisContext = PolarisContext> {
 
     warn(
         message: string,
-        options: {
+        options?: {
             context?: TContext;
             polarisLogProperties?: PolarisLogProperties;
         },
@@ -59,7 +59,7 @@ export class GraphqlLogger<TContext extends PolarisContext = PolarisContext> {
 
     info(
         message: string,
-        options: {
+        options?: {
             context?: TContext;
             polarisLogProperties?: PolarisLogProperties;
         },
@@ -72,7 +72,7 @@ export class GraphqlLogger<TContext extends PolarisContext = PolarisContext> {
 
     trace(
         message: string,
-        options: {
+        options?: {
             context?: TContext;
             polarisLogProperties?: PolarisLogProperties;
         },
@@ -85,7 +85,7 @@ export class GraphqlLogger<TContext extends PolarisContext = PolarisContext> {
 
     debug(
         message: string,
-        options: {
+        options?: {
             context?: TContext;
             polarisLogProperties?: PolarisLogProperties;
         },
