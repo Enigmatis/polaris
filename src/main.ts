@@ -21,3 +21,4 @@ export { CommonEntityInterface } from './schema/common/entities/common-entity-in
 export { PolarisSchemaCreator, SchemaCreator } from './schema/utils/schema.creator';
 export { GraphQLServer, PolarisGraphQLServer } from './server/graphql.server';
 export { HeadersConfiguration } from './http/request/polaris-request-headers';
+export { DbConnection } from './db/db-connection';
