@@ -11,7 +11,7 @@ import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { PolarisMiddleware } from '../middlewares/polaris-middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
-import { SchemaCreator } from '../schema/utils/schema.creator';
+import { SchemaCreator } from '../schema/utils/schema-creator';
 import { PolarisContext } from './polaris-context';
 
 const app = new Koa();

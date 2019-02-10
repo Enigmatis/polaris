@@ -6,7 +6,7 @@ import {
 } from '../common/injectable-interfaces';
 import { GraphqlLogger } from '../logging/graphql-logger';
 import { PolarisMiddleware } from '../middlewares/polaris-middleware';
-import { SchemaCreator } from '../schema/utils/schema.creator';
+import { SchemaCreator } from '../schema/utils/schema-creator';
 import { GraphQLServer } from '../server/graphql.server';
 
 export const POLARIS_TYPES = {
