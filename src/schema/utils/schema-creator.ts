@@ -23,7 +23,10 @@ export class PolarisSchemaCreator implements SchemaCreator {
 
     generateSchema(): { def: ITypeDefinitions; resolvers: IResolvers } {
         const schemaDefinition = `schema {query: Query, mutation: Mutation}`;
-        const definitions = [schemaDefinition, ...this.types.map(x => x.definition)];
+        const definitions: ITypeDefinitions = [
+            schemaDefinition,
+            ...this.types.map(x => x.definition),
+        ];
         const resolverObjects = this.resolvers.map(x => x.resolver());
 
         return { def: definitions, resolvers: Object.assign({}, ...resolverObjects) };

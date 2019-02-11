@@ -1,18 +1,18 @@
-import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
-import { ApolloServer, Config, makeExecutableSchema } from 'apollo-server-koa';
-import { applyMiddleware } from 'graphql-middleware';
-import { inject, injectable, multiInject } from 'inversify';
+import {LoggerConfiguration, PolarisLogger} from '@enigmatis/polaris-logs';
+import {ApolloServer, Config, makeExecutableSchema} from 'apollo-server-koa';
+import {applyMiddleware} from 'graphql-middleware';
+import {inject, injectable, multiInject} from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
-
-import { LoggerConfig, PolarisServerConfig } from '../common/injectable-interfaces';
-import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
-import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
-import { PolarisMiddleware } from '../middlewares/polaris-middleware';
-import { createMiddleware } from '../middlewares/polaris-middleware-creator';
-import { PolarisProperties } from '../properties/polaris-properties';
-import { SchemaCreator } from '../schema/utils/schema-creator';
-import { PolarisContext } from './polaris-context';
+import omitEmpty = require('omit-empty');
+import {LoggerConfig, PolarisServerConfig} from '../common/injectable-interfaces';
+import {getHeaders} from '../http/request/polaris-request-headers';
+import {POLARIS_TYPES} from '../inversion-of-control/polaris-types';
+import {Middleware} from '../middlewares/middleware';
+import {createMiddleware} from '../middlewares/polaris-middleware-creator';
+import {PolarisProperties} from '../properties/polaris-properties';
+import {SchemaCreator} from '../schema/utils/schema.creator';
+import {PolarisContext} from './polaris-context';
 
 const app = new Koa();
 app.use(koaBody());
@@ -32,7 +32,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
         @inject(POLARIS_TYPES.LoggerConfig) logConfig: LoggerConfig,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
-        @multiInject(POLARIS_TYPES.PolarisMiddleware) middlewares: PolarisMiddleware[],
+        @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
     ) {
         const schema = creator.generateSchema();
         const executableSchemaDefinition: { typeDefs: any; resolvers: any } = {
@@ -45,23 +45,39 @@ export class PolarisGraphQLServer implements GraphQLServer {
             executableSchema,
             ...(middlewares.map(createMiddleware) as any),
         );
-        this.logProperties = logConfig.getLogConfiguration();
-        this.polarisProperties = propertiesConfig.getPolarisProperties();
+        this.logProperties = logConfig.loggerConfiguration;
+        this.polarisProperties = propertiesConfig.polarisProperties;
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
-            context: ({ ctx }: { ctx: Koa.Context }): PolarisContext => ({
-                headers: new PolarisRequestHeaders(ctx.request.headers),
-            }),
+            context: ({ctx}: { ctx: Koa.Context }): PolarisContext => {
+                try {
+                    const headers = getHeaders(ctx.request.headers);
+                    return {
+                        headers: headers,
+                        body: ctx.request.body,
+                    }
+                } catch (e) {
+                    this.polarisLogger.error('headers error', {throwable: e});
+                    throw new Error("Unable to format headers");
+                }
+            },
             formatError: (error: Error) => {
-                this.polarisLogger.error('apollo server Error', { throwable: error });
+                this.polarisLogger.error('apollo server Error', {throwable: error});
                 return new Error('Internal server error');
+            },
+
+            formatResponse: (response: any) => {
+                const res = omitEmpty(response);
+                const result = Object.keys(res).length ? res : {data: {}};
+                this.polarisLogger.info(`Finished response, answer is ${JSON.stringify(result)}`);
+                return result;
             },
         };
         this.server = new ApolloServer(config);
         if (!this.polarisProperties.endpoint) {
-            this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
+            this.server.applyMiddleware({app, path: this.polarisProperties.endpoint});
         } else {
-            this.server.applyMiddleware({ app });
+            this.server.applyMiddleware({app});
         }
     }
 
