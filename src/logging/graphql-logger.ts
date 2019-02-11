@@ -13,8 +13,8 @@ export class GraphqlLogger<TContext extends PolarisContext = PolarisContext> {
         @inject(POLARIS_TYPES.PolarisServerConfig) polarisServerConfig: PolarisServerConfig,
     ) {
         this.polarisLogger = new PolarisLogger(
-            polarisServerConfig.getPropertiesForLog(),
-            loggerConfig.getLogConfiguration(),
+            polarisServerConfig.applicationLogProperties,
+            loggerConfig.loggerConfiguration,
         );
     }
 

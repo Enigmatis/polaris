@@ -1,27 +1,54 @@
-import { HeaderNames } from '../header-names';
+import * as joi from 'joi';
 
-export class PolarisRequestHeaders {
-    readonly dataVersion?: number;
-    readonly isSnapshot?: boolean;
-    readonly includeLinkedOperation?: boolean;
-    readonly snapshotPageSize?: number;
-    readonly requestId?: string;
-    readonly upn?: string;
-    readonly eventKind?: string;
-    readonly realityId?: string;
-    readonly requestingSystemId?: string;
-    readonly requestingSystemName?: string;
+const headersSchema = joi.object().keys({
+    'data-version': joi.number(),
+    'snap-request': joi.boolean(),
+    'include-linked-oper': joi.boolean(),
+    'snap-page-size': joi.boolean(),
+    'request-id': joi.string(),
+    upn: joi.string(),
+    'event-kind': joi.string(),
+    'reality-id': joi.string(),
+    'requesting-sys': joi.string(),
+    'requesting-sys-name': joi.string(),
+});
 
-    constructor(headers: any) {
-        this.dataVersion = headers[HeaderNames.DATA_VERSION];
-        this.isSnapshot = headers[HeaderNames.SNAPSHOT];
-        this.includeLinkedOperation = headers[HeaderNames.INCLUDE_LINKED_OPER];
-        this.snapshotPageSize = headers[HeaderNames.SNAPSHOT_PAGE_SIZE];
-        this.requestId = headers[HeaderNames.REQUEST_ID];
-        this.upn = headers[HeaderNames.UPN];
-        this.eventKind = headers[HeaderNames.EVENT_KIND];
-        this.realityId = headers[HeaderNames.REALITY_ID];
-        this.requestingSystemId = headers[HeaderNames.REQUESTING_SYS];
-        this.requestingSystemName = headers[HeaderNames.REQUESTING_SYS_NAME];
+export interface PolarisRequestHeaders {
+    dataVersion?: number;
+    isSnapshot?: boolean;
+    includeLinkedOperation?: boolean;
+    snapshotPageSize?: number;
+    requestId?: string;
+    upn?: string;
+    eventKind?: string;
+    realityId?: string;
+    requestingSystemId?: string;
+    requestingSystemName?: string;
+}
+
+export const getHeaders = (candidate: object): PolarisRequestHeaders => {
+    const { error, value: validatedHeaders } = joi.validate(candidate, headersSchema, {
+        stripUnknown: true,
+    }) as { error: joi.ValidationError; value: { [key: string]: any } };
+    if (error) {
+        throw error;
+    } else {
+        return {
+            dataVersion: validatedHeaders['data-version'],
+            isSnapshot: validatedHeaders['snap-request'],
+            includeLinkedOperation: validatedHeaders['include-linked-oper'],
+            snapshotPageSize: validatedHeaders['snap-page-size'],
+            requestId: validatedHeaders['request-id'],
+            upn: validatedHeaders.upn,
+            eventKind: validatedHeaders['event-kind'],
+            realityId: validatedHeaders['reality-id'],
+            requestingSystemId: validatedHeaders['requesting-sys'],
+            requestingSystemName: validatedHeaders['requesting-sys-name'],
+        };
     }
+};
+
+export interface HeadersConfiguration {
+    dataVersion?: boolean;
+    realityId?: boolean;
 }
