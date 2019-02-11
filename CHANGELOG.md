@@ -1,3 +1,25 @@
+# [2.0.0](https://github.com/Enigmatis/polaris/compare/v1.4.0...v2.0.0) (2019-02-11)
+
+
+### Bug Fixes
+
+* **fix headers cr:** fix ([120dee1](https://github.com/Enigmatis/polaris/commit/120dee1))
+* **format response:** remove null from response ([415d5d7](https://github.com/Enigmatis/polaris/commit/415d5d7))
+* **headers config default:** headers config default to true ([73ad739](https://github.com/Enigmatis/polaris/commit/73ad739))
+* **heades:** throw error on headers ([e4f3dc4](https://github.com/Enigmatis/polaris/commit/e4f3dc4))
+* **merge with master:** merge ([80871b3](https://github.com/Enigmatis/polaris/commit/80871b3))
+
+
+### Features
+
+* headers middleware ([0b27c02](https://github.com/Enigmatis/polaris/commit/0b27c02))
+* **headers middleware:** dada version+ reality id ([dca3672](https://github.com/Enigmatis/polaris/commit/dca3672))
+
+
+### BREAKING CHANGES
+
+* **headers middleware:** configs
+
 # [1.4.0](https://github.com/Enigmatis/polaris/compare/v1.3.0...v1.4.0) (2019-02-07)
 
 
