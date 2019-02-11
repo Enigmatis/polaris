@@ -5,7 +5,6 @@ import {
     LoggerConfig,
     PolarisServerConfig,
 } from '../common/injectable-interfaces';
-import { PolarisHeadersFactory } from '../http/request/polaris-headers-factory';
 import { GraphqlLogger } from '../logging/graphql-logger';
 import { Middleware } from '../middlewares/middleware';
 import { SchemaCreator } from '../schema/utils/schema.creator';

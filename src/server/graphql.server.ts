@@ -1,12 +1,12 @@
-import omitEmpty = require('omit-empty');
 import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
 import { ApolloServer, Config, makeExecutableSchema } from 'apollo-server-koa';
 import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
+import omitEmpty = require('omit-empty');
 import { LoggerConfig, PolarisServerConfig } from '../common/injectable-interfaces';
-import { PolarisHeadersFactory } from '../http/request/polaris-headers-factory';
+import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
@@ -32,7 +32,6 @@ export class PolarisGraphQLServer implements GraphQLServer {
         @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
         @inject(POLARIS_TYPES.LoggerConfig) logConfig: LoggerConfig,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
-        @inject(POLARIS_TYPES.PolarisHeadersFactory) polarisHeadersFactory: PolarisHeadersFactory,
         @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
     ) {
         const schema = creator.generateSchema();
@@ -51,7 +50,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
             context: ({ ctx }: { ctx: Koa.Context }): PolarisContext => ({
-                headers: polarisHeadersFactory.createHeaders(ctx.request.headers),
+                headers: getHeaders(ctx.request.headers),
                 body: ctx.request.body,
             }),
             formatError: (error: Error) => {
@@ -61,7 +60,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
 
             formatResponse: (response: any) => {
                 const res = omitEmpty(response);
-                const result = Object.keys(res).length === 0 ? { data: {} } : res;
+                const result = Object.keys(res).length ? res : { data: {} };
                 this.polarisLogger.info(`Finished response, answer is ${JSON.stringify(result)}`);
                 return result;
             },

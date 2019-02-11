@@ -25,6 +25,6 @@ const schema = joi.object().keys({
     secretGroups: joi.array().items(joi.string()),
 });
 
-export function isRepositoryEntity(object: any): boolean {
-    return !joi.validate(object, schema, { stripUnknown: true }).error;
+export function isRepositoryEntity(candidate: object): boolean {
+    return !joi.validate(candidate, schema, { stripUnknown: true }).error;
 }
