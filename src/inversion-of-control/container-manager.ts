@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import { GraphqlLogger } from '../logging/graphql-logger';
 import { LoggerMiddleware } from '../middlewares/logger-middleware';
 import { PolarisSchemaCreator } from '../schema/utils/schema-creator';
-import { PolarisGraphQLServer } from '../server/graphql.server';
+import { PolarisGraphQLServer } from '../server/graphql-server';
 import { POLARIS_TYPES } from './polaris-types';
 
 decorate(injectable(), PolarisLogger);

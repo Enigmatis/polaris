@@ -7,7 +7,7 @@ import {
 import { GraphqlLogger } from '../logging/graphql-logger';
 import { PolarisMiddleware } from '../middlewares/polaris-middleware';
 import { SchemaCreator } from '../schema/utils/schema-creator';
-import { GraphQLServer } from '../server/graphql.server';
+import { GraphQLServer } from '../server/graphql-server';
 
 export const POLARIS_TYPES = {
     GraphQLServer: Symbol('GraphQLServer'),
