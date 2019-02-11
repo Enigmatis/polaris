@@ -1,3 +1,4 @@
+import omitEmpty = require('omit-empty');
 import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
 import { ApolloServer, Config, makeExecutableSchema } from 'apollo-server-koa';
 import { applyMiddleware } from 'graphql-middleware';
@@ -59,7 +60,6 @@ export class PolarisGraphQLServer implements GraphQLServer {
             },
 
             formatResponse: (response: any) => {
-                const omitEmpty = require('omit-empty');
                 const res = omitEmpty(response);
                 const result = Object.keys(res).length === 0 ? { data: {} } : res;
                 this.polarisLogger.info(`Finished response, answer is ${JSON.stringify(result)}`);

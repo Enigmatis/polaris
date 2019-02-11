@@ -9,7 +9,7 @@ export {
     InjectableType,
     LoggerConfig,
     HeaderConfig,
-    PolarisServerConfig,
+    PolarisServerConfig
 } from './common/injectable-interfaces';
 export { polarisContainer } from './inversion-of-control/container-manager';
 export { POLARIS_TYPES } from './inversion-of-control/polaris-types';
