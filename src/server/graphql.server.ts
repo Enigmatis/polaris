@@ -67,6 +67,8 @@ export class PolarisGraphQLServer implements GraphQLServer {
             },
 
             formatResponse: (response: any) => {
+                if (response.data.__schema)
+                    return response;
                 const res = omitEmpty(response);
                 const result = Object.keys(res).length ? res : {data: {}};
                 this.polarisLogger.info(`Finished response, answer is ${JSON.stringify(result)}`);
