@@ -33,7 +33,7 @@ describe('graphql-server tests', () => {
     } as any;
     const polarisMiddlewareMock: { [T in keyof PolarisMiddleware]: any } = {} as any;
 
-    test('creating new polaris server - with arguments - schema generate schema have been called', () => {
+    test('creating new polaris server - with arguments - generate schema have been called', () => {
         const server = new PolarisGraphQLServer(
             schemaCreatorMock,
             loggerConfigMock,
@@ -82,7 +82,7 @@ describe('graphql-server tests', () => {
         expect(createMiddleware).toHaveBeenCalledTimes(middlewares.length);
     });
 
-    test('creating new polaris server - with arguments - calling apollo server constructor have been called', () => {
+    test('creating new polaris server - with arguments - apollo server constructor have been called', () => {
         const server = new PolarisGraphQLServer(
             schemaCreatorMock,
             loggerConfigMock,
