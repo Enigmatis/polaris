@@ -61,9 +61,13 @@ export class PolarisGraphQLServer implements GraphQLServer {
                     throw new Error('Unable to format headers');
                 }
             },
-            formatError: (error: Error) => {
-                this.polarisLogger.error('apollo server Error', { throwable: error });
-                return new Error('Internal server error');
+            formatError: (error: any) => {
+                if (error.extensions && error.extensions.code === 'GRAPHQL_VALIDATION_FAILED') {
+                    return error;
+                } else {
+                    this.polarisLogger.error('apollo server Error', { throwable: error });
+                    return new Error('Internal server error');
+                }
             },
 
             formatResponse: (response: any) => {

@@ -9,7 +9,7 @@ export class UpperCaseDirective extends SchemaDirectiveVisitor implements Inject
 
     visitFieldDefinition(field: GraphQLField<any, any>) {
         const { resolve = defaultFieldResolver } = field;
-        field.resolve = function (...args: any) {
+        field.resolve = function(...args: any) {
             const result = resolve.apply(this, args);
             if (typeof result === 'string') {
                 return result.toUpperCase();
