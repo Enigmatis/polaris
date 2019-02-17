@@ -3,8 +3,8 @@ import { Container, decorate, injectable } from 'inversify';
 import 'reflect-metadata';
 import { GraphqlLogger } from '../logging/graphql-logger';
 import { PolarisMiddleware } from '../middlewares/polaris-middleware';
-import { PolarisSchemaCreator } from '../schema/utils/schema.creator';
-import { PolarisGraphQLServer } from '../server/graphql.server';
+import { PolarisSchemaCreator } from '../schema/utils/schema-creator';
+import { PolarisGraphQLServer } from '../server/graphql-server';
 import { POLARIS_TYPES } from './polaris-types';
 
 decorate(injectable(), PolarisLogger);

@@ -1,6 +1,6 @@
 {
   "name": "@enigmatis/polaris",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "An express graphql js engine",
   "main": "./dist/src/main.js",
   "types": "./dist/src/main.d.ts",
@@ -71,7 +71,7 @@
     "@types/node": "10.12.12",
     "apollo-server-core": "^2.3.3",
     "apollo-server-koa": "^2.3.3",
-    "graphql": "^0.13.2",
+    "graphql": "^14.1.1",
     "graphql-fields": "^2.0.1",
     "graphql-middleware": "^3.0.1",
     "graphql-tools": "^4.0.4",
