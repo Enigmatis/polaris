@@ -1,8 +1,8 @@
 import {
-    HeaderConfig,
     InjectableResolver,
     InjectableType,
     LoggerConfig,
+    MiddlewaresConfig,
     PolarisServerConfig,
 } from '../common/injectable-interfaces';
 import { PolarisGraphqlLogger } from '../logging/polaris-graphql-logger';
@@ -16,7 +16,7 @@ export const POLARIS_TYPES = {
     PolarisHeadersFactory: Symbol('PolarisHeadersFactory'),
     Middleware: Symbol('Middleware'),
     PolarisServerConfig: Symbol('PolarisServerConfig'),
-    HeaderConfig: Symbol('HeaderConfig'),
+    MiddlewaresConfig: Symbol('MiddlewaresConfig'),
     LoggerConfig: Symbol('LoggerConfig'),
     InjectableType: Symbol('InjectableType'),
     InjectableResolver: Symbol('InjectableResolver'),

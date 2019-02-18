@@ -48,7 +48,7 @@ export const getHeaders = (candidate: object): PolarisRequestHeaders => {
     }
 };
 
-export interface HeadersConfiguration {
-    dataVersion?: boolean;
-    realityId?: boolean;
+export interface MiddlewaresConfiguration {
+    allowDataVersionMiddleware?: boolean;
+    allowRealityMiddleware?: boolean;
 }

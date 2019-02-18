@@ -1,6 +1,6 @@
 import { ApplicationLogProperties, LoggerConfiguration } from '@enigmatis/polaris-logs';
 import { IResolvers } from 'graphql-tools';
-import { HeadersConfiguration } from '../http/request/polaris-request-headers';
+import { MiddlewaresConfiguration } from '../http/request/polaris-request-headers';
 import { PolarisProperties } from '../properties/polaris-properties';
 
 export interface InjectableType {
@@ -14,8 +14,8 @@ export interface InjectableResolver {
 export interface LoggerConfig {
     loggerConfiguration: LoggerConfiguration;
 }
-export interface HeaderConfig {
-    headersConfiguration: HeadersConfiguration;
+export interface MiddlewaresConfig {
+    middlewaresConfiguration: MiddlewaresConfiguration;
 }
 export interface PolarisServerConfig {
     polarisProperties: PolarisProperties;
