@@ -1,10 +1,11 @@
+import { GraphqlLogger } from '@enigmatis/utills';
 import { inject, injectable } from 'inversify';
 import { HeaderConfig } from '../common/injectable-interfaces';
 import { isRepositoryEntity } from '../dal/entities/repository-entity';
 import { HeadersConfiguration } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { GraphqlLogProperties } from '../logging/graphql-log-properties';
-import { GraphqlLogger } from '../logging/graphql-logger';
+import { PolarisContext } from '../server/polaris-context';
 import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from './middleware';
 import { DataVersionFilter } from './middleware-activation-condition/filter-data-version';
 import { RealityIdFilter } from './middleware-activation-condition/filter-realities';
@@ -12,7 +13,7 @@ import { SoftDeleteFilter } from './middleware-activation-condition/filter-soft-
 
 @injectable()
 export class PolarisMiddleware implements Middleware {
-    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: GraphqlLogger;
+    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: GraphqlLogger<PolarisContext>;
     headersConfiguration: HeadersConfiguration;
 
     constructor(@inject(POLARIS_TYPES.HeaderConfig) headerConfig: HeaderConfig) {

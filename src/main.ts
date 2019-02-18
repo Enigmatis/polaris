@@ -13,7 +13,7 @@ export {
 } from './common/injectable-interfaces';
 export { polarisContainer } from './inversion-of-control/container-manager';
 export { POLARIS_TYPES } from './inversion-of-control/polaris-types';
-export { GraphqlLogger } from './logging/graphql-logger';
+export { PolarisGraphqlLogger } from './logging/polaris-graphql-logger';
 export { PolarisProperties } from './properties/polaris-properties';
 export { CommonEntities } from './schema/common/common-entities';
 export { RepositoryEntity } from './dal/entities/repository-entity';
@@ -21,4 +21,3 @@ export { CommonEntityInterface } from './schema/common/entities/common-entity-in
 export { PolarisSchemaCreator, SchemaCreator } from './schema/utils/schema-creator';
 export { GraphQLServer, PolarisGraphQLServer } from './server/graphql-server';
 export { HeadersConfiguration } from './http/request/polaris-request-headers';
-export { DbConnection } from './db/db-connection';
