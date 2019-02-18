@@ -8,6 +8,7 @@ import { GraphqlLogger } from '../logging/graphql-logger';
 import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from './middleware';
 import { DataVersionFilter } from './middleware-activation-condition/filter-data-version';
 import { RealityIdFilter } from './middleware-activation-condition/filter-realities';
+import { SoftDeleteFilter } from './middleware-activation-condition/filter-soft-delete';
 
 @injectable()
 export class PolarisMiddleware implements Middleware {
@@ -53,8 +54,10 @@ export class PolarisMiddleware implements Middleware {
     shouldBeReturned(params: ResponseMiddlewareParams, headersConfig: HeadersConfiguration) {
         return (
             !(params.root && isRepositoryEntity(params.root)) ||
-            ((headersConfig.realityId === false || RealityIdFilter.shouldBeReturned(params)) &&
-                (headersConfig.dataVersion === false || DataVersionFilter.shouldBeReturned(params)))
+            (SoftDeleteFilter.shouldBeReturned(params) &&
+                ((headersConfig.realityId === false || RealityIdFilter.shouldBeReturned(params)) &&
+                    (headersConfig.dataVersion === false ||
+                        DataVersionFilter.shouldBeReturned(params))))
         );
     }
 
