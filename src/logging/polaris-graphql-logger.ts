@@ -1,11 +1,13 @@
 import { PolarisLogger, PolarisLogProperties } from '@enigmatis/polaris-logs';
+import { GraphqlLogger } from '@enigmatis/utills';
 import { inject, injectable } from 'inversify';
 import { LoggerConfig, PolarisServerConfig } from '../common/injectable-interfaces';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { PolarisContext } from '../server/polaris-context';
 
 @injectable()
-export class GraphqlLogger<TContext extends PolarisContext = PolarisContext> {
+export class PolarisGraphqlLogger<TContext extends PolarisContext = PolarisContext>
+    implements GraphqlLogger<TContext> {
     private polarisLogger: PolarisLogger;
 
     constructor(
