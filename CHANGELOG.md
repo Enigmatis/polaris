@@ -1,3 +1,16 @@
+# [2.1.0](https://github.com/Enigmatis/polaris/compare/v2.0.0...v2.1.0) (2019-02-18)
+
+
+### Bug Fixes
+
+* **introspection:** fix introspection ([6d13056](https://github.com/Enigmatis/polaris/commit/6d13056))
+
+
+### Features
+
+* **introspection:** not filtering type introspection ([38799b2](https://github.com/Enigmatis/polaris/commit/38799b2))
+* **validation:** send validation error to client ([2864f84](https://github.com/Enigmatis/polaris/commit/2864f84))
+
 # [2.0.0](https://github.com/Enigmatis/polaris/compare/v1.4.0...v2.0.0) (2019-02-11)
 
 
