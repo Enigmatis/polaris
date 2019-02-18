@@ -9,14 +9,13 @@ const result = '';
 const realityId = '../../../src/middlewares/middleware-activation-condition/filter-realities';
 const filterCondition = '../../../src/middlewares/middleware-activation-condition/filter-condition';
 describe('reality id tests', () => {
-    beforeEach(() => jest.resetModules());
-    it('reality id header doesnt exist', () => {
+    test('reality id header doesnt exist', () => {
         const root = {realityId: '1'};
         const context: PolarisContext = {headers: {}, body: {},};
         const middlewareParams: ResponseMiddlewareParams = {root, args, context, info, result};
         expect(RealityIdFilter.shouldBeReturned(middlewareParams)).toBe(true);
     });
-    it('entity reality id is the same as headers reality id', () => {
+    test('entity reality id is the same as headers reality id', () => {
         const root = {realityId: '1'};
         const context: PolarisContext = {headers: {realityId: '1'}, body: {},};
         const middlewareParams: ResponseMiddlewareParams = {root, args, context, info, result};
@@ -25,7 +24,7 @@ describe('reality id tests', () => {
     describe('reality id header exist, and entity reality id and headers reality id do not match ', () => {
         describe('entity is a sub entity ', () => {
             describe('includeLinkedOperation is true', () => {
-                it('entity is operational', () => {
+                test('entity is operational', () => {
                     const root = {realityId: '0'};
                     const context: PolarisContext = {headers: {realityId: '1', includeLinkedOperation: true}, body: {}};
                     const middlewareParams: ResponseMiddlewareParams = {root, args, context, info, result};
@@ -33,7 +32,7 @@ describe('reality id tests', () => {
                     const RealityId = require(realityId).RealityIdFilter;
                     expect(RealityId.shouldBeReturned(middlewareParams)).toBe(true);
                 });
-                it('entity is not operational', () => {
+                test('entity is not operational', () => {
                     const root = {realityId: '2'};
                     const context: PolarisContext = {
                         headers: {realityId: '1', includeLinkedOperation: false},
@@ -46,7 +45,7 @@ describe('reality id tests', () => {
                 });
             });
             describe('includeLinkedOperation is false', () => {
-                it('entity is operational', () => {
+                test('entity is operational', () => {
                     const root = {realityId: '0'};
                     const context: PolarisContext = {
                         headers: {realityId: '1', includeLinkedOperation: false},
@@ -57,7 +56,7 @@ describe('reality id tests', () => {
                     const RealityId = require(realityId).RealityIdFilter;
                     expect(RealityId.shouldBeReturned(middlewareParams)).toBe(false);
                 });
-                it('entity is not operational', () => {
+                test('entity is not operational', () => {
                     const root = {realityId: '2'};
                     const context: PolarisContext = {
                         headers: {realityId: '1', includeLinkedOperation: false},
@@ -72,7 +71,7 @@ describe('reality id tests', () => {
         });
         describe('entity is not sub entity', () => {
             describe('includeLinkedOperation is true', () => {
-                it('entity is operational', () => {
+                test('entity is operational', () => {
                     const root = {realityId: '0'};
                     const context: PolarisContext = {headers: {realityId: '1', includeLinkedOperation: true}, body: {}};
                     const middlewareParams: ResponseMiddlewareParams = {root, args, context, info, result};
@@ -80,7 +79,7 @@ describe('reality id tests', () => {
                     const RealityId = require(realityId).RealityIdFilter;
                     expect(RealityId.shouldBeReturned(middlewareParams)).toBe(false);
                 });
-                it('entity is not operational', () => {
+                test('entity is not operational', () => {
                     const root = {realityId: '2'};
                     const context: PolarisContext = {
                         headers: {realityId: '1', includeLinkedOperation: false},
@@ -93,7 +92,7 @@ describe('reality id tests', () => {
                 });
             });
             describe('includeLinkedOperation is false', () => {
-                it('entity is operational', () => {
+                test('entity is operational', () => {
                     const root = {realityId: '0'};
                     const context: PolarisContext = {
                         headers: {realityId: '1', includeLinkedOperation: false},
@@ -104,7 +103,7 @@ describe('reality id tests', () => {
                     const RealityId = require(realityId).RealityIdFilter;
                     expect(RealityId.shouldBeReturned(middlewareParams)).toBe(false);
                 });
-                it('entity is not operational', () => {
+                test('entity is not operational', () => {
                     const root = {realityId: '2'};
                     const context: PolarisContext = {
                         headers: {realityId: '1', includeLinkedOperation: false},

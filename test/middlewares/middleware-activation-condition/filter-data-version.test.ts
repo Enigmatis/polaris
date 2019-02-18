@@ -10,8 +10,7 @@ const dataVersion = '../../../src/middlewares/middleware-activation-condition/fi
 const filterCondition = '../../../src/middlewares/middleware-activation-condition/filter-condition';
 
 describe('data version tests', () => {
-    beforeEach(() => jest.resetModules());
-    it('data version header doesnt exist', () => {
+    test('data version header doesnt exist', () => {
         const root = {dataVersion: 0};
         const context: PolarisContext = {headers: {}, body: {}};
         const middlewareParams: ResponseMiddlewareParams = {root, args, context, info, result};
@@ -19,7 +18,7 @@ describe('data version tests', () => {
     });
     describe('data version header exist', () => {
         describe('entity data version is bigger than headers data version', () => {
-            it('entity is not a sub entity', () => {
+            test('entity is not a sub entity', () => {
                 const root = {dataVersion: 1};
                 const context: PolarisContext = {headers: {dataVersion: 0}, body: {}};
                 const middlewareParams: ResponseMiddlewareParams = {root, args, context, info, result};
@@ -27,7 +26,7 @@ describe('data version tests', () => {
                 const DataVersion = require(dataVersion).DataVersionFilter;
                 expect(DataVersion.shouldBeReturned(middlewareParams)).toBe(true);
             });
-            it('entity is a sub entity', () => {
+            test('entity is a sub entity', () => {
                 const root = {dataVersion: 1};
                 const context: PolarisContext = {headers: {dataVersion: 0}, body: {}};
                 const middlewareParams: ResponseMiddlewareParams = {root, args, context, info, result};
@@ -37,7 +36,7 @@ describe('data version tests', () => {
             });
         });
         describe('headers data version is bigger than entity data version', () => {
-            it('entity is a sub entity', () => {
+            test('entity is a sub entity', () => {
                 const root = {dataVersion: 0};
                 const context: PolarisContext = {headers: {dataVersion: 1}, body: {}};
                 const middlewareParams: ResponseMiddlewareParams = {root, args, context, info, result};
@@ -45,7 +44,7 @@ describe('data version tests', () => {
                 const DataVersion = require(dataVersion).DataVersionFilter;
                 expect(DataVersion.shouldBeReturned(middlewareParams)).toBe(true);
             });
-            it('entity is not a sub entity', () => {
+            test('entity is not a sub entity', () => {
                 const root = {dataVersion: 0};
                 const context: PolarisContext = {headers: {dataVersion: 1}, body: {}};
                 const middlewareParams: ResponseMiddlewareParams = {root, args, context, info, result};
