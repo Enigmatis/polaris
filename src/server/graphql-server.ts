@@ -71,15 +71,15 @@ export class PolarisGraphQLServer implements GraphQLServer {
             },
 
             formatResponse: (response: any) => {
-                if (!response.data.__schema) {
+                if (response.data.__schema || response.data.__type) {
+                    return response;
+                } else {
                     const res = omitEmpty(response);
                     const result = Object.keys(res).length ? res : { data: {} };
                     this.polarisLogger.info(
                         `Finished response, answer is ${JSON.stringify(result)}`,
                     );
                     return result;
-                } else {
-                    return response;
                 }
             },
         };
