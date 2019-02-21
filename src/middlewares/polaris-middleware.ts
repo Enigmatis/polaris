@@ -1,22 +1,23 @@
 import { GraphqlLogger } from '@enigmatis/utills';
 import { inject, injectable } from 'inversify';
-import { HeaderConfig } from '../common/injectable-interfaces';
+import { MiddlewaresConfig } from '../common/injectable-interfaces';
 import { isRepositoryEntity } from '../dal/entities/repository-entity';
-import { HeadersConfiguration } from '../http/request/polaris-request-headers';
+import { MiddlewaresConfiguration } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { GraphqlLogProperties } from '../logging/graphql-log-properties';
 import { PolarisContext } from '../server/polaris-context';
 import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from './middleware';
 import { DataVersionFilter } from './middleware-activation-condition/filter-data-version';
 import { RealityIdFilter } from './middleware-activation-condition/filter-realities';
+import { SoftDeleteFilter } from './middleware-activation-condition/filter-soft-delete';
 
 @injectable()
 export class PolarisMiddleware implements Middleware {
     @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: GraphqlLogger<PolarisContext>;
-    headersConfiguration: HeadersConfiguration;
+    middlewaresConfig: MiddlewaresConfiguration;
 
-    constructor(@inject(POLARIS_TYPES.HeaderConfig) headerConfig: HeaderConfig) {
-        this.headersConfiguration = headerConfig.headersConfiguration;
+    constructor(@inject(POLARIS_TYPES.MiddlewaresConfig) middlewaresConfig: MiddlewaresConfig) {
+        this.middlewaresConfig = middlewaresConfig.middlewaresConfiguration;
     }
 
     preResolve({ root, info, context, args }: RequestMiddlewareParams): void {
@@ -41,7 +42,7 @@ export class PolarisMiddleware implements Middleware {
                 info,
                 result,
             },
-            this.headersConfiguration,
+            this.middlewaresConfig,
         )
             ? result
             : null;
@@ -51,11 +52,14 @@ export class PolarisMiddleware implements Middleware {
         return resolveResult;
     }
 
-    shouldBeReturned(params: ResponseMiddlewareParams, headersConfig: HeadersConfiguration) {
+    shouldBeReturned(params: ResponseMiddlewareParams, middlewaresConfig: MiddlewaresConfiguration) {
         return (
             !(params.root && isRepositoryEntity(params.root)) ||
-            ((headersConfig.realityId === false || RealityIdFilter.shouldBeReturned(params)) &&
-                (headersConfig.dataVersion === false || DataVersionFilter.shouldBeReturned(params)))
+            (SoftDeleteFilter.shouldBeReturned(params) &&
+                ((middlewaresConfig.allowRealityMiddleware === false ||
+                    RealityIdFilter.shouldBeReturned(params)) &&
+                    (middlewaresConfig.allowDataVersionMiddleware === false ||
+                        DataVersionFilter.shouldBeReturned(params))))
         );
     }
 

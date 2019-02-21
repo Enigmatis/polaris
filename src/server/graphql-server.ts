@@ -57,7 +57,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                         body: ctx.request.body,
                     };
                 } catch (e) {
-                    this.polarisLogger.error('headers error', { throwable: e });
+                    this.polarisLogger.error('Headers error', { throwable: e });
                     throw new Error('Unable to format headers');
                 }
             },
@@ -65,7 +65,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                 if (error.extensions && error.extensions.code === 'GRAPHQL_VALIDATION_FAILED') {
                     return error;
                 } else {
-                    this.polarisLogger.error('apollo server Error', { throwable: error });
+                    this.polarisLogger.error('Apollo server error', { throwable: error });
                     return new Error('Internal server error');
                 }
             },
@@ -84,7 +84,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             },
         };
         this.server = new ApolloServer(config);
-        if (!this.polarisProperties.endpoint) {
+        if (this.polarisProperties.endpoint) {
             this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
         } else {
             this.server.applyMiddleware({ app });
