@@ -52,7 +52,10 @@ export class PolarisMiddleware implements Middleware {
         return resolveResult;
     }
 
-    shouldBeReturned(params: ResponseMiddlewareParams, middlewaresConfig: MiddlewaresConfiguration) {
+    shouldBeReturned(
+        params: ResponseMiddlewareParams,
+        middlewaresConfig: MiddlewaresConfiguration,
+    ) {
         return (
             !(params.root && isRepositoryEntity(params.root)) ||
             (SoftDeleteFilter.shouldBeReturned(params) &&
