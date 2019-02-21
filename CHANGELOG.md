@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/Enigmatis/polaris/compare/v2.1.0...v2.2.0) (2019-02-21)
+
+
+### Features
+
+* **soft delete middleware:** added soft delete middleware ([0d87441](https://github.com/Enigmatis/polaris/commit/0d87441))
+
 # [2.1.0](https://github.com/Enigmatis/polaris/compare/v2.0.0...v2.1.0) (2019-02-18)
 
 
