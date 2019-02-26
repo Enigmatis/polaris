@@ -1,11 +1,12 @@
 import { defaultFieldResolver, GraphQLField } from 'graphql';
 import { SchemaDirectiveVisitor } from 'graphql-tools';
+import { InjectableType } from '../../../common/injectable-interfaces';
 
-const definition = `
+export class UpperCaseDirective extends SchemaDirectiveVisitor implements InjectableType {
+    definition = `
     directive @upper on FIELD_DEFINITION
 `;
 
-export class UpperCaseDirective extends SchemaDirectiveVisitor {
     visitFieldDefinition(field: GraphQLField<any, any>) {
         const { resolve = defaultFieldResolver } = field;
         field.resolve = function(...args: any) {

@@ -4,7 +4,6 @@ import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
-import omitEmpty = require('omit-empty');
 import { LoggerConfig, PolarisServerConfig } from '../common/injectable-interfaces';
 import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
@@ -49,30 +48,34 @@ export class PolarisGraphQLServer implements GraphQLServer {
         this.polarisProperties = propertiesConfig.polarisProperties;
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
-            context: ({ context }: { context: Koa.Context }): PolarisContext => {
+            context: ({ ctx }: { ctx: Koa.Context }): PolarisContext => {
                 try {
-                    const headers = getHeaders(context.request.headers);
+                    const headers = getHeaders(ctx.request.headers);
                     return {
                         headers,
-                        body: context.request.body,
+                        body: ctx.request.body,
                     };
                 } catch (e) {
                     this.polarisLogger.error('headers error', { throwable: e });
                     throw new Error('Unable to format headers');
                 }
             },
-            formatError: (error: Error) => {
-                this.polarisLogger.error('apollo server Error', { throwable: error });
-                return new Error('Internal server error');
+            formatError: (error: any) => {
+                if (error.extensions && error.extensions.code === 'GRAPHQL_VALIDATION_FAILED') {
+                    return error;
+                } else {
+                    this.polarisLogger.error('apollo server Error', { throwable: error });
+                    return new Error('Internal server error');
+                }
             },
 
             formatResponse: (response: any) => {
-                if (response.data.__schema)
-                    return response;
-                const res = omitEmpty(response);
-                const result = Object.keys(res).length ? res : { data: {} };
-                this.polarisLogger.info(`Finished response, answer is ${JSON.stringify(result)}`);
-                return result;
+                if (!response.data.__schema && !response.data.__type) {
+                    this.polarisLogger.info(
+                        `Finished response, answer is ${JSON.stringify(response)}`,
+                    );
+                }
+                return response;
             },
         };
         this.server = new ApolloServer(config);

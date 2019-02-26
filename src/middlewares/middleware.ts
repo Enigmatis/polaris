@@ -16,5 +16,5 @@ export interface RequestMiddlewareParams<TContext extends PolarisContext = Polar
 
 export interface ResponseMiddlewareParams<TContext extends PolarisContext = PolarisContext>
     extends RequestMiddlewareParams<TContext> {
-    result: string | null;
+    result: object;
 }

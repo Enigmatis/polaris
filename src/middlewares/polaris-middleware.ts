@@ -1,21 +1,19 @@
+import { GraphqlLogger } from '@enigmatis/utills';
 import { inject, injectable } from 'inversify';
-import { HeaderConfig } from '../common/injectable-interfaces';
-import { isRepositoryEntity } from '../dal/entities/repository-entity';
-import { HeadersConfiguration } from '../http/request/polaris-request-headers';
+import { MiddlewareConfig } from '../common/injectable-interfaces';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { GraphqlLogProperties } from '../logging/graphql-log-properties';
-import { GraphqlLogger } from '../logging/graphql-logger';
+import { PolarisContext } from '../server/polaris-context';
+import { FilterResolver } from './filter-resolver';
 import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from './middleware';
-import { DataVersionFilter } from './middleware-activation-condition/filter-data-version';
-import { RealityIdFilter } from './middleware-activation-condition/filter-realities';
 
 @injectable()
 export class PolarisMiddleware implements Middleware {
-    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: GraphqlLogger;
-    headersConfiguration: HeadersConfiguration;
+    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: GraphqlLogger<PolarisContext>;
+    filterResolver: FilterResolver;
 
-    constructor(@inject(POLARIS_TYPES.HeaderConfig) headerConfig: HeaderConfig) {
-        this.headersConfiguration = headerConfig.headersConfiguration;
+    constructor(@inject(POLARIS_TYPES.MiddlewareConfig) middlewareConfig: MiddlewareConfig) {
+        this.filterResolver = new FilterResolver(middlewareConfig.middlewaresConfiguration);
     }
 
     preResolve({ root, info, context, args }: RequestMiddlewareParams): void {
@@ -31,31 +29,19 @@ export class PolarisMiddleware implements Middleware {
         this.polarisLogger.debug(msg, { context, polarisLogProperties });
     }
 
-    postResolve({ root, args, context, info, result }: ResponseMiddlewareParams): string | null {
-        const resolveResult: string | null = this.shouldBeReturned(
-            {
-                root,
-                args,
-                context,
-                info,
-                result,
-            },
-            this.headersConfiguration,
-        )
-            ? result
-            : null;
-        const polarisLogProperties: GraphqlLogProperties = this.buildProps(context);
-        const msg = `Field fetching of ${info.fieldName} finished execution. Result is: ${result}`;
-        this.polarisLogger.debug(msg, { context, polarisLogProperties });
+    postResolve(params: ResponseMiddlewareParams): string | null {
+        const resolveResult =
+            params.info.operation.operation === 'query'
+                ? this.filterResolver.filterResolveResult(params)
+                : params.result;
+        this.logEndOfResolve(params);
         return resolveResult;
     }
 
-    shouldBeReturned(params: ResponseMiddlewareParams, headersConfig: HeadersConfiguration) {
-        return (
-            !(params.root && isRepositoryEntity(params.root)) ||
-            ((headersConfig.realityId === false || RealityIdFilter.shouldBeReturned(params)) &&
-                (headersConfig.dataVersion === false || DataVersionFilter.shouldBeReturned(params)))
-        );
+    logEndOfResolve({ root, args, info, context, result }: ResponseMiddlewareParams) {
+        const polarisLogProperties: GraphqlLogProperties = this.buildProps(context);
+        const msg = `Field fetching of ${info.fieldName} finished execution. Result is: ${result}`;
+        this.polarisLogger.debug(msg, { context, polarisLogProperties });
     }
 
     buildProps(context: any): GraphqlLogProperties {

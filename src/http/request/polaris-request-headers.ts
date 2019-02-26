@@ -8,7 +8,7 @@ const headersSchema = joi.object().keys({
     'request-id': joi.string(),
     upn: joi.string(),
     'event-kind': joi.string(),
-    'reality-id': joi.string(),
+    'reality-id': joi.number(),
     'requesting-sys': joi.string(),
     'requesting-sys-name': joi.string(),
 });
@@ -21,7 +21,7 @@ export interface PolarisRequestHeaders {
     requestId?: string;
     upn?: string;
     eventKind?: string;
-    realityId?: string;
+    realityId?: number;
     requestingSystemId?: string;
     requestingSystemName?: string;
 }
@@ -47,8 +47,3 @@ export const getHeaders = (candidate: object): PolarisRequestHeaders => {
         };
     }
 };
-
-export interface HeadersConfiguration {
-    dataVersion?: boolean;
-    realityId?: boolean;
-}

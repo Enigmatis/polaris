@@ -7,20 +7,20 @@ export interface RepositoryEntity {
     creationDate: string;
     lastUpdateDate: string;
     dataVersion: number;
-    realityId: string;
+    realityId: number;
     classification?: string;
     secretGroups?: string[];
 }
 
 const schema = joi.object().keys({
-    id: joi.string().required(),
+    _id: joi.object().required(),
     deleted: joi.boolean().required(),
     createdBy: joi.string(),
     lastUpdatedBy: joi.string(),
-    creationDate: joi.string().required(),
-    lastUpdateDate: joi.string().required(),
+    creationDate: joi.object().required(),
+    lastUpdateDate: joi.object().required(),
     dataVersion: joi.number().required(),
-    realityId: joi.string().required(),
+    realityId: joi.number().required(),
     classification: joi.string(),
     secretGroups: joi.array().items(joi.string()),
 });
