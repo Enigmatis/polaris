@@ -16,5 +16,10 @@ export interface RequestMiddlewareParams<TContext extends PolarisContext = Polar
 
 export interface ResponseMiddlewareParams<TContext extends PolarisContext = PolarisContext>
     extends RequestMiddlewareParams<TContext> {
-    result: object;
+    result: any;
+}
+
+export interface MiddlewaresConfiguration {
+    allowDataVersionMiddleware?: boolean;
+    allowRealityMiddleware?: boolean;
 }

@@ -30,7 +30,7 @@ describe('filter resolver tests', () => {
                 info,
                 result,
             };
-            const filterResolver = new FilterResolver({ dataVersion: false });
+            const filterResolver = new FilterResolver({ allowDataVersionMiddleware: false });
             expect(filterResolver.filterEntities(middlewareParams)).toEqual(result);
         });
         test('reality id filter off', () => {
@@ -42,7 +42,7 @@ describe('filter resolver tests', () => {
                 info,
                 result,
             };
-            const filterResolver = new FilterResolver({ realityId: false });
+            const filterResolver = new FilterResolver({ allowRealityMiddleware: false });
             expect(filterResolver.filterEntities(middlewareParams)).toEqual(result);
         });
     });
@@ -56,10 +56,10 @@ describe('filter resolver tests', () => {
                 args,
                 context,
                 info,
-                result: entity,
+                result: { entity },
             };
             const filterResolver = new FilterResolver();
-            expect(filterResolver.filterResolveResult(middlewareParams)).toBe(entity);
+            expect(filterResolver.filterResolveResult(middlewareParams)).toEqual({ entity });
         });
         test('is a repository entity and reality id filter off', () => {
             const context: PolarisContext = { headers: { realityId: 1 }, body: {} };
@@ -70,8 +70,8 @@ describe('filter resolver tests', () => {
                 info,
                 result,
             };
-            const filterResolver = new FilterResolver({ realityId: false });
-            expect(filterResolver.filterResolveResult(middlewareParams)).toBe(result);
+            const filterResolver = new FilterResolver({ allowRealityMiddleware: false });
+            expect(filterResolver.filterResolveResult(middlewareParams)).toEqual(result);
         });
     });
 });

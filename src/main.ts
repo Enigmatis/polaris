@@ -8,7 +8,7 @@ export {
     InjectableResolver,
     InjectableType,
     LoggerConfig,
-    MiddlewareConfig,
+    MiddlewaresConfig,
     PolarisServerConfig,
 } from './common/injectable-interfaces';
 export { polarisContainer } from './inversion-of-control/container-manager';
@@ -20,6 +20,4 @@ export { RepositoryEntity } from './dal/entities/repository-entity';
 export { CommonEntityInterface } from './schema/common/entities/common-entity-interface';
 export { PolarisSchemaCreator, SchemaCreator } from './schema/utils/schema-creator';
 export { GraphQLServer, PolarisGraphQLServer } from './server/graphql-server';
-export {
-    MiddlewaresConfiguration,
-} from './middlewares/middleware-activation-condition/filter-condition';
+export { MiddlewaresConfiguration } from './middlewares/middleware'

@@ -4,7 +4,7 @@ const headersSchema = joi.object().keys({
     'data-version': joi.number(),
     'snap-request': joi.boolean(),
     'include-linked-oper': joi.boolean(),
-    'snap-page-size': joi.boolean(),
+    'snap-page-size': joi.number(),
     'request-id': joi.string(),
     upn: joi.string(),
     'event-kind': joi.string(),
