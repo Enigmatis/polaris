@@ -4,7 +4,7 @@ import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
-import { LoggerConfig, PolarisServerConfig } from '../common/injectable-interfaces';
+import { PolarisServerConfig } from '../common/injectable-interfaces';
 import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { Middleware } from '../middlewares/middleware';
@@ -25,11 +25,9 @@ export class PolarisGraphQLServer implements GraphQLServer {
     @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: PolarisLogger;
     private server: ApolloServer;
     private polarisProperties: PolarisProperties;
-    private logProperties: LoggerConfiguration;
 
     constructor(
         @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
-        @inject(POLARIS_TYPES.LoggerConfig) logConfig: LoggerConfig,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
     ) {
@@ -44,7 +42,6 @@ export class PolarisGraphQLServer implements GraphQLServer {
             executableSchema,
             ...(middlewares.map(createMiddleware) as any),
         );
-        this.logProperties = logConfig.loggerConfiguration;
         this.polarisProperties = propertiesConfig.polarisProperties;
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
