@@ -6,7 +6,7 @@ class FilterSoftDelete implements MiddlewareCondition {
         { root, context, info, result }: ResponseMiddlewareParams,
         subEntity?: boolean,
     ): boolean {
-        return subEntity ? !root.deleted : !(result as any).deleted;
+        return subEntity ? !root.deleted : !result.deleted;
     }
 }
 

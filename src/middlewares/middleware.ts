@@ -20,6 +20,6 @@ export interface ResponseMiddlewareParams<TContext extends PolarisContext = Pola
 }
 
 export interface MiddlewaresConfiguration {
-    allowDataVersionMiddleware?: boolean;
-    allowRealityMiddleware?: boolean;
+    allowDataVersionMiddleware: boolean;
+    allowRealityMiddleware: boolean;
 }

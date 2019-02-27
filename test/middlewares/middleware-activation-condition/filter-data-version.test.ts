@@ -5,51 +5,64 @@ import { PolarisContext } from '../../../src/server/polaris-context';
 
 const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
 const args = {};
-const result = {};
 
 describe('data version tests', () => {
     test('data version header doesnt exist', () => {
-        const root = { dataVersion: 0 };
+        const result = { dataVersion: 0 };
         const context: PolarisContext = { headers: {}, body: {} };
-        const middlewareParams: ResponseMiddlewareParams = { root, args, context, info, result };
-        expect(DataVersionFilter.shouldBeReturned(middlewareParams)).toBe(true);
+        const middlewareParams: ResponseMiddlewareParams = {
+            root: undefined,
+            args,
+            context,
+            info,
+            result,
+        };
+        expect(DataVersionFilter.shouldBeReturned(middlewareParams, false)).toBe(true);
     });
     describe('data version header exist', () => {
         test('entity data version is bigger than headers data version', () => {
-            const root = { dataVersion: 2 };
             const context: PolarisContext = { headers: { dataVersion: 1 }, body: {} };
             const middlewareParams: ResponseMiddlewareParams = {
-                root,
+                root: undefined,
                 args,
                 context,
                 info,
-                result,
+                result: { dataVersion: 2 },
             };
-            expect(DataVersionFilter.shouldBeReturned(middlewareParams)).toBe(true);
+            expect(DataVersionFilter.shouldBeReturned(middlewareParams, false)).toBe(true);
         });
         test('entity data version is equal to headers data version', () => {
-            const root = { dataVersion: 1 };
             const context: PolarisContext = { headers: { dataVersion: 1 }, body: {} };
             const middlewareParams: ResponseMiddlewareParams = {
-                root,
+                root: undefined,
                 args,
                 context,
                 info,
-                result,
+                result: { dataVersion: 1 },
             };
-            expect(DataVersionFilter.shouldBeReturned(middlewareParams)).toBe(false);
+            expect(DataVersionFilter.shouldBeReturned(middlewareParams, false)).toBe(false);
         });
         test('entity data version is smaller than headers data version', () => {
-            const root = { dataVersion: 1 };
             const context: PolarisContext = { headers: { dataVersion: 2 }, body: {} };
             const middlewareParams: ResponseMiddlewareParams = {
-                root,
+                root: undefined,
                 args,
                 context,
                 info,
-                result,
+                result: { dataVersion: 1 },
             };
-            expect(DataVersionFilter.shouldBeReturned(middlewareParams)).toBe(false);
+            expect(DataVersionFilter.shouldBeReturned(middlewareParams, false)).toBe(false);
+        });
+        test('entity is sub entity', () => {
+            const context: PolarisContext = { headers: { dataVersion: 2 }, body: {} };
+            const middlewareParams: ResponseMiddlewareParams = {
+                root: undefined,
+                args,
+                context,
+                info,
+                result: { dataVersion: 1 },
+            };
+            expect(DataVersionFilter.shouldBeReturned(middlewareParams, true)).toBe(true);
         });
     });
 });

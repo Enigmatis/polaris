@@ -9,10 +9,10 @@ class FilterRealities implements MiddlewareCondition {
     ): boolean {
         const operationalRealityId: number = 0;
         const headers: PolarisRequestHeaders = context.headers;
+        const realityIdHeaderExists: any = headers.realityId === 0 ? true : headers.realityId;
         const isMatchingRealities: boolean = subEntity
             ? root.realityId === headers.realityId
-            : (result as any).realityId === headers.realityId;
-        const realityIdHeaderExists: any = headers.realityId === 0 ? true : headers.realityId;
+            : result.realityId === headers.realityId;
         return (
             !realityIdHeaderExists ||
             isMatchingRealities ||

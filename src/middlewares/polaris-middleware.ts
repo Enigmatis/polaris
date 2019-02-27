@@ -4,16 +4,16 @@ import { MiddlewaresConfig } from '../common/injectable-interfaces';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { GraphqlLogProperties } from '../logging/graphql-log-properties';
 import { PolarisContext } from '../server/polaris-context';
-import { FilterResolver } from './filter-resolver';
+import { FilterExecutor } from './filter-executor';
 import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from './middleware';
 
 @injectable()
 export class PolarisMiddleware implements Middleware {
     @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: GraphqlLogger<PolarisContext>;
-    filterResolver: FilterResolver;
+    filterResolver: FilterExecutor;
 
     constructor(@inject(POLARIS_TYPES.MiddlewaresConfig) middlewaresConfig: MiddlewaresConfig) {
-        this.filterResolver = new FilterResolver(middlewaresConfig.middlewaresConfiguration);
+        this.filterResolver = new FilterExecutor(middlewaresConfig.middlewaresConfiguration);
     }
 
     preResolve({ root, info, context, args }: RequestMiddlewareParams): void {
@@ -32,7 +32,7 @@ export class PolarisMiddleware implements Middleware {
     postResolve(params: ResponseMiddlewareParams): any {
         const resolveResult =
             params.info.operation.operation === 'query'
-                ? this.filterResolver.filterResolveResult(params)
+                ? this.filterResolver.executeFilters(params)
                 : params.result;
         this.logEndOfResolve(params);
         return resolveResult;
