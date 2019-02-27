@@ -47,7 +47,7 @@ export class FilterResolver {
         return res;
     }
 
-    filterSubEntity(params: ResponseMiddlewareParams): any{
+    filterSubEntity(params: ResponseMiddlewareParams): any {
         return !isRepositoryEntity(params.result as any) ||
             (SoftDeleteFilter.shouldBeReturned(params, true) &&
                 (!this.middlewaresConfig.allowRealityMiddleware ||
