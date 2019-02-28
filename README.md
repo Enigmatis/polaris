@@ -75,7 +75,7 @@ module.exports = {
 
 And `book.js`:
 ```JavaScript
-const {CommonEntities: {commonEntityInterface, upperCaseDirective}} = require('@vulcan/polaris');
+const {CommonEntities: {commonEntityInterface, upperCaseDirective}} = require('@enigmatis/polaris');
 
 // Define the Book type schema
 const Book = `
