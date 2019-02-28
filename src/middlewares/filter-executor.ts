@@ -12,47 +12,35 @@ export class FilterExecutor {
     }
 
     executeFilters(params: ResponseMiddlewareParams): any {
-        return params.root ? this.filterSubEntity(params) : this.filterRootEntities(params);
+        const hasRoot: boolean = params.root ? true : false;
+        return hasRoot ? this.filterSubEntity(params) : this.filterRootEntities(params);
     }
 
     filterRootEntities(params: ResponseMiddlewareParams): any[] {
-        const repositoryEntities: any[] = [];
-        const notRepositoryEntities: any[] = [];
-        for (const entity of params.result as any) {
-            if (isRepositoryEntity(entity._doc)) {
-                repositoryEntities.push(entity._doc);
-            } else {
-                notRepositoryEntities.push(entity);
+        const entities: any[] = params.result;
+        for (let i = 0; i < entities.length; i++) {
+            params.result = entities[i]._doc;
+            if (this.shouldFilterEntity(params, false)) {
+                entities.splice(i, 1);
             }
         }
-        params.result = repositoryEntities;
-        return notRepositoryEntities.concat(this.filterRootRepositoryEntities(params));
-    }
-
-    shouldFilterRepositoryEntity(params: ResponseMiddlewareParams, subEntity: boolean): boolean {
-        return (
-            SoftDeleteFilter.shouldBeReturned(params, subEntity) &&
-            (!this.middlewaresConfig.allowDataVersionMiddleware ||
-                DataVersionFilter.shouldBeReturned(params, subEntity)) &&
-            (!this.middlewaresConfig.allowRealityMiddleware ||
-                RealityIdFilter.shouldBeReturned(params, subEntity))
-        );
-    }
-
-    filterRootRepositoryEntities(params: ResponseMiddlewareParams): any[] {
-        const res: any = [];
-        for (const entity of params.result as any) {
-            params.result = entity;
-            if (this.shouldFilterRepositoryEntity(params, false)) {
-                res.push(entity);
-            }
-        }
-        return res;
+        return entities;
     }
 
     filterSubEntity(params: ResponseMiddlewareParams): any {
-        return !isRepositoryEntity(params) || this.shouldFilterRepositoryEntity(params, true)
-            ? params.result
-            : null;
+        return this.shouldFilterEntity(params, true) ? null : params.result;
+    }
+
+    shouldFilterEntity(params: ResponseMiddlewareParams, isSubEntity: boolean): boolean {
+        return (
+            isRepositoryEntity(params.result) &&
+            !(
+                SoftDeleteFilter.shouldBeReturned(params) &&
+                (!this.middlewaresConfig.allowDataVersionMiddleware ||
+                    DataVersionFilter.shouldBeReturned(params, isSubEntity)) &&
+                (!this.middlewaresConfig.allowRealityMiddleware ||
+                    RealityIdFilter.shouldBeReturned(params, isSubEntity))
+            )
+        );
     }
 }

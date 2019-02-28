@@ -7,14 +7,16 @@ const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
 const args = {};
 const result: any = [
     {
-        deleted: false,
-        _id: { id: '5c5bf81a83e6e21ff08710ed' },
-        title: 'zero',
-        author: 'BiKoV',
-        creationDate: {},
-        lastUpdateDate: {},
-        realityId: 0,
-        dataVersion: 2,
+        _doc: {
+            deleted: false,
+            _id: { id: '5c5bf81a83e6e21ff08710ed' },
+            title: 'zero',
+            author: 'BiKoV',
+            creationDate: {},
+            lastUpdateDate: {},
+            realityId: 0,
+            dataVersion: 2,
+        },
     },
 ];
 describe('filter resolver tests', () => {
@@ -29,11 +31,11 @@ describe('filter resolver tests', () => {
                 info,
                 result,
             };
-            const filterResolver = new FilterExecutor({
+            const filterExecutor = new FilterExecutor({
                 allowDataVersionMiddleware: false,
                 allowRealityMiddleware: true,
             });
-            expect(filterResolver.filterRootRepositoryEntities(middlewareParams)).toEqual(result);
+            expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(result);
         });
         test('reality id filter off', () => {
             const context: PolarisContext = { headers: { realityId: 1 }, body: {} };
@@ -44,11 +46,11 @@ describe('filter resolver tests', () => {
                 info,
                 result,
             };
-            const filterResolver = new FilterExecutor({
+            const filterExecutor = new FilterExecutor({
                 allowRealityMiddleware: false,
                 allowDataVersionMiddleware: true,
             });
-            expect(filterResolver.filterRootRepositoryEntities(middlewareParams)).toEqual(result);
+            expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(result);
         });
     });
     describe('sub entity', () => {
@@ -63,11 +65,11 @@ describe('filter resolver tests', () => {
                 info,
                 result: entity,
             };
-            const filterResolver = new FilterExecutor({
+            const filterExecutor = new FilterExecutor({
                 allowDataVersionMiddleware: true,
                 allowRealityMiddleware: true,
             });
-            expect(filterResolver.executeFilters(middlewareParams)).toEqual(entity);
+            expect(filterExecutor.filterSubEntity(middlewareParams)).toEqual(entity);
         });
         test('is a repository entity and reality id filter off', () => {
             const context: PolarisContext = { headers: { realityId: 1 }, body: {} };
@@ -76,13 +78,13 @@ describe('filter resolver tests', () => {
                 args,
                 context,
                 info,
-                result,
+                result: result[0]._doc,
             };
-            const filterResolver = new FilterExecutor({
+            const filterExecutor = new FilterExecutor({
                 allowRealityMiddleware: false,
                 allowDataVersionMiddleware: true,
             });
-            expect(filterResolver.executeFilters(middlewareParams)).toEqual(result);
+            expect(filterExecutor.filterSubEntity(middlewareParams)).toEqual(result[0]._doc);
         });
     });
 });

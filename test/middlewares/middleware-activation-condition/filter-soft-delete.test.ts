@@ -7,29 +7,27 @@ describe('filter-soft-delete tests', () => {
     const args = {};
     const context: PolarisContext = { headers: {}, body: {} };
     const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
-    const result = {};
+    const root = undefined;
 
     test('deleted entity should not be returned', () => {
-        const root = { deleted: true };
         const middlewareParams: ResponseMiddlewareParams = {
             root,
             args,
             context,
             info,
-            result,
+            result: { deleted: true },
         };
-        expect(SoftDeleteFilter.shouldBeReturned(middlewareParams, true)).toBe(false);
+        expect(SoftDeleteFilter.shouldBeReturned(middlewareParams)).toBe(false);
     });
 
     test('not deleted entity should be returned', () => {
-        const root = { deleted: false };
         const middlewareParams: ResponseMiddlewareParams = {
             root,
             args,
             context,
             info,
-            result,
+            result: { deleted: false },
         };
-        expect(SoftDeleteFilter.shouldBeReturned(middlewareParams, true)).toBe(true);
+        expect(SoftDeleteFilter.shouldBeReturned(middlewareParams)).toBe(true);
     });
 });

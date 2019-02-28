@@ -10,13 +10,26 @@ import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from '.
 @injectable()
 export class PolarisMiddleware implements Middleware {
     @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: GraphqlLogger<PolarisContext>;
-    filterResolver: FilterExecutor;
+    filterExecutor: FilterExecutor;
 
     constructor(@inject(POLARIS_TYPES.MiddlewaresConfig) middlewaresConfig: MiddlewaresConfig) {
-        this.filterResolver = new FilterExecutor(middlewaresConfig.middlewaresConfiguration);
+        this.filterExecutor = new FilterExecutor(middlewaresConfig.middlewaresConfiguration);
     }
 
-    preResolve({ root, info, context, args }: RequestMiddlewareParams): void {
+    preResolve(params: RequestMiddlewareParams): void {
+        this.logStartOfResolve(params);
+    }
+
+    postResolve(params: ResponseMiddlewareParams): any {
+        const resolveResult =
+            params.info.operation.operation === 'query'
+                ? this.filterExecutor.executeFilters(params)
+                : params.result;
+        this.logEndOfResolve(params);
+        return resolveResult;
+    }
+
+    logStartOfResolve({ root, context, args, info }: RequestMiddlewareParams): void {
         const polarisLogProperties: GraphqlLogProperties = this.buildProps(context);
         if (!root) {
             const startMsg = `Resolver of ${
@@ -29,16 +42,7 @@ export class PolarisMiddleware implements Middleware {
         this.polarisLogger.debug(msg, { context, polarisLogProperties });
     }
 
-    postResolve(params: ResponseMiddlewareParams): any {
-        const resolveResult =
-            params.info.operation.operation === 'query'
-                ? this.filterResolver.executeFilters(params)
-                : params.result;
-        this.logEndOfResolve(params);
-        return resolveResult;
-    }
-
-    logEndOfResolve({ root, args, info, context, result }: ResponseMiddlewareParams) {
+    logEndOfResolve({ root, args, info, context, result }: ResponseMiddlewareParams): void {
         const polarisLogProperties: GraphqlLogProperties = this.buildProps(context);
         const msg = `Field fetching of ${info.fieldName} finished execution. Result is: ${result}`;
         this.polarisLogger.debug(msg, { context, polarisLogProperties });

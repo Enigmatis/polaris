@@ -3,22 +3,17 @@ import { ResponseMiddlewareParams } from '../middleware';
 import { MiddlewareCondition } from './filter-condition';
 
 class FilterRealities implements MiddlewareCondition {
-    shouldBeReturned(
-        { root, context, info, result }: ResponseMiddlewareParams,
-        subEntity: boolean,
-    ): boolean {
+    shouldBeReturned({ context, result }: ResponseMiddlewareParams, isSubEntity: boolean): boolean {
         const operationalRealityId: number = 0;
         const headers: PolarisRequestHeaders = context.headers;
         const realityIdHeaderExists: any = headers.realityId === 0 ? true : headers.realityId;
-        const isMatchingRealities: boolean = subEntity
-            ? root.realityId === headers.realityId
-            : result.realityId === headers.realityId;
+        const isMatchingRealities: boolean = result.realityId === headers.realityId;
         return (
             !realityIdHeaderExists ||
             isMatchingRealities ||
-            (subEntity &&
+            (isSubEntity &&
                 headers.includeLinkedOperation === true &&
-                root.realityId === operationalRealityId)
+                result.realityId === operationalRealityId)
         );
     }
 }

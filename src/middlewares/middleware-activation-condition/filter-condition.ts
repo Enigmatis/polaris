@@ -1,4 +1,4 @@
 import { ResponseMiddlewareParams } from '../middleware';
 export interface MiddlewareCondition {
-    shouldBeReturned(params: ResponseMiddlewareParams, subEntity?: boolean): boolean;
+    shouldBeReturned(params: ResponseMiddlewareParams, isSubEntity?: boolean): boolean;
 }
