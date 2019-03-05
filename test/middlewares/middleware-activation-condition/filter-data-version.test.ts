@@ -1,35 +1,68 @@
 import { GraphQLResolveInfo } from 'graphql';
 import { ResponseMiddlewareParams } from '../../../src/middlewares/middleware';
-import { SoftDeleteFilter } from '../../../src/middlewares/middleware-activation-condition/filter-soft-delete';
+import { DataVersionFilter } from '../../../src/middlewares/middleware-activation-condition/filter-data-version';
 import { PolarisContext } from '../../../src/server/polaris-context';
 
-describe('filter-soft-delete tests', () => {
-    const args = {};
-    const context: PolarisContext = { headers: {}, body: {} };
-    const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
-    const result = '';
+const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
+const args = {};
 
-    test('deleted entity should not be returned', () => {
-        const root = { deleted: true };
+describe('data version tests', () => {
+    test('data version header doesnt exist', () => {
+        const result = { dataVersion: 0 };
+        const context: PolarisContext = { headers: {}, body: {} };
         const middlewareParams: ResponseMiddlewareParams = {
-            root,
+            root: undefined,
             args,
             context,
             info,
             result,
         };
-        expect(SoftDeleteFilter.shouldBeReturned(middlewareParams)).toBe(false);
+        expect(DataVersionFilter.shouldBeReturned(middlewareParams, false)).toBe(true);
     });
-
-    test('not deleted entity should be returned', () => {
-        const root = { deleted: false };
-        const middlewareParams: ResponseMiddlewareParams = {
-            root,
-            args,
-            context,
-            info,
-            result,
-        };
-        expect(SoftDeleteFilter.shouldBeReturned(middlewareParams)).toBe(true);
+    describe('data version header exist', () => {
+        test('entity data version is bigger than headers data version', () => {
+            const context: PolarisContext = { headers: { dataVersion: 1 }, body: {} };
+            const middlewareParams: ResponseMiddlewareParams = {
+                root: undefined,
+                args,
+                context,
+                info,
+                result: { dataVersion: 2 },
+            };
+            expect(DataVersionFilter.shouldBeReturned(middlewareParams, false)).toBe(true);
+        });
+        test('entity data version is equal to headers data version', () => {
+            const context: PolarisContext = { headers: { dataVersion: 1 }, body: {} };
+            const middlewareParams: ResponseMiddlewareParams = {
+                root: undefined,
+                args,
+                context,
+                info,
+                result: { dataVersion: 1 },
+            };
+            expect(DataVersionFilter.shouldBeReturned(middlewareParams, false)).toBe(false);
+        });
+        test('entity data version is smaller than headers data version', () => {
+            const context: PolarisContext = { headers: { dataVersion: 2 }, body: {} };
+            const middlewareParams: ResponseMiddlewareParams = {
+                root: undefined,
+                args,
+                context,
+                info,
+                result: { dataVersion: 1 },
+            };
+            expect(DataVersionFilter.shouldBeReturned(middlewareParams, false)).toBe(false);
+        });
+        test('entity is sub entity', () => {
+            const context: PolarisContext = { headers: { dataVersion: 2 }, body: {} };
+            const middlewareParams: ResponseMiddlewareParams = {
+                root: undefined,
+                args,
+                context,
+                info,
+                result: { dataVersion: 1 },
+            };
+            expect(DataVersionFilter.shouldBeReturned(middlewareParams, true)).toBe(true);
+        });
     });
 });

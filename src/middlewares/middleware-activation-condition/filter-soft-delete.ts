@@ -2,8 +2,8 @@ import { ResponseMiddlewareParams } from '../middleware';
 import { MiddlewareCondition } from './filter-condition';
 
 class FilterSoftDelete implements MiddlewareCondition {
-    shouldBeReturned({ root, context, info }: ResponseMiddlewareParams): boolean {
-        return !root.deleted;
+    shouldBeReturned({ result }: ResponseMiddlewareParams): boolean {
+        return !result.deleted;
     }
 }
 

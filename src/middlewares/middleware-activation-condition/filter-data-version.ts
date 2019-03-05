@@ -1,10 +1,10 @@
 import { ResponseMiddlewareParams } from '../middleware';
-import { isSubEntity, MiddlewareCondition } from './filter-condition';
+import { MiddlewareCondition } from './filter-condition';
 
 class FilterDataVersion implements MiddlewareCondition {
-    shouldBeReturned({ root, context, info }: ResponseMiddlewareParams): boolean {
+    shouldBeReturned({ context, result }: ResponseMiddlewareParams, isSubEntity: boolean): boolean {
         const dataVersionHeader = context.headers.dataVersion;
-        return !dataVersionHeader || (!isSubEntity(info) && root.dataVersion > dataVersionHeader);
+        return !dataVersionHeader || isSubEntity || result.dataVersion > dataVersionHeader;
     }
 }
 

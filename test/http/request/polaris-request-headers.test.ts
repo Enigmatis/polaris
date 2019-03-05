@@ -109,17 +109,17 @@ describe('polaris-request-headers tests', () => {
     });
 
     describe('reality id header', () => {
-        test('string header', () => {
-            const headers = { 'reality-id': 'wow' };
+        test('number header', () => {
+            const headers = { 'reality-id': 55 };
             const polarisRequestHeaders = getHeaders(headers);
             expect(polarisRequestHeaders.realityId).toBe(headers['reality-id']);
         });
 
-        test('not string header', () => {
-            const headers = { 'reality-id': 55 };
+        test('not number header', () => {
+            const headers = { 'reality-id': 'wow' };
             expect(() => {
                 getHeaders(headers);
-            }).toThrowError('must be a string');
+            }).toThrowError('must be a number');
         });
     });
 
