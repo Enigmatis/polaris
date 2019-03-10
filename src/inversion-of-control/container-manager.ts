@@ -13,3 +13,4 @@ polarisContainer.bind(POLARIS_TYPES.GraphQLServer).to(PolarisGraphQLServer);
 polarisContainer.bind(POLARIS_TYPES.SchemaCreator).to(PolarisSchemaCreator);
 polarisContainer.bind(POLARIS_TYPES.GraphqlLogger).to(PolarisGraphqlLogger);
 polarisContainer.bind(POLARIS_TYPES.Middleware).to(PolarisMiddleware);
+// polarisContainer.bind(POLARIS_TYPES.Middleware).to(IrrelevantEntitiesMiddleware);

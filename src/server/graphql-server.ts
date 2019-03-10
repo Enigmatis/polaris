@@ -1,4 +1,4 @@
-import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
+import { PolarisLogger } from '@enigmatis/polaris-logs';
 import { ApolloServer, Config, makeExecutableSchema } from 'apollo-server-koa';
 import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
@@ -7,6 +7,7 @@ import * as koaBody from 'koa-bodyparser';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
 import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
+import { IrrelevantEntitiesContainer } from '../middlewares/irrelevant-entities';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
@@ -71,7 +72,12 @@ export class PolarisGraphQLServer implements GraphQLServer {
                     this.polarisLogger.info(
                         `Finished response, answer is ${JSON.stringify(response)}`,
                     );
+
+                    response.extensions = {
+                        irrelevantEntities: IrrelevantEntitiesContainer.getIrrelevant(),
+                    };
                 }
+
                 return response;
             },
         };
