@@ -1,6 +1,6 @@
-import { PolarisRequestHeaders } from '../http/request/polaris-request-headers';
+import { PolarisBaseContext, PolarisRequestHeaders } from '@enigmatis/utills';
 
-export interface PolarisContext {
+export interface PolarisContext extends PolarisBaseContext {
     headers: PolarisRequestHeaders;
     body: any;
 }

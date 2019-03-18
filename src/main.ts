@@ -1,3 +1,5 @@
+import { PolarisContext } from './server/polaris-context';
+
 export {
     ResponseMiddlewareParams,
     RequestMiddlewareParams,
@@ -21,3 +23,4 @@ export { CommonEntityInterface } from './schema/common/entities/common-entity-in
 export { PolarisSchemaCreator, SchemaCreator } from './schema/utils/schema-creator';
 export { GraphQLServer, PolarisGraphQLServer } from './server/graphql-server';
 export { MiddlewaresConfiguration } from './middlewares/middleware';
+export { PolarisContext } from './server/polaris-context';
