@@ -1,5 +1,4 @@
-import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
-import { ApolloServer, Config, makeExecutableSchema } from 'apollo-server-koa';
+import { ApolloError, ApolloServer, Config, makeExecutableSchema } from 'apollo-server-koa';
 import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
@@ -7,6 +6,7 @@ import * as koaBody from 'koa-bodyparser';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
 import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
+import { PolarisGraphqlLogger } from '../logging/polaris-graphql-logger';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
@@ -22,7 +22,7 @@ export interface GraphQLServer {
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
-    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: PolarisLogger;
+    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: PolarisGraphqlLogger;
     private server: ApolloServer;
     private polarisProperties: PolarisProperties;
 
@@ -53,21 +53,25 @@ export class PolarisGraphQLServer implements GraphQLServer {
                         body: ctx.request.body,
                     };
                 } catch (e) {
-                    this.polarisLogger.error('Headers error', { throwable: e });
+                    this.polarisLogger.error('Headers error', {
+                        polarisLogProperties: { throwable: e },
+                    });
                     throw new Error('Unable to format headers');
                 }
             },
             formatError: (error: any) => {
-                if (error.extensions && error.extensions.code === 'GRAPHQL_VALIDATION_FAILED') {
-                    return error;
+                this.polarisLogger.error('Apollo server error', {
+                    polarisLogProperties: { throwable: error },
+                });
+                if (error instanceof ApolloError || error.name === 'GraphQLError') {
+                    return { message: error.message, code: error.extensions.code };
                 } else {
-                    this.polarisLogger.error('Apollo server error', { throwable: error });
                     return new Error('Internal server error');
                 }
             },
 
             formatResponse: (response: any) => {
-                if (!response.data.__schema && !response.data.__type) {
+                if (response.data && !response.data.__schema && !response.data.__type) {
                     this.polarisLogger.info(
                         `Finished response, answer is ${JSON.stringify(response)}`,
                     );

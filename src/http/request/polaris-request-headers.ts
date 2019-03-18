@@ -1,3 +1,4 @@
+import { PolarisRequestHeaders } from '@enigmatis/utills';
 import * as joi from 'joi';
 
 const headersSchema = joi.object().keys({
@@ -12,19 +13,6 @@ const headersSchema = joi.object().keys({
     'requesting-sys': joi.string(),
     'requesting-sys-name': joi.string(),
 });
-
-export interface PolarisRequestHeaders {
-    dataVersion?: number;
-    isSnapshot?: boolean;
-    includeLinkedOperation?: boolean;
-    snapshotPageSize?: number;
-    requestId?: string;
-    upn?: string;
-    eventKind?: string;
-    realityId?: number;
-    requestingSystemId?: string;
-    requestingSystemName?: string;
-}
 
 export const getHeaders = (candidate: object): PolarisRequestHeaders => {
     const { error, value: validatedHeaders } = joi.validate(candidate, headersSchema, {
