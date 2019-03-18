@@ -7,7 +7,6 @@ import * as koaBody from 'koa-bodyparser';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
 import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
-import { IrrelevantEntitiesContainer } from '../middlewares/irrelevant-entities';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
@@ -74,7 +73,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                     );
 
                     response.extensions = {
-                        irrelevantEntities: IrrelevantEntitiesContainer.getIrrelevant(),
+
                     };
                 }
 
