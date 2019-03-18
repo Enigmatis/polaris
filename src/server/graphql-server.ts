@@ -72,9 +72,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                         `Finished response, answer is ${JSON.stringify(response)}`,
                     );
 
-                    response.extensions = {
-
-                    };
+                    response.extensions = {};
                 }
 
                 return response;

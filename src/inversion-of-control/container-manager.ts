@@ -2,7 +2,7 @@ import { PolarisLogger } from '@enigmatis/polaris-logs';
 import { Container, decorate, injectable } from 'inversify';
 import 'reflect-metadata';
 import { PolarisGraphqlLogger } from '../logging/polaris-graphql-logger';
-import {IrrelevantEntitiesMiddleware} from "../middlewares/irrelevant-entities-middleware";
+import { IrrelevantEntitiesMiddleware } from '../middlewares/irrelevant-entities-middleware';
 import { PolarisMiddleware } from '../middlewares/polaris-middleware';
 import { PolarisSchemaCreator } from '../schema/utils/schema-creator';
 import { PolarisGraphQLServer } from '../server/graphql-server';
