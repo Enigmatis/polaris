@@ -1,10 +1,10 @@
-import { ApolloServer, makeExecutableSchema } from 'apollo-server-koa';
+import { ApolloServer } from 'apollo-server-koa';
+import { GraphQLSchema } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
 import 'reflect-metadata';
-import { LoggerConfig, PolarisServerConfig } from '../../src/common/injectable-interfaces';
+import { PolarisServerConfig } from '../../src/common/injectable-interfaces';
 import { PolarisMiddleware } from '../../src/middlewares/polaris-middleware';
 import { createMiddleware } from '../../src/middlewares/polaris-middleware-creator';
-import { SchemaCreator } from '../../src/schema/utils/schema-creator';
 import { PolarisGraphQLServer } from '../../src/server/graphql-server';
 
 const apolloServerMock: { [T in keyof ApolloServer]: any } = {
@@ -22,38 +22,19 @@ jest.mock('graphql-middleware', () => ({
 jest.mock('../../src/middlewares/polaris-middleware-creator', () => ({
     createMiddleware: jest.fn(),
 }));
+jest.mock('../../src/schema/polaris-schema-creator', () => ({
+    makeExecutablePolarisSchema: jest.fn(),
+}));
 
 describe('graphql-server tests', () => {
-    const schemaCreatorMock: { [T in keyof SchemaCreator]: any } = {
-        generateSchema: jest.fn(() => ({ def: 'definition', resolvers: jest.fn() })),
-    } as any;
+    const schema: { [T in keyof GraphQLSchema]: any } = {} as any;
     const polarisServerConfigMock: { [T in keyof PolarisServerConfig]: any } = {
         polarisProperties: jest.fn(),
     } as any;
     const polarisMiddlewareMock: { [T in keyof PolarisMiddleware]: any } = {} as any;
 
-    test('creating new polaris server - with arguments - generate schema have been called', () => {
-        const server = new PolarisGraphQLServer(schemaCreatorMock, polarisServerConfigMock, [
-            polarisMiddlewareMock,
-        ]);
-
-        expect(schemaCreatorMock.generateSchema).toHaveBeenCalled();
-    });
-
-    test('creating new polaris server - with arguments - make executable schema have been called with generated typeDefs', () => {
-        const server = new PolarisGraphQLServer(schemaCreatorMock, polarisServerConfigMock, [
-            polarisMiddlewareMock,
-        ]);
-
-        expect(makeExecutableSchema).toHaveBeenCalledWith(
-            expect.objectContaining({
-                typeDefs: schemaCreatorMock.generateSchema().def,
-            }),
-        );
-    });
-
     test('creating new polaris server - with arguments - graphql apply middleware have been called', () => {
-        const server = new PolarisGraphQLServer(schemaCreatorMock, polarisServerConfigMock, [
+        const server = new PolarisGraphQLServer(schema, polarisServerConfigMock, [
             polarisMiddlewareMock,
         ]);
 
@@ -62,17 +43,13 @@ describe('graphql-server tests', () => {
 
     test('creating new polaris server - with arguments - create middleware have been called number of times as middlewares provided', () => {
         const middlewares = [polarisMiddlewareMock, polarisMiddlewareMock, polarisMiddlewareMock];
-        const server = new PolarisGraphQLServer(
-            schemaCreatorMock,
-            polarisServerConfigMock,
-            middlewares,
-        );
+        const server = new PolarisGraphQLServer(schema, polarisServerConfigMock, middlewares);
 
         expect(createMiddleware).toHaveBeenCalledTimes(middlewares.length);
     });
 
     test('creating new polaris server - with arguments - apollo server constructor have been called', () => {
-        const server = new PolarisGraphQLServer(schemaCreatorMock, polarisServerConfigMock, [
+        const server = new PolarisGraphQLServer(schema, polarisServerConfigMock, [
             polarisMiddlewareMock,
         ]);
 
@@ -84,11 +61,9 @@ describe('graphql-server tests', () => {
             polarisProperties: { endpoint: 'test' },
         } as any;
 
-        const server = new PolarisGraphQLServer(
-            schemaCreatorMock,
-            polarisServerConfigMockWithEndpoint,
-            [polarisMiddlewareMock],
-        );
+        const server = new PolarisGraphQLServer(schema, polarisServerConfigMockWithEndpoint, [
+            polarisMiddlewareMock,
+        ]);
         expect(apolloServerMock.applyMiddleware).toHaveBeenCalledWith(
             expect.objectContaining({
                 path: polarisServerConfigMockWithEndpoint.polarisProperties.endpoint,

@@ -32,10 +32,10 @@ The ``schema.js`` file will look like this:
 const {merge} = require('lodash');
 
 // Get the Query Root object
-const Query = require('./entities/query/rootQuery');
+const Query = require(types);
 
 // Get the Mutation Root object
-const Mutation = require('./entities/mutation/rootMutation');
+const Mutation = require(types);
 
 // Create the schema definition
 const SchemaDefinition = `schema {query: Query, mutation: Mutation}`;

@@ -1,5 +1,6 @@
-import { LoggerConfiguration, PolarisLogger } from '@enigmatis/polaris-logs';
-import { ApolloServer, Config, makeExecutableSchema } from 'apollo-server-koa';
+import { PolarisLogger } from '@enigmatis/polaris-logs';
+import { ApolloServer, Config } from 'apollo-server-koa';
+import { GraphQLSchema } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
@@ -10,7 +11,6 @@ import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
-import { SchemaCreator } from '../schema/utils/schema-creator';
 import { PolarisContext } from './polaris-context';
 
 const app = new Koa();
@@ -27,19 +27,12 @@ export class PolarisGraphQLServer implements GraphQLServer {
     private polarisProperties: PolarisProperties;
 
     constructor(
-        @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
+        @inject(POLARIS_TYPES.GraphQLSchema) schema: GraphQLSchema,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
     ) {
-        const schema = creator.generateSchema();
-        const executableSchemaDefinition: { typeDefs: any; resolvers: any } = {
-            typeDefs: schema.def,
-            resolvers: schema.resolvers,
-        };
-        const executableSchema = makeExecutableSchema(executableSchemaDefinition);
-
         const executableSchemaWithMiddlewares = applyMiddleware(
-            executableSchema,
+            schema,
             ...(middlewares.map(createMiddleware) as any),
         );
         this.polarisProperties = propertiesConfig.polarisProperties;

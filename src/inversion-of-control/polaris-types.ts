@@ -1,17 +1,14 @@
 import {
-    InjectableResolver,
-    InjectableType,
     LoggerConfig,
     MiddlewaresConfig,
     PolarisServerConfig,
 } from '../common/injectable-interfaces';
 import { PolarisGraphqlLogger } from '../logging/polaris-graphql-logger';
-import { SchemaCreator } from '../schema/utils/schema-creator';
 import { GraphQLServer } from '../server/graphql-server';
 
 export const POLARIS_TYPES = {
     GraphQLServer: Symbol('GraphQLServer'),
-    SchemaCreator: Symbol('SchemaCreator'),
+    GraphQLSchema: Symbol('GraphQLSchema'),
     GraphqlLogger: Symbol('PolarisGraphqlLogger'),
     PolarisHeadersFactory: Symbol('PolarisHeadersFactory'),
     Middleware: Symbol('Middleware'),

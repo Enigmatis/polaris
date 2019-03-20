@@ -5,8 +5,6 @@ export {
 } from './middlewares/middleware';
 export { PolarisLogger } from '@enigmatis/polaris-logs';
 export {
-    InjectableResolver,
-    InjectableType,
     LoggerConfig,
     MiddlewaresConfig,
     PolarisServerConfig,
@@ -15,9 +13,7 @@ export { polarisContainer } from './inversion-of-control/container-manager';
 export { POLARIS_TYPES } from './inversion-of-control/polaris-types';
 export { PolarisGraphqlLogger } from './logging/polaris-graphql-logger';
 export { PolarisProperties } from './properties/polaris-properties';
-export { CommonEntities } from './schema/common/common-entities';
 export { RepositoryEntity } from './dal/entities/repository-entity';
-export { CommonEntityInterface } from './schema/common/entities/common-entity-interface';
-export { PolarisSchemaCreator, SchemaCreator } from './schema/utils/schema-creator';
 export { GraphQLServer, PolarisGraphQLServer } from './server/graphql-server';
 export { MiddlewaresConfiguration } from './middlewares/middleware';
+export { makeExecutablePolarisSchema } from './schema/polaris-schema-creator';
