@@ -1,4 +1,8 @@
-import { InjectableResolver, InjectableType } from '../../src/common/injectable-interfaces';
+import {
+    InjectableResolver,
+    InjectableType,
+    PolarisServerConfig,
+} from '../../src/common/injectable-interfaces';
 import { PolarisSchemaCreator } from '../../src/schema/utils/schema-creator';
 
 describe('schema-creator tests', () => {
@@ -16,7 +20,11 @@ describe('schema-creator tests', () => {
             { resolver: jest.fn(() => ({ fourth: jest.fn() })) },
         ];
 
-        const schemaCreator = new PolarisSchemaCreator(types, resolvers);
+        const properties: any = {
+            polarisProperties: { includeSubscription: false },
+        };
+
+        const schemaCreator = new PolarisSchemaCreator(types, resolvers, properties);
         const schema = schemaCreator.generateSchema();
 
         expect(schema.def).toContain('schema {query: Query, mutation: Mutation}');
