@@ -5,7 +5,7 @@ import { PolarisContext } from '../../../src/server/polaris-context';
 
 describe('filter-soft-delete tests', () => {
     const args = {};
-    const context: PolarisContext = { headers: {}, body: {} };
+    const context: PolarisContext = { headers: {}, body: {}, extensions: {} };
     const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
     const root = undefined;
 

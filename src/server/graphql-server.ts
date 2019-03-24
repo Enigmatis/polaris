@@ -11,6 +11,7 @@ import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
 import { SchemaCreator } from '../schema/utils/schema-creator';
+import { ExtensionContextBuilder } from './extension-context-builder';
 import { PolarisContext } from './polaris-context';
 
 const app = new Koa();
@@ -36,6 +37,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             typeDefs: schema.def,
             resolvers: schema.resolvers,
         };
+
         const executableSchema = makeExecutableSchema(executableSchemaDefinition);
 
         const executableSchemaWithMiddlewares = applyMiddleware(
@@ -45,12 +47,14 @@ export class PolarisGraphQLServer implements GraphQLServer {
         this.polarisProperties = propertiesConfig.polarisProperties;
         const config: Config = {
             schema: executableSchemaWithMiddlewares,
+            extensions: [() => new ExtensionContextBuilder()],
             context: ({ ctx }: { ctx: Koa.Context }): PolarisContext => {
                 try {
                     const headers = getHeaders(ctx.request.headers);
                     return {
                         headers,
                         body: ctx.request.body,
+                        extensions: {},
                     };
                 } catch (e) {
                     this.polarisLogger.error('Headers error', { throwable: e });
@@ -66,13 +70,11 @@ export class PolarisGraphQLServer implements GraphQLServer {
                 }
             },
 
-            formatResponse: (response: any) => {
+            formatResponse: (response: any, { ctx }: { ctx: Koa.Context }) => {
                 if (!response.data.__schema && !response.data.__type) {
                     this.polarisLogger.info(
                         `Finished response, answer is ${JSON.stringify(response)}`,
                     );
-
-                    response.extensions = {};
                 }
 
                 return response;

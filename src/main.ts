@@ -17,6 +17,7 @@ export { PolarisGraphqlLogger } from './logging/polaris-graphql-logger';
 export { PolarisProperties } from './properties/polaris-properties';
 export { CommonEntities } from './schema/common/common-entities';
 export { RepositoryEntity } from './dal/entities/repository-entity';
+export { PolarisContext } from './server/polaris-context';
 export { CommonEntityInterface } from './schema/common/entities/common-entity-interface';
 export { PolarisSchemaCreator, SchemaCreator } from './schema/utils/schema-creator';
 export { GraphQLServer, PolarisGraphQLServer } from './server/graphql-server';
