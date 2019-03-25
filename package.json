@@ -65,13 +65,12 @@
   "homepage": "https://github.com/yarinvak/polaris#readme",
   "dependencies": {
     "@enigmatis/polaris-logs": "^2.2.3",
-    "@enigmatis/utills": "^1.0.1",
+    "@enigmatis/utills": "^1.2.0",
     "@types/graphql": "^14.0.5",
     "@types/graphql-fields": "^1.3.0",
     "@types/koa-router": "^7.0.39",
     "@types/node": "10.12.12",
     "apollo-server-core": "^2.3.3",
-    "apollo-server-koa": "^2.3.3",
     "graphql": "^14.1.1",
     "graphql-extensions": "^0.5.7",
     "graphql-fields": "^2.0.1",
@@ -92,6 +91,7 @@
     "@types/cors": "^2.8.4",
     "@types/jest": "^23.3.13",
     "@types/joi": "^14.3.1",
+    "apollo-server-koa": "^2.3.3",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.3.1",
     "jest": "^23.6.0",
@@ -108,6 +108,9 @@
     "tslint-plugin-prettier": "^2.0.1",
     "typedoc": "^0.14.2",
     "typescript": "^3.2.4"
+  },
+  "peerDependencies": {
+    "apollo-server-koa": ">=2.3.3 <3"
   },
   "config": {
     "commitizen": {

@@ -6,6 +6,8 @@ const schema = joi.object().keys({
 });
 
 export function isContainsIrrelevant(candidate: object): boolean {
-    if(!candidate){return false;}
+    if (!candidate) {
+        return false;
+    }
     return !joi.validate(candidate, schema, { stripUnknown: true }).error;
 }

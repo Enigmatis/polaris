@@ -1,3 +1,5 @@
+import { PolarisContext } from './server/polaris-context';
+
 export {
     ResponseMiddlewareParams,
     RequestMiddlewareParams,

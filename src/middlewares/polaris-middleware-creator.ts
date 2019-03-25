@@ -1,8 +1,9 @@
+import { PolarisBaseContext } from '@enigmatis/utills';
 import { GraphQLResolveInfo } from 'graphql';
 import { PolarisContext } from '../server/polaris-context';
 import { Middleware } from './middleware';
 
-export const createMiddleware = <TContext extends PolarisContext = PolarisContext>(
+export const createMiddleware = <TContext extends PolarisBaseContext = PolarisContext>(
     middleware: Middleware<TContext>,
 ) => {
     return async (
