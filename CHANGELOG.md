@@ -1,3 +1,12 @@
+## [2.2.1](https://github.com/Enigmatis/polaris/compare/v2.2.0...v2.2.1) (2019-03-05)
+
+
+### Bug Fixes
+
+* **fix introspection:** fix introspection schema ([c7ef9bb](https://github.com/Enigmatis/polaris/commit/c7ef9bb))
+* change middleware to run up to down ([39202a9](https://github.com/Enigmatis/polaris/commit/39202a9))
+* lint fix ([a085d68](https://github.com/Enigmatis/polaris/commit/a085d68))
+
 # [2.2.0](https://github.com/Enigmatis/polaris/compare/v2.1.0...v2.2.0) (2019-02-21)
 
 
