@@ -18,29 +18,33 @@ export class FilterExecutor {
 
     filterRootEntities(params: ResponseMiddlewareParams): any[] {
         const entities: any[] = params.result;
-        for (let i = 0; i < entities.length; i++) {
-            params.result = entities[i]._doc;
-            if (this.shouldFilterEntity(params, false)) {
-                entities.splice(i, 1);
+        const newEntities: any[] = [];
+        for (const entity of entities) {
+            params.result = entity._doc;
+            if (isRepositoryEntity(params.result)) {
+                if (!this.shouldFilterEntity(params, false)) {
+                    newEntities.push(entity._doc);
+                } else {
+                    newEntities.push(entity);
+                }
             }
         }
-        return entities;
+        return newEntities;
     }
 
     filterSubEntity(params: ResponseMiddlewareParams): any {
-        return this.shouldFilterEntity(params, true) ? null : params.result;
+        return isRepositoryEntity(params.result) && this.shouldFilterEntity(params, true)
+            ? null
+            : params.result;
     }
 
     shouldFilterEntity(params: ResponseMiddlewareParams, isSubEntity: boolean): boolean {
-        return (
-            isRepositoryEntity(params.result) &&
-            !(
-                SoftDeleteFilter.shouldBeReturned(params) &&
-                (!this.middlewaresConfig.allowDataVersionMiddleware ||
-                    DataVersionFilter.shouldBeReturned(params, isSubEntity)) &&
-                (!this.middlewaresConfig.allowRealityMiddleware ||
-                    RealityIdFilter.shouldBeReturned(params, isSubEntity))
-            )
+        return !(
+            SoftDeleteFilter.shouldBeReturned(params) &&
+            (!this.middlewaresConfig.allowDataVersionMiddleware ||
+                DataVersionFilter.shouldBeReturned(params, isSubEntity)) &&
+            (!this.middlewaresConfig.allowRealityMiddleware ||
+                RealityIdFilter.shouldBeReturned(params, isSubEntity))
         );
     }
 }

@@ -1,11 +1,11 @@
 import * as joi from 'joi';
 export interface RepositoryEntity {
-    id: string;
+    _id: object;
     deleted: boolean;
     createdBy?: string;
     lastUpdatedBy?: string;
-    creationDate: string;
-    lastUpdateDate: string;
+    creationDate: object;
+    lastUpdateDate: object;
     dataVersion: number;
     realityId: number;
     classification?: string;
