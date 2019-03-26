@@ -1,3 +1,12 @@
+# [2.3.0](https://github.com/Enigmatis/polaris/compare/v2.2.1...v2.3.0) (2019-03-26)
+
+
+### Features
+
+* **mongo-driver:** support new mongo driver ([09ca797](https://github.com/Enigmatis/polaris/commit/09ca797))
+* **mongo-driver:** support new mongo driver ([8795c22](https://github.com/Enigmatis/polaris/commit/8795c22))
+* **subscription:** support subscription ([3a9d5d7](https://github.com/Enigmatis/polaris/commit/3a9d5d7))
+
 ## [2.2.1](https://github.com/Enigmatis/polaris/compare/v2.2.0...v2.2.1) (2019-03-05)
 
 
