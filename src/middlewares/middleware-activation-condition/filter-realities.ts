@@ -1,4 +1,4 @@
-import { PolarisRequestHeaders } from '../../http/request/polaris-request-headers';
+import { PolarisRequestHeaders } from '@enigmatis/utills';
 import { ResponseMiddlewareParams } from '../middleware';
 import { MiddlewareCondition } from './filter-condition';
 
