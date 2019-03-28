@@ -136,4 +136,26 @@ describe('graphql-server tests', () => {
         );
         expect(app.listen).toHaveBeenCalled();
     });
+
+    test('on start - with custom app - apollo server apply middleware have been called with custom app', () => {
+        const polarisServerConfigMockWithEndpoint: { [T in keyof PolarisServerConfig]: any } = {
+            polarisProperties: { endpoint: 'test' },
+        } as any;
+
+        const app = {
+            listen: jest.fn(),
+        } as any;
+
+        const server = new PolarisGraphQLServer(
+            schemaCreatorMock,
+            polarisServerConfigMockWithEndpoint,
+            [polarisMiddlewareMock],
+            polarisLog,
+        );
+        server.start(app);
+        expect(apolloServerMock.applyMiddleware).toHaveBeenCalledWith(
+            expect.objectContaining({ app }),
+        );
+        expect(app.listen).toHaveBeenCalled();
+    });
 });
