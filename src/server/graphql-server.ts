@@ -1,6 +1,7 @@
 import { ApolloError, ApolloServer, Config, makeExecutableSchema, PubSub } from 'apollo-server-koa';
 import { applyMiddleware } from 'graphql-middleware';
 import { IResolvers, ITypeDefinitions } from 'graphql-tools';
+import * as http from 'http';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
@@ -14,9 +15,6 @@ import { PolarisProperties } from '../properties/polaris-properties';
 import { SchemaCreator } from '../schema/utils/schema-creator';
 import { PolarisContext } from './polaris-context';
 
-const app = new Koa();
-app.use(koaBody());
-
 export interface GraphQLServer {
     start(): void;
 }
@@ -25,15 +23,17 @@ export type contextCreator = (ctx: Koa.Context) => object;
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
-    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: PolarisGraphqlLogger;
+    private app: Koa;
     private server: ApolloServer;
     private polarisProperties: PolarisProperties;
     private customContexts: contextCreator[] = [];
+    private httpServer?: http.Server;
 
     constructor(
         @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
+        @inject(POLARIS_TYPES.GraphqlLogger) private polarisLogger: PolarisGraphqlLogger,
     ) {
         const schema = creator.generateSchema();
         const executableSchemaDefinition: { typeDefs: ITypeDefinitions; resolvers: IResolvers } = {
@@ -55,16 +55,18 @@ export class PolarisGraphQLServer implements GraphQLServer {
             formatResponse: (response: any) => this.formatResponse(response),
         };
         this.server = new ApolloServer(config);
+        this.app = new Koa();
+        this.app.use(koaBody());
+    }
+
+    start(app = this.app) {
         if (this.polarisProperties.endpoint) {
             this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
         } else {
             this.server.applyMiddleware({ app });
         }
-    }
-
-    start() {
         const port = this.polarisProperties.port;
-        const httpServer = app.listen(port, () => {
+        this.httpServer = app.listen(port, () => {
             this.polarisLogger.info(
                 `🚀 Server ready at http://localhost:${port}${this.server.graphqlPath}`,
             );
@@ -73,7 +75,13 @@ export class PolarisGraphQLServer implements GraphQLServer {
             );
         });
         if (this.polarisProperties.includeSubscription) {
-            this.server.installSubscriptionHandlers(httpServer);
+            this.server.installSubscriptionHandlers(this.httpServer);
+        }
+    }
+
+    stop() {
+        if (this.httpServer) {
+            this.httpServer.close();
         }
     }
 
