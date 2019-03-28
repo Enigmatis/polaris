@@ -14,9 +14,6 @@ import { PolarisProperties } from '../properties/polaris-properties';
 import { SchemaCreator } from '../schema/utils/schema-creator';
 import { PolarisContext } from './polaris-context';
 
-const app = new Koa();
-app.use(koaBody());
-
 export interface GraphQLServer {
     start(): void;
 }
@@ -25,7 +22,7 @@ export type contextCreator = (ctx: Koa.Context) => object;
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
-    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: PolarisGraphqlLogger;
+    private app: Koa;
     private server: ApolloServer;
     private polarisProperties: PolarisProperties;
     private customContexts: contextCreator[] = [];
@@ -34,6 +31,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
+        @inject(POLARIS_TYPES.GraphqlLogger) private polarisLogger: PolarisGraphqlLogger,
     ) {
         const schema = creator.generateSchema();
         const executableSchemaDefinition: { typeDefs: ITypeDefinitions; resolvers: IResolvers } = {
@@ -55,14 +53,16 @@ export class PolarisGraphQLServer implements GraphQLServer {
             formatResponse: (response: any) => this.formatResponse(response),
         };
         this.server = new ApolloServer(config);
+        this.app = new Koa();
+        this.app.use(koaBody());
+    }
+
+    start(app = this.app) {
         if (this.polarisProperties.endpoint) {
             this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
         } else {
             this.server.applyMiddleware({ app });
         }
-    }
-
-    start() {
         const port = this.polarisProperties.port;
         const httpServer = app.listen(port, () => {
             this.polarisLogger.info(
