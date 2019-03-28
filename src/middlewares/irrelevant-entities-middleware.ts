@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { isContainsIrrelevant } from '../common/query-irr-result';
+import { isContainsIrrelevant } from '../common/query-irrelevant-result';
 import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from './middleware';
 
 @injectable()
@@ -13,7 +13,7 @@ export class IrrelevantEntitiesMiddleware implements Middleware {
             return;
         }
         if (isContainsIrrelevant(params.result)) {
-            params.context.extensions.irrelevantEntities = params.result.irr;
+            params.context.irrelevantEntities = params.result.irr;
             return params.result.result;
         }
         return params.result;

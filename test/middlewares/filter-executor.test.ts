@@ -26,7 +26,7 @@ describe('filter resolver tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 3 },
                 body: {},
-                extensions: {},
+                irrelevantEntities: [],
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -42,7 +42,7 @@ describe('filter resolver tests', () => {
             expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(result);
         });
         test('reality id filter off', () => {
-            const context: PolarisContext = { headers: { realityId: 1 }, body: {}, extensions: {} };
+            const context: PolarisContext = { headers: { realityId: 1 }, body: {}, irrelevantEntities: [] };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
                 args,
@@ -61,7 +61,7 @@ describe('filter resolver tests', () => {
         const root: any = { realityId: 0, dataVersion: 1 };
         test('not a repository entity', () => {
             const entity = 'this is not a repository entity';
-            const context: PolarisContext = { headers: { realityId: 1 }, body: {}, extensions: {} };
+            const context: PolarisContext = { headers: { realityId: 1 }, body: {}, irrelevantEntities: [] };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
                 args,
@@ -76,7 +76,7 @@ describe('filter resolver tests', () => {
             expect(filterExecutor.filterSubEntity(middlewareParams)).toEqual(entity);
         });
         test('is a repository entity and reality id filter off', () => {
-            const context: PolarisContext = { headers: { realityId: 1 }, body: {}, extensions: {} };
+            const context: PolarisContext = { headers: { realityId: 1 }, body: {}, irrelevantEntities: [] };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
                 args,

@@ -1,0 +1,13 @@
+import * as joi from 'joi';
+
+const irrelevantEntitiesResponseSchema = joi.object().keys({
+    result: joi.array().items(joi.any()),
+    irrelevantEntities: joi.array().items(joi.any()),
+});
+
+export function isContainsIrrelevant(candidate: object): boolean {
+    if (!candidate) {
+        return false;
+    }
+    return !joi.validate(candidate, irrelevantEntitiesResponseSchema, { stripUnknown: true }).error;
+}

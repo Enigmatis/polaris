@@ -9,7 +9,7 @@ const args = {};
 describe('data version tests', () => {
     test('data version header doesnt exist', () => {
         const result = { dataVersion: 0 };
-        const context: PolarisContext = { headers: {}, body: {}, extensions: {} };
+        const context: PolarisContext = { headers: {}, body: {}, irrelevantEntities: [] };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
             args,
@@ -24,7 +24,7 @@ describe('data version tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 1 },
                 body: {},
-                extensions: {},
+                irrelevantEntities: [],
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -39,7 +39,7 @@ describe('data version tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 1 },
                 body: {},
-                extensions: {},
+                irrelevantEntities: [],
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -54,7 +54,7 @@ describe('data version tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 2 },
                 body: {},
-                extensions: {},
+                irrelevantEntities: [],
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -69,7 +69,7 @@ describe('data version tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 2 },
                 body: {},
-                extensions: {},
+                irrelevantEntities: [],
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,

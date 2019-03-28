@@ -123,7 +123,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         const context: PolarisContext = {
             headers,
             body: ctx.request.body,
-            extensions: {},
+            irrelevantEntities: [],
             ...this.getCustomContext(ctx),
         };
         if (this.polarisProperties.includeSubscription) {

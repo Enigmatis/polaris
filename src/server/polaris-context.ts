@@ -5,5 +5,5 @@ export interface PolarisContext extends PolarisBaseContext {
     headers: PolarisRequestHeaders;
     body: any;
     pubSub?: PubSub;
-    extensions: any;
+    irrelevantEntities: string[];
 }

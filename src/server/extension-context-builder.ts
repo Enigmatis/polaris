@@ -1,11 +1,13 @@
 import { GraphQLExtension } from 'graphql-extensions';
 
 export class ExtensionContextBuilder extends GraphQLExtension {
-    willSendResponse(o: any) {
-        const { context, graphqlResponse } = o;
+    willSendResponse(responseContext: any) {
+        const { context, graphqlResponse } = responseContext;
 
-        graphqlResponse.extensions = context.extensions;
+        if (context.headers.dataVersion) {
+            graphqlResponse.extensions = {irrelevantEntities: context.irrelevantEntities};
+        }
 
-        return o;
+        return responseContext;
     }
 }
