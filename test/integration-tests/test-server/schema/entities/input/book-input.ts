@@ -8,7 +8,7 @@ export class BookInput implements InjectableType {
                      title: String,
                      author: String
                  },
-                 input BookCreationInput{
+                 input UpdateBookInput{
                     title:String,
                     author:String
                  }`;

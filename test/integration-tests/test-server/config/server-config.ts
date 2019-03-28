@@ -9,7 +9,8 @@ export class TestServerConfig implements PolarisServerConfig {
     constructor() {
         this.polarisProperties = {
             endpoint: '/test',
-            port: 3537,
+            port: 1113,
+            includeSubscription: true,
         };
         this.applicationLogProperties = {
             id: 'polaris-test',

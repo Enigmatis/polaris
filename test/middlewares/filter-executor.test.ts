@@ -35,7 +35,7 @@ describe('filter resolver tests', () => {
                 allowDataVersionMiddleware: false,
                 allowRealityMiddleware: true,
             });
-            expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual([result[0]._doc]);
+            expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(result);
         });
         test('reality id filter off', () => {
             const context: PolarisContext = { headers: { realityId: 1 }, body: {} };
@@ -50,7 +50,7 @@ describe('filter resolver tests', () => {
                 allowRealityMiddleware: false,
                 allowDataVersionMiddleware: true,
             });
-            expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual([result[0]._doc]);
+            expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(result);
         });
     });
     describe('sub entity', () => {

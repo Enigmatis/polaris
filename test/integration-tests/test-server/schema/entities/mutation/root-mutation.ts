@@ -5,7 +5,7 @@ import { InjectableType, POLARIS_TYPES } from '../../../../../../src/main';
 export class Mutation implements InjectableType {
     definition = `
              type Mutation {
-                 updateBook(book: BookInput!): Book,
-                 createBook(book: BookCreationInput): Book
+                 createBook(book: BookInput): Book
+                 updateBook(bookId: String!, update: UpdateBookInput): Book,
              }`;
 }

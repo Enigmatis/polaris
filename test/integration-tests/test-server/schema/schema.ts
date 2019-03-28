@@ -20,9 +20,7 @@ requireAllInFolder(path.join(__dirname, './entities/**/*'));
 requireAllInFolder(path.join(__dirname, './resolvers/*'));
 
 // Create container
-export const schemaContainer = new Container();
-schemaContainer.load(buildProviderModule());
-schemaContainer
-    .bind<CommonEntityInterface>(POLARIS_TYPES.CommonEntityInterface)
-    .to(CommonEntityInterface);
-schemaContainer.bind<InjectableType>(POLARIS_TYPES.InjectableType).to(CommonEntityInterface);
+export const schema = new Container();
+schema.load(buildProviderModule());
+schema.bind<CommonEntityInterface>(POLARIS_TYPES.CommonEntityInterface).to(CommonEntityInterface);
+schema.bind<InjectableType>(POLARIS_TYPES.InjectableType).to(CommonEntityInterface);

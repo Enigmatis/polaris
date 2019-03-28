@@ -8,7 +8,7 @@ export class TestLogConfig implements LoggerConfig {
     constructor() {
         this.loggerConfiguration = {
             loggerLevel: 'debug',
-            logstashConfiguration: { logstashHost: '127.0.0.1', logstashPort: 1234 },
+            logstashConfigurations: [{ logstashHost: '127.0.0.1', logstashPort: 1234 }],
             writeToConsole: true,
         };
     }

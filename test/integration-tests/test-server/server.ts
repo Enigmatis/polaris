@@ -9,13 +9,13 @@ import {
 import { TestLogConfig } from './config/log-config';
 import { TestMiddlewaresConfig } from './config/middleware-config';
 import { TestServerConfig } from './config/server-config';
-import { schemaContainer } from './schema/schema-container';
+import { schema } from './schema/schema';
 
 polarisContainer.bind(POLARIS_TYPES.LoggerConfig).to(TestLogConfig);
 polarisContainer.bind(POLARIS_TYPES.PolarisServerConfig).to(TestServerConfig);
 polarisContainer.bind(POLARIS_TYPES.MiddlewaresConfig).to(TestMiddlewaresConfig);
 
-const mergedContainer = Container.merge(polarisContainer, schemaContainer);
+const mergedContainer = Container.merge(polarisContainer, schema);
 const serverConfig: PolarisServerConfig = mergedContainer.get(POLARIS_TYPES.PolarisServerConfig);
 export const url = `http://localhost:${serverConfig.polarisProperties.port}${
     serverConfig.polarisProperties.endpoint
