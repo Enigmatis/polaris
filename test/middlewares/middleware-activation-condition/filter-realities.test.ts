@@ -19,7 +19,11 @@ describe('reality id tests', () => {
         expect(RealityIdFilter.shouldBeReturned(middlewareParams, false)).toBe(true);
     });
     test('sub entity reality id is the same as headers reality id', () => {
-        const context: PolarisContext = { headers: { realityId: 1 }, body: {}, irrelevantEntities: [] };
+        const context: PolarisContext = {
+            headers: { realityId: 1 },
+            body: {},
+            irrelevantEntities: [],
+        };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
             args,
@@ -30,7 +34,11 @@ describe('reality id tests', () => {
         expect(RealityIdFilter.shouldBeReturned(middlewareParams, true)).toBe(true);
     });
     test('entity reality id is the same as headers reality id', () => {
-        const context: PolarisContext = { headers: { realityId: 1 }, body: {}, irrelevantEntities: [] };
+        const context: PolarisContext = {
+            headers: { realityId: 1 },
+            body: {},
+            irrelevantEntities: [],
+        };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
             args,
