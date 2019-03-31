@@ -1,17 +1,16 @@
-import { ApolloError, ApolloServer, Config, makeExecutableSchema, PubSub } from 'apollo-server-koa';
+import { ApolloError, ApolloServer, Config, PubSub } from 'apollo-server-koa';
+import { GraphQLSchema } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
-import { IResolvers, ITypeDefinitions } from 'graphql-tools';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
 import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
-import { PolarisGraphqlLogger } from '../logging/polaris-graphql-logger';
+import { PolarisGraphQLLogger } from '../logging/polaris-graphql-logger';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
-import { SchemaCreator } from '../schema/utils/schema-creator';
 import { PolarisContext } from './polaris-context';
 
 const app = new Koa();
@@ -25,25 +24,18 @@ export type contextCreator = (ctx: Koa.Context) => object;
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
-    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: PolarisGraphqlLogger;
+    @inject(POLARIS_TYPES.GraphQLLogger) polarisLogger!: PolarisGraphQLLogger;
     private server: ApolloServer;
     private polarisProperties: PolarisProperties;
     private customContexts: contextCreator[] = [];
 
     constructor(
-        @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
+        @inject(POLARIS_TYPES.GraphQLSchema) schema: GraphQLSchema,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
     ) {
-        const schema = creator.generateSchema();
-        const executableSchemaDefinition: { typeDefs: ITypeDefinitions; resolvers: IResolvers } = {
-            typeDefs: schema.def,
-            resolvers: schema.resolvers,
-        };
-        const executableSchema = makeExecutableSchema(executableSchemaDefinition);
-
         const executableSchemaWithMiddleware = applyMiddleware(
-            executableSchema,
+            schema,
             ...(middlewares.map(createMiddleware) as any),
         );
         this.polarisProperties = propertiesConfig.polarisProperties;

@@ -2,14 +2,14 @@ import { GraphqlLogger } from '@enigmatis/utills';
 import { inject, injectable } from 'inversify';
 import { MiddlewaresConfig } from '../common/injectable-interfaces';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
-import { GraphqlLogProperties } from '../logging/graphql-log-properties';
+import { GraphQLLogProperties } from '../logging/graphql-log-properties';
 import { PolarisContext } from '../server/polaris-context';
 import { FilterExecutor } from './filter-executor';
 import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from './middleware';
 
 @injectable()
 export class PolarisMiddleware implements Middleware {
-    @inject(POLARIS_TYPES.GraphqlLogger) polarisLogger!: GraphqlLogger<PolarisContext>;
+    @inject(POLARIS_TYPES.GraphQLLogger) polarisLogger!: GraphqlLogger<PolarisContext>;
     filterExecutor: FilterExecutor;
 
     constructor(@inject(POLARIS_TYPES.MiddlewaresConfig) middlewaresConfig: MiddlewaresConfig) {
@@ -30,7 +30,7 @@ export class PolarisMiddleware implements Middleware {
     }
 
     logStartOfResolve({ root, context, args, info }: RequestMiddlewareParams): void {
-        const polarisLogProperties: GraphqlLogProperties = this.buildProps(context);
+        const polarisLogProperties: GraphQLLogProperties = this.buildProps(context);
         if (!root) {
             const startMsg = `Resolver of ${
                 polarisLogProperties.operationName
@@ -43,12 +43,12 @@ export class PolarisMiddleware implements Middleware {
     }
 
     logEndOfResolve({ root, args, info, context, result }: ResponseMiddlewareParams): void {
-        const polarisLogProperties: GraphqlLogProperties = this.buildProps(context);
+        const polarisLogProperties: GraphQLLogProperties = this.buildProps(context);
         const msg = `Field fetching of ${info.fieldName} finished execution. Result is: ${result}`;
         this.polarisLogger.debug(msg, { context, polarisLogProperties });
     }
 
-    buildProps(context: any): GraphqlLogProperties {
+    buildProps(context: any): GraphQLLogProperties {
         return {
             operationName: context.body.operationName,
             request: {
