@@ -1,10 +1,10 @@
 import { GraphQLExtension } from 'graphql-extensions';
 
-export class ExtensionContextBuilder extends GraphQLExtension {
+export class IrrelevantEntitiesExtension extends GraphQLExtension {
     willSendResponse(responseContext: any) {
         const { context, graphqlResponse } = responseContext;
 
-        if (context.headers.dataVersion !== undefined) {
+        if (context.headers.dataVersion) {
             graphqlResponse.extensions = { irrelevantEntities: context.irrelevantEntities };
         }
 

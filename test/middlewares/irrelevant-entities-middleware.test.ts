@@ -1,6 +1,6 @@
 import { QueryIrrelevantResult } from '@enigmatis/utills';
 import { GraphQLResolveInfo } from 'graphql';
-import 'reflect-metadata'
+import 'reflect-metadata';
 import { IrrelevantEntitiesMiddleware } from '../../src/middlewares/irrelevant-entities-middleware';
 import { ResponseMiddlewareParams } from '../../src/middlewares/middleware';
 import { PolarisContext } from '../../src/server/polaris-context';
@@ -24,7 +24,7 @@ const resolverResult = [
 ];
 const result = new QueryIrrelevantResult(resolverResult, irrelevantEntities);
 
-describe('split result and irrelevant', () => {
+describe('split relevantEntities and irrelevant', () => {
     describe('one relevant and two not relevant', () => {
         const root = undefined;
         test('irrelevant entities are correctly separated to context ', () => {
@@ -61,7 +61,7 @@ describe('split result and irrelevant', () => {
 
             const middleware = new IrrelevantEntitiesMiddleware();
             const middlewareResult = middleware.postResolve(middlewareParams);
-            expect(middlewareResult).toEqual(result.result);
+            expect(middlewareResult).toEqual(result.relevantEntities);
         });
 
         test('relevant are returned from the middleware without irrelevant even if data version is 0', () => {
@@ -80,7 +80,7 @@ describe('split result and irrelevant', () => {
 
             const middleware = new IrrelevantEntitiesMiddleware();
             const middlewareResult = middleware.postResolve(middlewareParams);
-            expect(middlewareResult).toEqual(result.result);
+            expect(middlewareResult).toEqual(result.relevantEntities);
         });
     });
 });

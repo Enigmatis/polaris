@@ -5,7 +5,7 @@ const irrelevantEntitiesResponseSchema = joi.object().keys({
     irrelevantEntities: joi.array().items(joi.any()),
 });
 
-export function isContainsIrrelevant(candidate: object): boolean {
+export function isIrrelevantEntitiesResponse(candidate: object): boolean {
     if (!candidate) {
         return false;
     }

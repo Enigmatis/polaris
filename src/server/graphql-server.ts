@@ -12,7 +12,7 @@ import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
 import { SchemaCreator } from '../schema/utils/schema-creator';
-import { ExtensionContextBuilder } from './extension-context-builder';
+import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
 
 const app = new Koa();
@@ -55,7 +55,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             context: (args: { ctx: Koa.Context; connection: any }) => this.getContext(args),
             formatError: (error: any) => this.formatError(error),
             formatResponse: (response: any) => this.formatResponse(response),
-            extensions: [() => new ExtensionContextBuilder()],
+            extensions: [() => new IrrelevantEntitiesExtension()],
         };
         this.server = new ApolloServer(config);
         if (this.polarisProperties.endpoint) {
