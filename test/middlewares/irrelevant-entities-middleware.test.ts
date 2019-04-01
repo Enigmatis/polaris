@@ -64,7 +64,7 @@ describe('split relevantEntities and irrelevant', () => {
             expect(middlewareResult).toEqual(result.relevantEntities);
         });
 
-        test('relevant are returned from the middleware without irrelevant even if data version is 0', () => {
+        test('relevant are returned from the middleware without irrelevant even if data version is invalid', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 0 },
                 body: {},
