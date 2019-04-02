@@ -1,5 +1,5 @@
-import { ApolloError, ApolloServer, Config, PubSub } from 'apollo-server-koa';
-import { GraphQLSchema } from 'graphql';
+import { ApolloServer, Config, PubSub } from 'apollo-server-koa';
+import { GraphQLError, GraphQLFormattedError, GraphQLSchema } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
 import * as http from 'http';
 import { inject, injectable, multiInject } from 'inversify';
@@ -88,16 +88,17 @@ export class PolarisGraphQLServer implements GraphQLServer {
         return response;
     }
 
-    private formatError(error: any) {
+    private formatError(error: GraphQLError): GraphQLFormattedError {
         this.polarisLogger.error('Apollo server error', {
             polarisLogProperties: { throwable: error },
         });
 
-        if (error instanceof ApolloError || error.name === 'GraphQLError') {
-            return { message: error.message, code: error.extensions.code };
-        } else {
-            return new Error('Internal server error');
-        }
+        return {
+            message: error.message,
+            path: error.path,
+            locations: error.locations,
+            extensions: error.extensions,
+        };
     }
 
     private getContext({ ctx, connection }: { ctx: Koa.Context; connection: any }): PolarisContext {
