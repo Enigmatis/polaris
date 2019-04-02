@@ -1,3 +1,16 @@
+# [2.5.0](https://github.com/Enigmatis/polaris/compare/v2.4.0...v2.5.0) (2019-04-02)
+
+
+### Bug Fixes
+
+* updated packages ([045713e](https://github.com/Enigmatis/polaris/commit/045713e))
+* updated packages ([20d55d1](https://github.com/Enigmatis/polaris/commit/20d55d1))
+
+
+### Features
+
+* **schema:** the repository is now providing the whole executable ([c53d9bc](https://github.com/Enigmatis/polaris/commit/c53d9bc))
+
 # [2.4.0](https://github.com/Enigmatis/polaris/compare/v2.3.0...v2.4.0) (2019-04-01)
 
 
