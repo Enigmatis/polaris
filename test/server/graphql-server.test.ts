@@ -109,6 +109,7 @@ describe('graphql-server tests', () => {
             expect.objectContaining({ app }),
         );
         expect(app.listen).toHaveBeenCalled();
+        server.stop();
     });
 
     test('on start - with custom app - apollo server apply middleware have been called with custom app', () => {
@@ -131,5 +132,6 @@ describe('graphql-server tests', () => {
             expect.objectContaining({ app }),
         );
         expect(app.listen).toHaveBeenCalled();
+        server.stop();
     });
 });
