@@ -1,3 +1,11 @@
+# [2.4.0](https://github.com/Enigmatis/polaris/compare/v2.3.0...v2.4.0) (2019-04-01)
+
+
+### Features
+
+* **koa server:** allow to pass custom koa server to the apollo ([27c9229](https://github.com/Enigmatis/polaris/commit/27c9229))
+* **koa server:** allow to pass custom koa server to the apollo ([9f4c903](https://github.com/Enigmatis/polaris/commit/9f4c903))
+
 # [2.3.0](https://github.com/Enigmatis/polaris/compare/v2.2.1...v2.3.0) (2019-03-26)
 
 
