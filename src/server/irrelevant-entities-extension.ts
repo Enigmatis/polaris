@@ -5,7 +5,9 @@ export class IrrelevantEntitiesExtension extends GraphQLExtension {
         const { context, graphqlResponse } = responseContext;
 
         if (context.headers.dataVersion) {
-            graphqlResponse.extensions = { irrelevantEntities: context.irrelevantEntities };
+            graphqlResponse.extensions = {
+                irrelevantEntities: context.irrelevantEntities.getIrrelevantEntitiesPerQuery(),
+            };
         }
 
         return responseContext;

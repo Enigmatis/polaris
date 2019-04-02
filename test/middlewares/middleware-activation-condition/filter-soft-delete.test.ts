@@ -1,11 +1,16 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { IrrelevantEntitiesContainer } from '../../../src/common/irrelevant-entities-container';
 import { ResponseMiddlewareParams } from '../../../src/middlewares/middleware';
 import { SoftDeleteFilter } from '../../../src/middlewares/middleware-activation-condition/filter-soft-delete';
 import { PolarisContext } from '../../../src/server/polaris-context';
 
 describe('filter-soft-delete tests', () => {
     const args = {};
-    const context: PolarisContext = { headers: {}, body: {}, irrelevantEntities: [] };
+    const context: PolarisContext = {
+        headers: {},
+        body: {},
+        irrelevantEntities: new IrrelevantEntitiesContainer(),
+    };
     const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
     const root = undefined;
 

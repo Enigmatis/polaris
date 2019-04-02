@@ -1,7 +1,7 @@
 import * as joi from 'joi';
 
 const irrelevantEntitiesResponseSchema = joi.object().keys({
-    result: joi.array().items(joi.any()),
+    relevantEntities: joi.array().items(joi.any()),
     irrelevantEntities: joi.array().items(joi.any()),
 });
 

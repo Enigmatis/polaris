@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { IrrelevantEntitiesContainer } from '../../../src/common/irrelevant-entities-container';
 import { ResponseMiddlewareParams } from '../../../src/middlewares/middleware';
 import { DataVersionFilter } from '../../../src/middlewares/middleware-activation-condition/filter-data-version';
 import { PolarisContext } from '../../../src/server/polaris-context';
@@ -9,7 +10,11 @@ const args = {};
 describe('data version tests', () => {
     test('data version header doesnt exist', () => {
         const result = { dataVersion: 0 };
-        const context: PolarisContext = { headers: {}, body: {}, irrelevantEntities: [] };
+        const context: PolarisContext = {
+            headers: {},
+            body: {},
+            irrelevantEntities: new IrrelevantEntitiesContainer(),
+        };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
             args,
@@ -24,7 +29,7 @@ describe('data version tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 1 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -39,7 +44,7 @@ describe('data version tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 1 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -54,7 +59,7 @@ describe('data version tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 2 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -69,7 +74,7 @@ describe('data version tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 2 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,

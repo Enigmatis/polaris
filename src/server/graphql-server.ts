@@ -6,6 +6,7 @@ import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
+import { IrrelevantEntitiesContainer } from '../common/irrelevant-entities-container';
 import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { PolarisGraphqlLogger } from '../logging/polaris-graphql-logger';
@@ -131,7 +132,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         const context: PolarisContext = {
             headers,
             body: ctx.request.body,
-            irrelevantEntities: [],
+            irrelevantEntities: new IrrelevantEntitiesContainer(),
             ...this.getCustomContext(ctx),
         };
         if (this.polarisProperties.includeSubscription) {

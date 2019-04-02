@@ -1,11 +1,12 @@
 import { QueryIrrelevantResult } from '@enigmatis/utills';
 import { GraphQLResolveInfo } from 'graphql';
 import 'reflect-metadata';
+import { IrrelevantEntitiesContainer } from '../../src/common/irrelevant-entities-container';
 import { IrrelevantEntitiesMiddleware } from '../../src/middlewares/irrelevant-entities-middleware';
 import { ResponseMiddlewareParams } from '../../src/middlewares/middleware';
 import { PolarisContext } from '../../src/server/polaris-context';
 
-const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
+const info: { [T in keyof GraphQLResolveInfo]: any } = { path: { key: 'test' } } as any;
 const args = {};
 const irrelevantEntities = ['1234', '2345'];
 const resolverResult = [
@@ -27,11 +28,11 @@ const result = new QueryIrrelevantResult(resolverResult, irrelevantEntities);
 describe('split relevantEntities and irrelevant', () => {
     describe('one relevant and two not relevant', () => {
         const root = undefined;
-        test('irrelevant entities are correctly separated to context ', () => {
+        test('irrelevant entities are correctly separated to context and assigned to the name of the operation ', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 3 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -43,13 +44,15 @@ describe('split relevantEntities and irrelevant', () => {
 
             const middleware = new IrrelevantEntitiesMiddleware();
             middleware.postResolve(middlewareParams);
-            expect(context.irrelevantEntities).toEqual(irrelevantEntities);
+            expect(
+                context.irrelevantEntities.getIrrelevantEntitiesPerQuery()[info.path.key],
+            ).toEqual(irrelevantEntities);
         });
         test('relevant are returned from the middleware without irrelevant ', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 3 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -68,7 +71,7 @@ describe('split relevantEntities and irrelevant', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 0 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -80,7 +83,7 @@ describe('split relevantEntities and irrelevant', () => {
 
             const middleware = new IrrelevantEntitiesMiddleware();
             const middlewareResult = middleware.postResolve(middlewareParams);
-            expect(middlewareResult).toEqual(result.relevantEntities);
+            expect(middlewareResult).toEqual(result);
         });
     });
 });
@@ -92,7 +95,7 @@ describe('not modifying result if not needed', () => {
             const context: PolarisContext = {
                 headers: {},
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -110,7 +113,7 @@ describe('not modifying result if not needed', () => {
             const context: PolarisContext = {
                 headers: {},
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -121,8 +124,8 @@ describe('not modifying result if not needed', () => {
             };
 
             const middleware = new IrrelevantEntitiesMiddleware();
-            const middlewareResult = middleware.postResolve(middlewareParams);
-            expect(context.irrelevantEntities).toHaveLength(0);
+            middleware.postResolve(middlewareParams);
+            expect(context.irrelevantEntities.irrelevantContainer).toEqual({});
         });
     });
     describe('not a QueryWithIrrelevantResult', () => {
@@ -131,7 +134,7 @@ describe('not modifying result if not needed', () => {
             const context: PolarisContext = {
                 headers: {},
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -149,7 +152,7 @@ describe('not modifying result if not needed', () => {
             const context: PolarisContext = {
                 headers: {},
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -160,8 +163,8 @@ describe('not modifying result if not needed', () => {
             };
 
             const middleware = new IrrelevantEntitiesMiddleware();
-            const middlewareResult = middleware.postResolve(middlewareParams);
-            expect(context.irrelevantEntities).toHaveLength(0);
+            middleware.postResolve(middlewareParams);
+            expect(context.irrelevantEntities.irrelevantContainer).toEqual({});
         });
     });
 });

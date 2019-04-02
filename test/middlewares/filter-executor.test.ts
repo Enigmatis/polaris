@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { IrrelevantEntitiesContainer } from '../../src/common/irrelevant-entities-container';
 import { FilterExecutor } from '../../src/middlewares/filter-executor';
 import { ResponseMiddlewareParams } from '../../src/middlewares/middleware';
 import { PolarisContext } from '../../src/server/polaris-context';
@@ -26,7 +27,7 @@ describe('filter resolver tests', () => {
             const context: PolarisContext = {
                 headers: { dataVersion: 3 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -45,7 +46,7 @@ describe('filter resolver tests', () => {
             const context: PolarisContext = {
                 headers: { realityId: 1 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -68,7 +69,7 @@ describe('filter resolver tests', () => {
             const context: PolarisContext = {
                 headers: { realityId: 1 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -87,7 +88,7 @@ describe('filter resolver tests', () => {
             const context: PolarisContext = {
                 headers: { realityId: 1 },
                 body: {},
-                irrelevantEntities: [],
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
