@@ -1,6 +1,6 @@
-import { ApolloError, ApolloServer, Config, makeExecutableSchema, PubSub } from 'apollo-server-koa';
+import { ApolloServer, Config, PubSub } from 'apollo-server-koa';
+import { GraphQLError, GraphQLFormattedError, GraphQLSchema } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
-import { IResolvers, ITypeDefinitions } from 'graphql-tools';
 import * as http from 'http';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
@@ -8,11 +8,10 @@ import * as koaBody from 'koa-bodyparser';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
 import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
-import { PolarisGraphqlLogger } from '../logging/polaris-graphql-logger';
+import { PolarisGraphQLLogger } from '../logging/polaris-graphql-logger';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
-import { SchemaCreator } from '../schema/utils/schema-creator';
 import { PolarisContext } from './polaris-context';
 
 export interface GraphQLServer {
@@ -30,20 +29,13 @@ export class PolarisGraphQLServer implements GraphQLServer {
     private httpServer?: http.Server;
 
     constructor(
-        @inject(POLARIS_TYPES.SchemaCreator) creator: SchemaCreator,
+        @inject(POLARIS_TYPES.GraphQLSchema) schema: GraphQLSchema,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
-        @inject(POLARIS_TYPES.GraphqlLogger) private polarisLogger: PolarisGraphqlLogger,
+        @inject(POLARIS_TYPES.GraphQLLogger) private polarisLogger: PolarisGraphQLLogger,
     ) {
-        const schema = creator.generateSchema();
-        const executableSchemaDefinition: { typeDefs: ITypeDefinitions; resolvers: IResolvers } = {
-            typeDefs: schema.def,
-            resolvers: schema.resolvers,
-        };
-        const executableSchema = makeExecutableSchema(executableSchemaDefinition);
-
         const executableSchemaWithMiddleware = applyMiddleware(
-            executableSchema,
+            schema,
             ...(middlewares.map(createMiddleware) as any),
         );
         this.polarisProperties = propertiesConfig.polarisProperties;
@@ -96,16 +88,17 @@ export class PolarisGraphQLServer implements GraphQLServer {
         return response;
     }
 
-    private formatError(error: any) {
+    private formatError(error: GraphQLError): GraphQLFormattedError {
         this.polarisLogger.error('Apollo server error', {
             polarisLogProperties: { throwable: error },
         });
 
-        if (error instanceof ApolloError || error.name === 'GraphQLError') {
-            return { message: error.message, code: error.extensions.code };
-        } else {
-            return new Error('Internal server error');
-        }
+        return {
+            message: error.message,
+            path: error.path,
+            locations: error.locations,
+            extensions: error.extensions,
+        };
     }
 
     private getContext({ ctx, connection }: { ctx: Koa.Context; connection: any }): PolarisContext {
