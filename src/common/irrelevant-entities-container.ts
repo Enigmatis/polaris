@@ -1,5 +1,5 @@
 export class IrrelevantEntitiesContainer {
-    irrelevantContainer: any;
+    irrelevantContainer: { [key: string]: string[] };
 
     constructor() {
         this.irrelevantContainer = {};
@@ -7,9 +7,5 @@ export class IrrelevantEntitiesContainer {
 
     addIrrelevantEntitiesOfQuery(queryKey: string, irrelevantEntities: string[]): void {
         this.irrelevantContainer[queryKey] = irrelevantEntities;
-    }
-
-    getIrrelevantEntitiesPerQuery(): any {
-        return this.irrelevantContainer;
     }
 }

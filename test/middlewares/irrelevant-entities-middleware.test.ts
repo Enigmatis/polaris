@@ -44,9 +44,9 @@ describe('split relevantEntities and irrelevant', () => {
 
             const middleware = new IrrelevantEntitiesMiddleware();
             middleware.postResolve(middlewareParams);
-            expect(
-                context.irrelevantEntities.getIrrelevantEntitiesPerQuery()[info.path.key],
-            ).toEqual(irrelevantEntities);
+            expect(context.irrelevantEntities.irrelevantContainer[info.path.key]).toEqual(
+                irrelevantEntities,
+            );
         });
         test('relevant are returned from the middleware without irrelevant ', () => {
             const context: PolarisContext = {

@@ -9,10 +9,11 @@ export class IrrelevantEntitiesMiddleware implements Middleware {
     }
 
     postResolve(params: ResponseMiddlewareParams): any {
-        if (!params.result || !params.context.headers.dataVersion) {
-            return params.result;
-        }
-        if (isIrrelevantEntitiesResponse(params.result)) {
+        if (
+            params.result &&
+            params.context.headers.dataVersion &&
+            isIrrelevantEntitiesResponse(params.result)
+        ) {
             params.context.irrelevantEntities.addIrrelevantEntitiesOfQuery(
                 params.info.path.key.toString(),
                 params.result.irrelevantEntities,
