@@ -72,6 +72,7 @@
     "@types/node": "10.12.12",
     "apollo-server-core": "^2.4.8",
     "graphql": "^14.2.1",
+    "graphql-extensions": "^0.5.7",
     "graphql-fields": "^2.0.3",
     "graphql-middleware": "^3.0.1",
     "graphql-tools": "^4.0.4",

@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { IrrelevantEntitiesContainer } from '../../../src/common/irrelevant-entities-container';
 import { ResponseMiddlewareParams } from '../../../src/middlewares/middleware';
 import { RealityIdFilter } from '../../../src/middlewares/middleware-activation-condition/filter-realities';
 import { PolarisContext } from '../../../src/server/polaris-context';
@@ -8,7 +9,11 @@ const args = {};
 describe('reality id tests', () => {
     test('reality id header doesnt exist', () => {
         const result = { realityId: 1 };
-        const context: PolarisContext = { headers: {}, body: {} };
+        const context: PolarisContext = {
+            headers: {},
+            body: {},
+            irrelevantEntities: new IrrelevantEntitiesContainer(),
+        };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
             args,
@@ -19,7 +24,11 @@ describe('reality id tests', () => {
         expect(RealityIdFilter.shouldBeReturned(middlewareParams, false)).toBe(true);
     });
     test('sub entity reality id is the same as headers reality id', () => {
-        const context: PolarisContext = { headers: { realityId: 1 }, body: {} };
+        const context: PolarisContext = {
+            headers: { realityId: 1 },
+            body: {},
+            irrelevantEntities: new IrrelevantEntitiesContainer(),
+        };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
             args,
@@ -30,7 +39,11 @@ describe('reality id tests', () => {
         expect(RealityIdFilter.shouldBeReturned(middlewareParams, true)).toBe(true);
     });
     test('entity reality id is the same as headers reality id', () => {
-        const context: PolarisContext = { headers: { realityId: 1 }, body: {} };
+        const context: PolarisContext = {
+            headers: { realityId: 1 },
+            body: {},
+            irrelevantEntities: new IrrelevantEntitiesContainer(),
+        };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
             args,
@@ -47,6 +60,7 @@ describe('reality id tests', () => {
                     const context: PolarisContext = {
                         headers: { realityId: 1, includeLinkedOperation: true },
                         body: {},
+                        irrelevantEntities: new IrrelevantEntitiesContainer(),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -61,6 +75,7 @@ describe('reality id tests', () => {
                     const context: PolarisContext = {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
+                        irrelevantEntities: new IrrelevantEntitiesContainer(),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -77,6 +92,7 @@ describe('reality id tests', () => {
                     const context: PolarisContext = {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
+                        irrelevantEntities: new IrrelevantEntitiesContainer(),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -91,6 +107,7 @@ describe('reality id tests', () => {
                     const context: PolarisContext = {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
+                        irrelevantEntities: new IrrelevantEntitiesContainer(),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -109,6 +126,7 @@ describe('reality id tests', () => {
                     const context: PolarisContext = {
                         headers: { realityId: 1, includeLinkedOperation: true },
                         body: {},
+                        irrelevantEntities: new IrrelevantEntitiesContainer(),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -123,6 +141,7 @@ describe('reality id tests', () => {
                     const context: PolarisContext = {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
+                        irrelevantEntities: new IrrelevantEntitiesContainer(),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -139,6 +158,7 @@ describe('reality id tests', () => {
                     const context: PolarisContext = {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
+                        irrelevantEntities: new IrrelevantEntitiesContainer(),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -153,6 +173,7 @@ describe('reality id tests', () => {
                     const context: PolarisContext = {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
+                        irrelevantEntities: new IrrelevantEntitiesContainer(),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,

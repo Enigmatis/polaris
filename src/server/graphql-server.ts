@@ -6,12 +6,14 @@ import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
+import { IrrelevantEntitiesContainer } from '../common/irrelevant-entities-container';
 import { getHeaders } from '../http/request/polaris-request-headers';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { PolarisGraphQLLogger } from '../logging/polaris-graphql-logger';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
+import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
 
 export interface GraphQLServer {
@@ -45,6 +47,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             context: (args: { ctx: Koa.Context; connection: any }) => this.getContext(args),
             formatError: (error: any) => this.formatError(error),
             formatResponse: (response: any) => this.formatResponse(response),
+            extensions: [() => new IrrelevantEntitiesExtension()],
         };
         this.server = new ApolloServer(config);
         this.app = new Koa();
@@ -121,6 +124,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         const context: PolarisContext = {
             headers,
             body: ctx.request.body,
+            irrelevantEntities: new IrrelevantEntitiesContainer(),
             ...this.getCustomContext(ctx),
         };
         if (this.polarisProperties.includeSubscription) {
