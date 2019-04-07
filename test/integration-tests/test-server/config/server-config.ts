@@ -1,6 +1,8 @@
 import { ApplicationLogProperties } from '@enigmatis/polaris-logs';
 import { injectable } from 'inversify';
 import { PolarisProperties, PolarisServerConfig } from '../../../../src/main';
+import * as polarisPropertiesPath from './properties.json';
+
 @injectable()
 export class TestServerConfig implements PolarisServerConfig {
     polarisProperties: PolarisProperties;
@@ -8,16 +10,16 @@ export class TestServerConfig implements PolarisServerConfig {
 
     constructor() {
         this.polarisProperties = {
-            endpoint: '/test',
-            port: 1113,
-            includeSubscription: true,
+            endpoint: polarisPropertiesPath.endpoint,
+            port: polarisPropertiesPath.port,
+            includeSubscription: polarisPropertiesPath.includeSubscription,
         };
         this.applicationLogProperties = {
-            id: 'polaris-test',
-            name: 'polaris-test',
-            repositoryVersion: '0.1',
-            environment: 'test',
-            component: 'compo',
+            id: polarisPropertiesPath.applicationId,
+            name: polarisPropertiesPath.applicationName,
+            repositoryVersion: polarisPropertiesPath.repositoryVersion,
+            environment: polarisPropertiesPath.environment,
+            component: polarisPropertiesPath.component,
         };
     }
 }

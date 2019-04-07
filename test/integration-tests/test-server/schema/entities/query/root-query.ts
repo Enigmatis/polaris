@@ -4,6 +4,8 @@ import { InjectableType, POLARIS_TYPES } from '../../../../../../src/main';
 @provide(POLARIS_TYPES.InjectableType)
 export class Query implements InjectableType {
     definition = `type Query {
-                    books: [Book] 
+                    books: [Book],
+                    bookById(bookId:String!): Book
+                    deletedBookById(bookId:String!): Book
                     }`;
 }

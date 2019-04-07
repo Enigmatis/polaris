@@ -13,7 +13,11 @@ export class FilterExecutor {
 
     executeFilters(params: ResponseMiddlewareParams): any {
         const hasRoot: boolean = params.root ? true : false;
-        return hasRoot ? this.filterSubEntity(params) : this.filterRootEntities(params);
+        return params.result
+            ? hasRoot
+                ? this.filterSubEntity(params)
+                : this.filterRootEntities(params)
+            : null;
     }
 
     filterRootEntities(params: ResponseMiddlewareParams): any[] {
