@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { IrrelevantEntitiesContainer } from '../../src/common/irrelevant-entities-container';
 import { FilterExecutor } from '../../src/middlewares/filter-executor';
 import { ResponseMiddlewareParams } from '../../src/middlewares/middleware';
 import { PolarisContext } from '../../src/server/polaris-context';
@@ -23,7 +24,11 @@ describe('filter resolver tests', () => {
     describe('not a sub entity', () => {
         const root = undefined;
         test('data version filter off', () => {
-            const context: PolarisContext = { headers: { dataVersion: 3 }, body: {} };
+            const context: PolarisContext = {
+                headers: { dataVersion: 3 },
+                body: {},
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
+            };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
                 args,
@@ -38,7 +43,11 @@ describe('filter resolver tests', () => {
             expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(result);
         });
         test('reality id filter off', () => {
-            const context: PolarisContext = { headers: { realityId: 1 }, body: {} };
+            const context: PolarisContext = {
+                headers: { realityId: 1 },
+                body: {},
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
+            };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
                 args,
@@ -57,7 +66,11 @@ describe('filter resolver tests', () => {
         const root: any = { realityId: 0, dataVersion: 1 };
         test('not a repository entity', () => {
             const entity = 'this is not a repository entity';
-            const context: PolarisContext = { headers: { realityId: 1 }, body: {} };
+            const context: PolarisContext = {
+                headers: { realityId: 1 },
+                body: {},
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
+            };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
                 args,
@@ -72,7 +85,11 @@ describe('filter resolver tests', () => {
             expect(filterExecutor.filterSubEntity(middlewareParams)).toEqual(entity);
         });
         test('is a repository entity and reality id filter off', () => {
-            const context: PolarisContext = { headers: { realityId: 1 }, body: {} };
+            const context: PolarisContext = {
+                headers: { realityId: 1 },
+                body: {},
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
+            };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
                 args,

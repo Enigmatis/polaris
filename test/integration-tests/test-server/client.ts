@@ -14,7 +14,7 @@ export async function graphqlRequest(data: string, headers: any, variables: any)
 
 export async function createDefaultBook(title: string, headers: any) {
     const defaultBookVariables = { author: 'chen', title, id: '1234' };
-    const createBookMutation = `mutation createBook ($book:BookInput) {createBook(book:$book){id}}`;
+    const createBookMutation = `mutation createBook ($book:BookInput!) {createBook(book:$book){id}}`;
     const result: any = await graphqlRequest(createBookMutation, headers, {
         book: defaultBookVariables,
     });

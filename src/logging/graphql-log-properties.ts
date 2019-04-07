@@ -1,5 +1,5 @@
 import { PolarisLogProperties } from '@enigmatis/polaris-logs';
 
-export interface GraphqlLogProperties extends PolarisLogProperties {
+export interface GraphQLLogProperties extends PolarisLogProperties {
     operationName?: string;
 }

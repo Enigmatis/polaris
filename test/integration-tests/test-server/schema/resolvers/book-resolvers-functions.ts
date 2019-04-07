@@ -1,9 +1,16 @@
+import { QueryWithIrrelevant } from '@enigmatis/mongo-driver';
 import { UserInputError } from 'apollo-server-koa';
-import { PolarisContext } from '../../../../../src/main';
+import { PolarisContext } from '../../../../../src/server/polaris-context';
 import { BookModelPerReality } from '../../dal/book-model';
-import { Book } from '../entities/book';
+import { Book } from '../definitions/book';
 import { BOOK_UPDATED } from './subscription-event-names';
 
+export const titleResolver = (book: Book) => {
+    if (book.dataVersion !== undefined) {
+        return book.title + ' (version ' + book.dataVersion + ')';
+    }
+    return 'Special Edition: ' + book.title;
+};
 export const createBookResolver = async (
     parent: object | null,
     { book }: { book: Book },
@@ -52,16 +59,23 @@ export const bookByIdQueryResolver = async (
         return BookModelPerReality(context).findById(bookId);
     }
 };
-export const deletedBookByIdQueryResolver = async (
+export const bookStartsWithQueryResolver = async (
     parent: object | null,
-    { bookId }: { bookId: string },
+    query: any,
     context: PolarisContext,
 ) => {
-    const { realityId } = context.headers;
+    const { realityId, dataVersion } = context.headers;
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header');
     } else {
-        return BookModelPerReality(context).find({ deleted: true, _id: bookId });
+        const bookModel = BookModelPerReality(context);
+        return QueryWithIrrelevant(
+            bookModel,
+            await bookModel.find({
+                title: { $regex: '^' + query.startsWith, $options: 'i' },
+            }),
+            dataVersion,
+        );
     }
 };
 export const subscribeResolver = (
@@ -76,6 +90,20 @@ export const subscribeResolver = (
         });
     return pubSub!.asyncIterator([BOOK_UPDATED]);
 };
+
+export const deletedBookByIdQueryResolver = async (
+    parent: object | null,
+    { bookId }: { bookId: string },
+    context: PolarisContext,
+) => {
+    const { realityId } = context.headers;
+    if (!Number.isInteger(realityId as any)) {
+        throw new UserInputError('please provide reality-id header');
+    } else {
+        return BookModelPerReality(context).find({ deleted: true, _id: bookId });
+    }
+};
+
 export const deleteBookResolver = async (
     parent: object | null,
     { bookId, update }: { bookId: string; update: Partial<Book> },

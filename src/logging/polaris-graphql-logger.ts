@@ -6,7 +6,7 @@ import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { PolarisContext } from '../server/polaris-context';
 
 @injectable()
-export class PolarisGraphqlLogger<TContext extends PolarisContext = PolarisContext>
+export class PolarisGraphQLLogger<TContext extends PolarisContext = PolarisContext>
     implements GraphqlLogger<TContext> {
     private polarisLogger: PolarisLogger;
 

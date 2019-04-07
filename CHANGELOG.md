@@ -1,3 +1,46 @@
+# [2.6.0](https://github.com/Enigmatis/polaris/compare/v2.5.0...v2.6.0) (2019-04-04)
+
+
+### Bug Fixes
+
+* added tests ([296c570](https://github.com/Enigmatis/polaris/commit/296c570))
+* after code review ([2d37817](https://github.com/Enigmatis/polaris/commit/2d37817))
+* after sakak ([48fabec](https://github.com/Enigmatis/polaris/commit/48fabec))
+* fix sakak and make irrelevant disappear if no data version provided ([0c66b98](https://github.com/Enigmatis/polaris/commit/0c66b98))
+* merge with master ([040656f](https://github.com/Enigmatis/polaris/commit/040656f))
+
+
+### Features
+
+* added irrelevant entities container ([cacf6bc](https://github.com/Enigmatis/polaris/commit/cacf6bc))
+* merge with vladi + irr works ([609a2a5](https://github.com/Enigmatis/polaris/commit/609a2a5))
+* refactoring code location (query irr) ([5b7fd87](https://github.com/Enigmatis/polaris/commit/5b7fd87))
+* working meanwhile ([6ccb82e](https://github.com/Enigmatis/polaris/commit/6ccb82e))
+* working meanwhile ([d4dca62](https://github.com/Enigmatis/polaris/commit/d4dca62))
+* **irrelevant entities:** multiple irrelevant entities for queries ([c7af32e](https://github.com/Enigmatis/polaris/commit/c7af32e))
+* **irrelevant entities:** multiple irrelevant entities for queries ([848f3a3](https://github.com/Enigmatis/polaris/commit/848f3a3))
+
+# [2.5.0](https://github.com/Enigmatis/polaris/compare/v2.4.0...v2.5.0) (2019-04-02)
+
+
+### Bug Fixes
+
+* updated packages ([045713e](https://github.com/Enigmatis/polaris/commit/045713e))
+* updated packages ([20d55d1](https://github.com/Enigmatis/polaris/commit/20d55d1))
+
+
+### Features
+
+* **schema:** the repository is now providing the whole executable ([c53d9bc](https://github.com/Enigmatis/polaris/commit/c53d9bc))
+
+# [2.4.0](https://github.com/Enigmatis/polaris/compare/v2.3.0...v2.4.0) (2019-04-01)
+
+
+### Features
+
+* **koa server:** allow to pass custom koa server to the apollo ([27c9229](https://github.com/Enigmatis/polaris/commit/27c9229))
+* **koa server:** allow to pass custom koa server to the apollo ([9f4c903](https://github.com/Enigmatis/polaris/commit/9f4c903))
+
 # [2.3.0](https://github.com/Enigmatis/polaris/compare/v2.2.1...v2.3.0) (2019-03-26)
 
 

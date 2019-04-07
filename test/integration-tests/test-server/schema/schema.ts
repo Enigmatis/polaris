@@ -1,26 +1,12 @@
-import glob = require('glob');
-import { Container } from 'inversify';
-import { buildProviderModule } from 'inversify-binding-decorators';
-import path = require('path');
-import 'reflect-metadata';
-import { CommonEntityInterface, InjectableType, POLARIS_TYPES } from '../../../../src/main';
+import { GraphQLSchema } from 'graphql';
+import { makeExecutablePolarisSchema } from '../../../../src/main';
+import { resolvers } from './resolvers/book-resolvers';
+import { Book, BookInput, Mutation, Query, Subscription } from './types/schema-types';
 
-export let requireAllInFolder = (pathToDir: string): void => {
-    const files = glob.sync(pathToDir);
-    files.forEach(file => {
-        if ((file.endsWith('.ts') && !file.endsWith('.d.ts')) || file.endsWith('.js')) {
-            file = file.replace(/\.[^/.]+$/, '');
-            require(file);
-        }
-    });
-};
-
-// Require all types and resolvers so they can be injected later
-requireAllInFolder(path.join(__dirname, './entities/**/*'));
-requireAllInFolder(path.join(__dirname, './resolvers/*'));
-
-// Create container
-export const schema = new Container();
-schema.load(buildProviderModule());
-schema.bind<CommonEntityInterface>(POLARIS_TYPES.CommonEntityInterface).to(CommonEntityInterface);
-schema.bind<InjectableType>(POLARIS_TYPES.InjectableType).to(CommonEntityInterface);
+export const schema: GraphQLSchema = makeExecutablePolarisSchema({
+    typeDefs: [Book, BookInput, Mutation, Query, Subscription],
+    resolvers: [resolvers],
+    resolverValidationOptions: {
+        requireResolversForResolveType: false,
+    },
+});
