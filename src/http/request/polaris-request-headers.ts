@@ -1,4 +1,5 @@
 import { PolarisRequestHeaders } from '@enigmatis/utills';
+import { UserInputError } from 'apollo-server-koa';
 import * as joi from 'joi';
 
 const headersSchema = joi.object().keys({
@@ -19,7 +20,7 @@ export const getHeaders = (candidate: object): PolarisRequestHeaders => {
         stripUnknown: true,
     }) as { error: joi.ValidationError; value: { [key: string]: any } };
     if (error) {
-        throw error;
+        throw new UserInputError(error.message);
     } else {
         return {
             dataVersion: validatedHeaders['data-version'],
