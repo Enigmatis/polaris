@@ -1,3 +1,11 @@
+# [2.7.0](https://github.com/Enigmatis/polaris/compare/v2.6.0...v2.7.0) (2019-04-09)
+
+
+### Features
+
+* **headers:** invalid error returning graphql error to the user ([2436733](https://github.com/Enigmatis/polaris/commit/2436733)), closes [#44](https://github.com/Enigmatis/polaris/issues/44)
+* **schema:** allow to use gql schema instead of regular string ([407211b](https://github.com/Enigmatis/polaris/commit/407211b))
+
 # [2.6.0](https://github.com/Enigmatis/polaris/compare/v2.5.0...v2.6.0) (2019-04-04)
 
 
