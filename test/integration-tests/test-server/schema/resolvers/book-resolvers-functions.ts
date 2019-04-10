@@ -5,12 +5,6 @@ import { BookModelPerReality } from '../../dal/book-model';
 import { Book } from '../definitions/book';
 import { BOOK_UPDATED } from './subscription-event-names';
 
-export const titleResolver = (book: Book) => {
-    if (book.dataVersion !== undefined) {
-        return book.title + ' (version ' + book.dataVersion + ')';
-    }
-    return 'Special Edition: ' + book.title;
-};
 export const createBookResolver = async (
     parent: object | null,
     { book }: { book: Book },
@@ -35,7 +29,7 @@ export const updateBookResolver = async (
         return BookModelPerReality(context).findByIdAndUpdate(bookId, update, { new: true });
     }
 };
-export const bookQueryResolver = async (
+export const bookResolver = async (
     parent: object | null,
     query: object,
     context: PolarisContext,
@@ -47,7 +41,7 @@ export const bookQueryResolver = async (
         return BookModelPerReality(context).find({});
     }
 };
-export const bookByIdQueryResolver = async (
+export const bookByIdResolver = async (
     parent: object | null,
     { bookId }: { bookId: string },
     context: PolarisContext,
@@ -59,7 +53,7 @@ export const bookByIdQueryResolver = async (
         return BookModelPerReality(context).findById(bookId);
     }
 };
-export const bookStartsWithQueryResolver = async (
+export const bookStartsWithResolver = async (
     parent: object | null,
     query: any,
     context: PolarisContext,
@@ -91,7 +85,7 @@ export const subscribeResolver = (
     return pubSub!.asyncIterator([BOOK_UPDATED]);
 };
 
-export const deletedBookByIdQueryResolver = async (
+export const deletedBookByIdResolver = async (
     parent: object | null,
     { bookId }: { bookId: string },
     context: PolarisContext,

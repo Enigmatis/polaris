@@ -22,7 +22,6 @@ describe('mutation tests', () => {
     });
 
     test('delete book, book is deleted ', async () => {
-        jest.setTimeout(500000);
         const id = await createDefaultBook('first', headers);
         await graphqlRequest(deleteBookMutation, headers, { bookId: id });
         const queryBook = `query bookById ($bookId:String!){bookById(bookId:$bookId){title}}`;

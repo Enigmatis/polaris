@@ -18,6 +18,7 @@ import { PolarisContext } from './polaris-context';
 
 export interface GraphQLServer {
     start(): void;
+    stop(): void;
 }
 
 export type contextCreator = (ctx: Koa.Context) => object;

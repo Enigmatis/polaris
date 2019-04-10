@@ -1,21 +1,20 @@
 import {
-    bookByIdQueryResolver,
-    bookQueryResolver,
-    bookStartsWithQueryResolver,
+    bookByIdResolver,
+    bookResolver,
+    bookStartsWithResolver,
     createBookResolver,
     deleteBookResolver,
-    deletedBookByIdQueryResolver,
+    deletedBookByIdResolver,
     subscribeResolver,
-    titleResolver,
     updateBookResolver,
 } from './book-resolvers-functions';
 
 export const resolvers = {
     Query: {
-        books: bookQueryResolver,
-        booksStartsWith: bookStartsWithQueryResolver,
-        bookById: bookByIdQueryResolver,
-        deletedBookById: deletedBookByIdQueryResolver,
+        books: bookResolver,
+        booksStartsWith: bookStartsWithResolver,
+        bookById: bookByIdResolver,
+        deletedBookById: deletedBookByIdResolver,
     },
     Mutation: {
         createBook: createBookResolver,

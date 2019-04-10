@@ -2,7 +2,8 @@ module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     clearMocks : true,
-    globalSetup:'./dist/test/integration-tests/test-server/setup.js',
+    globalSetup:'./test/integration-tests/test-server/setup.ts',
+    globalTeardown:'./test/integration-tests/test-server/teardown.ts',
     moduleFileExtensions: [
         "ts",
         "js",

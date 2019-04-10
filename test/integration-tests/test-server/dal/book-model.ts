@@ -12,7 +12,7 @@ const bookSchema: Schema = new Schema({
     title: String,
     author: String,
     otherBook: Object,
-    dataVersion: Object,
+    dataVersion: Number,
 });
 
 export const BookModelPerReality = getModelCreator<Book>('book', bookSchema);

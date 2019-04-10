@@ -21,7 +21,7 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once",
-    "test": "jest --runInBand --detectOpenHandles --forceExit"
+    "test": "jest --runInBand --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -64,13 +64,12 @@
   },
   "homepage": "https://github.com/yarinvak/polaris#readme",
   "dependencies": {
-    "@enigmatis/mongo-driver": "1.8.0",
     "@enigmatis/polaris-logs": "^2.5.0",
     "@enigmatis/utills": "^1.3.1",
     "@types/graphql": "^14.2.0",
     "@types/graphql-fields": "^1.3.0",
     "@types/koa-router": "^7.0.40",
-    "@types/mongoose": "^5.3.24",
+    "@types/mongoose": "^5.3.25",
     "@types/node": "10.12.12",
     "apollo-server-core": "^2.3.3",
     "glob": "^7.1.3",
@@ -85,37 +84,38 @@
     "joi": "^14.3.1",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
-    "mongoose": "^5.4.22",
+    "mongoose": "^5.5.0",
     "reflect-metadata": "^0.1.13",
     "dotenv": "^7.0.0"
   },
   "devDependencies": {
+    "@enigmatis/mongo-driver": "1.8.0",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.3.1",
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.8",
     "@types/cors": "^2.8.4",
     "@types/dotenv": "^6.1.1",
-    "@types/jest": "^23.3.14",
+    "@types/jest": "^24.0.11",
     "@types/joi": "^14.3.2",
     "apollo-server-koa": "^2.4.8",
     "cz-conventional-changelog": "^2.1.0",
     "dotenv": "^7.0.0",
     "husky": "^1.3.1",
-    "jest": "^23.6.0",
+    "jest": "24.1.0",
     "prettier": "^1.16.1",
     "rimraf": "^2.6.3",
     "semantic-release": "^15.13.3",
     "shx": "^0.3.2",
     "travis-deploy-once": "^5.0.11",
-    "ts-jest": "^24.0.1",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.15.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-consistent-codestyle": "^1.15.1",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-plugin-prettier": "^2.0.1",
     "typedoc": "^0.14.2",
-    "typescript": "^3.4.1"
+    "typescript": "3.1.3"
   },
   "peerDependencies": {
     "apollo-server-koa": ">=2.3.3 <3"

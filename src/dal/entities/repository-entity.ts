@@ -4,8 +4,8 @@ export interface RepositoryEntity {
     deleted: boolean;
     createdBy?: string;
     lastUpdatedBy?: string;
-    creationDate: object;
-    lastUpdateDate: object;
+    creationDate: Date;
+    lastUpdateDate: Date;
     dataVersion: number;
     realityId: number;
     classification?: string;
@@ -17,8 +17,8 @@ const schema = joi.object().keys({
     deleted: joi.boolean().required(),
     createdBy: joi.string(),
     lastUpdatedBy: joi.string(),
-    creationDate: joi.object().required(),
-    lastUpdateDate: joi.object().required(),
+    creationDate: joi.date().required(),
+    lastUpdateDate: joi.date().required(),
     dataVersion: joi.number().required(),
     realityId: joi.number().required(),
     classification: joi.string(),
