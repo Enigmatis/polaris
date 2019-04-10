@@ -22,7 +22,7 @@ describe('filter-soft-delete tests', () => {
             info,
             result: { deleted: true },
         };
-        expect(SoftDeleteFilter.shouldBeReturned(middlewareParams)).toBe(false);
+        expect(SoftDeleteFilter.shouldBeReturned(middlewareParams.result)).toBe(false);
     });
 
     test('not deleted entity should be returned', () => {

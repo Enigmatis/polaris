@@ -17,7 +17,7 @@ import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
 
 export interface GraphQLServer {
-    start(): void;
+    start(app?: Koa<any, {}>): void;
 }
 
 export type contextCreator = (ctx: Koa.Context) => object;
@@ -54,24 +54,29 @@ export class PolarisGraphQLServer implements GraphQLServer {
         this.app.use(koaBody());
     }
 
-    start(app = this.app) {
-        if (this.polarisProperties.endpoint) {
-            this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
-        } else {
-            this.server.applyMiddleware({ app });
-        }
-        const port = this.polarisProperties.port;
-        this.httpServer = app.listen(port, () => {
-            this.polarisLogger.info(
-                `🚀 Server ready at http://localhost:${port}${this.server.graphqlPath}`,
-            );
-            this.polarisLogger.info(
-                `🚀 Subscriptions ready at ws://localhost:${port}${this.server.subscriptionsPath}`,
-            );
+    async start(app = this.app) {
+        return new Promise(resolve => {
+            if (this.polarisProperties.endpoint) {
+                this.server.applyMiddleware({ app, path: this.polarisProperties.endpoint });
+            } else {
+                this.server.applyMiddleware({ app });
+            }
+            const port = this.polarisProperties.port;
+            this.httpServer = app.listen(port, () => {
+                this.polarisLogger.info(
+                    `🚀 Server ready at http://localhost:${port}${this.server.graphqlPath}`,
+                );
+                this.polarisLogger.info(
+                    `🚀 Subscriptions ready at ws://localhost:${port}${
+                        this.server.subscriptionsPath
+                    }`,
+                );
+                resolve();
+            });
+            if (this.polarisProperties.includeSubscription) {
+                this.server.installSubscriptionHandlers(this.httpServer);
+            }
         });
-        if (this.polarisProperties.includeSubscription) {
-            this.server.installSubscriptionHandlers(this.httpServer);
-        }
     }
 
     stop() {
