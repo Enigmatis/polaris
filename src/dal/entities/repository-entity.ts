@@ -1,11 +1,11 @@
 import * as joi from 'joi';
 export interface RepositoryEntity {
-    id: string;
+    _id: object;
     deleted: boolean;
     createdBy?: string;
     lastUpdatedBy?: string;
-    creationDate: string;
-    lastUpdateDate: string;
+    creationDate: Date;
+    lastUpdateDate: Date;
     dataVersion: number;
     realityId: number;
     classification?: string;
@@ -17,8 +17,8 @@ const schema = joi.object().keys({
     deleted: joi.boolean().required(),
     createdBy: joi.string(),
     lastUpdatedBy: joi.string(),
-    creationDate: joi.object().required(),
-    lastUpdateDate: joi.object().required(),
+    creationDate: joi.date().required(),
+    lastUpdateDate: joi.date().required(),
     dataVersion: joi.number().required(),
     realityId: joi.number().required(),
     classification: joi.string(),

@@ -1,0 +1,11 @@
+{
+  "port": 4444,
+  "endpoint": "/test",
+
+  "applicationId": "p01aris-example",
+  "applicationName": "polaris-example",
+  "repositoryVersion": "0.1",
+  "environment": "int",
+  "component": "compo",
+  "includeSubscription": true
+}

@@ -14,7 +14,10 @@ export class FilterExecutor {
 
     executeFilters(params: ResponseMiddlewareParams): any {
         const hasRoot: boolean = !!params.root;
-        return hasRoot ? this.filterSubEntity(params) : this.filterRootEntities(params);
+        return (
+            params.result &&
+            (hasRoot ? this.filterSubEntity(params) : this.filterRootEntities(params))
+        );
     }
 
     filterRootEntities(params: ResponseMiddlewareParams): any[] {
@@ -31,7 +34,15 @@ export class FilterExecutor {
                     ),
             );
         } else {
-            return this.shouldFilterEntity(result._doc, false) || result._doc;
+            return (
+                this.shouldFilterEntity(
+                    {
+                        context: params.context,
+                        result: result._doc,
+                    },
+                    false,
+                ) || result._doc
+            );
         }
     }
 
