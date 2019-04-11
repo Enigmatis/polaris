@@ -25,7 +25,7 @@ describe('filter resolver tests', () => {
         const root = undefined;
         test('data version filter off', () => {
             const context: PolarisContext = {
-                headers: { dataVersion: 3 },
+                headers: { dataVersion: 3, realityId: 0 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
             };

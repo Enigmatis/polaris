@@ -1,3 +1,24 @@
+# [2.8.0](https://github.com/Enigmatis/polaris/compare/v2.7.0...v2.8.0) (2019-04-10)
+
+
+### Bug Fixes
+
+* **filter:** filter executor now supports non array object result ([f928c40](https://github.com/Enigmatis/polaris/commit/f928c40))
+* **server:** get app in start function also in interface ([ab6d63c](https://github.com/Enigmatis/polaris/commit/ab6d63c))
+
+
+### Features
+
+* **server:** server.start is async so user can await untill the start ([84883f2](https://github.com/Enigmatis/polaris/commit/84883f2))
+
+# [2.7.0](https://github.com/Enigmatis/polaris/compare/v2.6.0...v2.7.0) (2019-04-09)
+
+
+### Features
+
+* **headers:** invalid error returning graphql error to the user ([2436733](https://github.com/Enigmatis/polaris/commit/2436733)), closes [#44](https://github.com/Enigmatis/polaris/issues/44)
+* **schema:** allow to use gql schema instead of regular string ([407211b](https://github.com/Enigmatis/polaris/commit/407211b))
+
 # [2.6.0](https://github.com/Enigmatis/polaris/compare/v2.5.0...v2.6.0) (2019-04-04)
 
 

@@ -1,4 +1,5 @@
 import { isRepositoryEntity } from '../dal/entities/repository-entity';
+import { PolarisContext } from '../server/polaris-context';
 import { MiddlewaresConfiguration, ResponseMiddlewareParams } from './middleware';
 import { DataVersionFilter } from './middleware-activation-condition/filter-data-version';
 import { RealityIdFilter } from './middleware-activation-condition/filter-realities';
@@ -12,7 +13,7 @@ export class FilterExecutor {
     }
 
     executeFilters(params: ResponseMiddlewareParams): any {
-        const hasRoot: boolean = params.root ? true : false;
+        const hasRoot: boolean = !!params.root;
         return (
             params.result &&
             (hasRoot ? this.filterSubEntity(params) : this.filterRootEntities(params))
@@ -20,29 +21,47 @@ export class FilterExecutor {
     }
 
     filterRootEntities(params: ResponseMiddlewareParams): any[] {
-        const entities: any[] = params.result;
-        for (let i = 0; i < entities.length; i++) {
-            params.result = entities[i]._doc;
-            if (this.shouldFilterEntity(params, false)) {
-                entities.splice(i, 1);
-            }
+        const { result } = params;
+        if (Array.isArray(result)) {
+            return result.filter(
+                entity =>
+                    !this.shouldFilterEntity(
+                        {
+                            context: params.context,
+                            result: entity._doc,
+                        },
+                        false,
+                    ),
+            );
+        } else {
+            return (
+                this.shouldFilterEntity(
+                    {
+                        context: params.context,
+                        result: result._doc,
+                    },
+                    false,
+                ) || result._doc
+            );
         }
-        return entities;
     }
 
     filterSubEntity(params: ResponseMiddlewareParams): any {
         return this.shouldFilterEntity(params, true) ? null : params.result;
     }
 
-    shouldFilterEntity(params: ResponseMiddlewareParams, isSubEntity: boolean): boolean {
+    shouldFilterEntity(
+        { context, result }: { context: PolarisContext; result: any },
+        isSubEntity: boolean,
+    ): boolean {
         return (
-            isRepositoryEntity(params.result) &&
+            isRepositoryEntity(result) &&
             !(
-                SoftDeleteFilter.shouldBeReturned(params) &&
+                SoftDeleteFilter.shouldBeReturned(result) &&
                 (!this.middlewaresConfig.allowDataVersionMiddleware ||
-                    DataVersionFilter.shouldBeReturned(params, isSubEntity)) &&
+                    DataVersionFilter.shouldBeReturned({ context, result }, isSubEntity)) &&
                 (!this.middlewaresConfig.allowRealityMiddleware ||
-                    RealityIdFilter.shouldBeReturned(params, isSubEntity))
+                    RealityIdFilter.shouldBeReturned({ context, result }, isSubEntity))
             )
         );
     }

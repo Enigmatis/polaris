@@ -14,7 +14,7 @@ export function makeExecutablePolarisSchema<TContext = any>({
     parseOptions,
     inheritResolversFromInterfaces,
 }: IExecutableSchemaDefinition<TContext>): GraphQLSchema {
-    const typeDefsWithCommonEntity = `${typeDefs}${CommonEntityInterface}`;
+    const typeDefsWithCommonEntity = [...(typeDefs as []), CommonEntityInterface];
     return makeExecutableSchema({
         typeDefs: typeDefsWithCommonEntity,
         resolvers,
