@@ -5,5 +5,6 @@
     "logstashPort": 12345
   }],
   "writeToConsole": true,
+  "timezone": "Israel",
   "writeFullMessageToConsole": false
 }
