@@ -4,7 +4,7 @@
 
   "applicationId": "p01aris-example",
   "applicationName": "polaris-example",
-  "repositoryVersion": "0.1",
+  "version": "0.1",
   "environment": "int",
   "component": "compo",
   "includeSubscription": true
