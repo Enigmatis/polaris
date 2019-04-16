@@ -1,6 +1,4 @@
 module.exports = {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
     clearMocks : true,
     globalSetup:'./test/integration-tests/test-server/setup.ts',
     globalTeardown:'./test/integration-tests/test-server/teardown.ts',
@@ -8,6 +6,8 @@ module.exports = {
         "ts",
         "js",
     ],
+    preset: 'ts-jest',
+    testEnvironment: 'node',
     testMatch: [
         "**/*.test.ts"
     ],
