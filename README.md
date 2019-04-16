@@ -1,6 +1,9 @@
+![logo](static/img/polaris-iconsmall.png) 
 # Polaris
+
 [![Build Status](https://travis-ci.com/Enigmatis/polaris.svg?branch=master)](https://travis-ci.com/Enigmatis/polaris)
 [![NPM version](https://img.shields.io/npm/v/@enigmatis/polaris.svg?style=flat-square)](https://www.npmjs.com/package/@enigmatis/polaris)
+
 A node.js express engine for creating GraphQL server easily, with base standardization and common types
 
 ## Getting Started
