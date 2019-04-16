@@ -17,7 +17,7 @@ export class TestServerConfig implements PolarisServerConfig {
         this.applicationLogProperties = {
             id: polarisPropertiesPath.applicationId,
             name: polarisPropertiesPath.applicationName,
-            repositoryVersion: polarisPropertiesPath.repositoryVersion,
+            version: polarisPropertiesPath.version,
             environment: polarisPropertiesPath.environment,
             component: polarisPropertiesPath.component,
         };

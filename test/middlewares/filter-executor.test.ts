@@ -34,6 +34,7 @@ const repositoryAndNotRepositoryEntities: any = [
     },
     { title: 'not a repository entity' },
 ];
+const emptyResult: any = [];
 describe('filter resolver tests', () => {
     describe('not a sub entity', () => {
         const root = undefined;
@@ -99,6 +100,25 @@ describe('filter resolver tests', () => {
             expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(
                 repositoryAndNotRepositoryEntities,
             );
+        });
+        test('empty result', () => {
+            const context: PolarisContext = {
+                headers: { realityId: 1 },
+                body: {},
+                irrelevantEntities: new IrrelevantEntitiesContainer(),
+            };
+            const middlewareParams: ResponseMiddlewareParams = {
+                root,
+                args,
+                context,
+                info,
+                result: emptyResult,
+            };
+            const filterExecutor = new FilterExecutor({
+                allowRealityMiddleware: false,
+                allowDataVersionMiddleware: false,
+            });
+            expect(filterExecutor.filterRootEntities(middlewareParams)).toBeUndefined();
         });
     });
     describe('sub entity', () => {
