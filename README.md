@@ -1,4 +1,4 @@
-![logo](static/img/polaris-iconsmall.png) 
+![logo](static/img/polaris-iconsmall.png?raw=true) 
 # Polaris
 
 [![Build Status](https://travis-ci.com/Enigmatis/polaris.svg?branch=master)](https://travis-ci.com/Enigmatis/polaris)
