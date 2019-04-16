@@ -18,7 +18,6 @@ export function makeExecutablePolarisSchema<TContext = any>({
     const typeDefsWithCommonEntity = mergeTypes([...(typeDefs as []), CommonEntityInterface], {
         all: true,
     });
-    // const typeDefsWithCommonEntity = [...(typeDefs as []), CommonEntityInterface];
     return makeExecutableSchema({
         typeDefs: typeDefsWithCommonEntity,
         resolvers,
