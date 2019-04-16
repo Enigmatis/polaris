@@ -1,6 +1,7 @@
 import { initConnection } from '@enigmatis/mongo-driver';
 import { config } from 'dotenv';
 import * as mongoose from 'mongoose';
+import { prepareDb } from './db-preparation';
 import { logger, server } from './server';
 async function init() {
     config();
@@ -10,6 +11,7 @@ async function init() {
 
     await initConnection({ connectionString, waitUntilReconnectInMs: 5000 }, logger as any);
     await mongoose.connection.db.dropDatabase();
+    await prepareDb();
     server.start();
 }
 
