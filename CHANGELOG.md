@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/Enigmatis/polaris/compare/v2.8.1...v2.9.0) (2019-04-18)
+
+
+### Features
+
+* changed how we inject the schema to polaris ([d57ca58](https://github.com/Enigmatis/polaris/commit/d57ca58))
+
 ## [2.8.1](https://github.com/Enigmatis/polaris/compare/v2.8.0...v2.8.1) (2019-04-17)
 
 
