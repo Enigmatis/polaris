@@ -3,7 +3,7 @@ import { firstRealityTitles } from '../test-server/db-preparation';
 
 const headers = { 'reality-id': 1 };
 
-describe.skip('query tests', () => {
+describe('query tests', () => {
     test('fetch single book', async () => {
         const queryBook = `query bookById ($bookId:String!) {bookById(bookId:$bookId){title}}`;
         for (let i = 0; i < firstRealityTitles.length; i++) {

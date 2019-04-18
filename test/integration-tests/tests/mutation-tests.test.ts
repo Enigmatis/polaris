@@ -10,7 +10,7 @@ const deleteBookMutation = `mutation deleteBook ($bookId:String!) {
          deleteBook(bookId: $bookId){ title }}`;
 const defaultBookVariables = (title: string, id: string) => ({ title, id });
 
-describe.skip('mutation tests', () => {
+describe('mutation tests', () => {
     test('create book, book is created ', async () => {
         const id = '5';
         const title = 'book';

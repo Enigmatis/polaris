@@ -1,5 +1,6 @@
 import { buildSchema, GraphQLSchema } from 'graphql';
 import { IExecutableSchemaDefinition, makeExecutableSchema } from 'graphql-tools';
+import { mergeTypes } from 'merge-graphql-schemas';
 import { CommonEntityInterface } from '../common/common-entity-interface';
 
 export function makeExecutablePolarisSchema<TContext = any>({
@@ -14,7 +15,9 @@ export function makeExecutablePolarisSchema<TContext = any>({
     parseOptions,
     inheritResolversFromInterfaces,
 }: IExecutableSchemaDefinition<TContext>): GraphQLSchema {
-    const typeDefsWithCommonEntity = [...(typeDefs as []), CommonEntityInterface];
+    const typeDefsWithCommonEntity = mergeTypes([...(typeDefs as []), CommonEntityInterface], {
+        all: true,
+    });
     return makeExecutableSchema({
         typeDefs: typeDefsWithCommonEntity,
         resolvers,

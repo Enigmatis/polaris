@@ -7,8 +7,19 @@ import { PolarisContext } from '../../src/server/polaris-context';
 const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
 const args = {};
 const repositoryEntity: any = {
-    _doc: {
-        deleted: false,
+    deleted: false,
+    _id: { id: '5c5bf81a83e6e21ff08710ed' },
+    title: 'zero',
+    author: 'BiKoV',
+    creationDate: {},
+    lastUpdateDate: {},
+    realityId: 0,
+    dataVersion: 2,
+};
+const onlyRepositoryEntities: any = [repositoryEntity];
+const repositoryAndNotRepositoryEntities: any = [
+    repositoryEntity,
+    {
         _id: { id: '5c5bf81a83e6e21ff08710ed' },
         title: 'zero',
         author: 'BiKoV',
@@ -17,25 +28,10 @@ const repositoryEntity: any = {
         realityId: 0,
         dataVersion: 2,
     },
-};
-const onlyRepositoryEntities: any = [repositoryEntity];
-const repositoryAndNotRepositoryEntities: any = [
-    repositoryEntity,
-    {
-        _doc: {
-            _id: { id: '5c5bf81a83e6e21ff08710ed' },
-            title: 'zero',
-            author: 'BiKoV',
-            creationDate: {},
-            lastUpdateDate: {},
-            realityId: 0,
-            dataVersion: 2,
-        },
-    },
     { title: 'not a repository entity' },
 ];
 const emptyResult: any = [];
-describe.skip('filter resolver tests', () => {
+describe('filter resolver tests', () => {
     describe('not a sub entity', () => {
         const root = undefined;
         test('data version filter off', () => {
@@ -56,7 +52,7 @@ describe.skip('filter resolver tests', () => {
                 allowRealityMiddleware: true,
             });
             expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(
-                onlyRepositoryEntities[0],
+                onlyRepositoryEntities,
             );
         });
         test('reality id filter off', () => {
@@ -77,7 +73,7 @@ describe.skip('filter resolver tests', () => {
                 allowDataVersionMiddleware: true,
             });
             expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(
-                onlyRepositoryEntities[0],
+                onlyRepositoryEntities,
             );
         });
         test('combined repository entities and not repository entities', () => {
@@ -118,7 +114,7 @@ describe.skip('filter resolver tests', () => {
                 allowRealityMiddleware: false,
                 allowDataVersionMiddleware: false,
             });
-            expect(filterExecutor.filterRootEntities(middlewareParams)).toBeUndefined();
+            expect(filterExecutor.filterRootEntities(middlewareParams)).toEqual(emptyResult);
         });
     });
     describe('sub entity', () => {
@@ -154,14 +150,14 @@ describe.skip('filter resolver tests', () => {
                 args,
                 context,
                 info,
-                result: onlyRepositoryEntities[0]._doc,
+                result: onlyRepositoryEntities[0],
             };
             const filterExecutor = new FilterExecutor({
                 allowRealityMiddleware: false,
                 allowDataVersionMiddleware: true,
             });
             expect(filterExecutor.filterSubEntity(middlewareParams)).toEqual(
-                onlyRepositoryEntities[0]._doc,
+                onlyRepositoryEntities[0],
             );
         });
     });
