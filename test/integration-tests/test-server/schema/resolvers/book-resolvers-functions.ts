@@ -45,7 +45,7 @@ export const bookResolver = async (
 };
 export const bookByIdResolver = async (
     parent: object | null,
-    {bookId}:{bookId:string},
+    { bookId }: { bookId: string },
     context: PolarisContext,
 ) => {
     const { realityId } = context.headers;

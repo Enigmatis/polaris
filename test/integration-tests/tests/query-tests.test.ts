@@ -1,4 +1,3 @@
-import { jestPreset } from 'ts-jest';
 import { graphqlRequest } from '../test-server/client';
 import { titles } from '../test-server/db-preparation';
 

@@ -4,7 +4,7 @@ const realityIdHeader = (realityId: number) => ({ headers: { realityId } });
 export const prepareDb = async () => {
     const books = [];
     for (let i = 0; i < titles.length; i++) {
-        books.push({ author: 'chen', title: titles[i], id: i.toString() });
+        books.push({ author: 'chen', title: titles[i], id: i });
     }
     await BookModelPerReality(realityIdHeader(1)).create(books);
 };
