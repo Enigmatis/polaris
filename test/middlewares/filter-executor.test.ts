@@ -35,7 +35,7 @@ const repositoryAndNotRepositoryEntities: any = [
     { title: 'not a repository entity' },
 ];
 const emptyResult: any = [];
-describe('filter resolver tests', () => {
+describe.skip('filter resolver tests', () => {
     describe('not a sub entity', () => {
         const root = undefined;
         test('data version filter off', () => {

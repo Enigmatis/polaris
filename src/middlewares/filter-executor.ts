@@ -34,7 +34,7 @@ export class FilterExecutor {
                       )
                     : entity,
             );
-            return filteredResult.length <= 1 ? filteredResult[0] : filteredResult;
+            return filteredResult.length < 1 ? filteredResult[0] : filteredResult;
         } else {
             return (
                 this.shouldFilterEntity(
