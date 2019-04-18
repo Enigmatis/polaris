@@ -23,27 +23,25 @@ export class FilterExecutor {
     filterRootEntities(params: ResponseMiddlewareParams): any[] {
         const { result } = params;
         if (Array.isArray(result)) {
-            const filteredResult = result.filter(entity =>
-                entity._doc
-                    ? !this.shouldFilterEntity(
-                          {
-                              context: params.context,
-                              result: entity._doc,
-                          },
-                          false,
-                      )
-                    : entity,
+            return result.filter(
+                entity =>
+                    !this.shouldFilterEntity(
+                        {
+                            context: params.context,
+                            result: entity,
+                        },
+                        false,
+                    ),
             );
-            return filteredResult.length <= 1 ? filteredResult[0] : filteredResult;
         } else {
             return (
                 this.shouldFilterEntity(
                     {
                         context: params.context,
-                        result: result._doc,
+                        result,
                     },
                     false,
-                ) || result._doc
+                ) || result
             );
         }
     }
