@@ -11,14 +11,14 @@ const args = {};
 const irrelevantEntities = ['1234', '2345'];
 const resolverResult = [
     {
-            deleted: false,
-            _id: { id: '5c5bf81a83e6e21ff08710ed' },
-            title: 'zero',
-            author: 'Arik',
-            creationDate: {},
-            lastUpdateDate: {},
-            realityId: 0,
-            dataVersion: 2,
+        deleted: false,
+        _id: { id: '5c5bf81a83e6e21ff08710ed' },
+        title: 'zero',
+        author: 'Arik',
+        creationDate: {},
+        lastUpdateDate: {},
+        realityId: 0,
+        dataVersion: 2,
     },
 ];
 const result = new QueryIrrelevantResult(resolverResult, irrelevantEntities);
