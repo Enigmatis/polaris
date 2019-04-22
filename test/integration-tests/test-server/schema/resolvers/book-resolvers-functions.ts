@@ -38,7 +38,9 @@ export const bookResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header');
     } else {
-        return BookModelPerReality(context).find({});
+        return BookModelPerReality(context)
+            .find({})
+            .lean();
     }
 };
 export const bookByIdResolver = async (
@@ -50,7 +52,9 @@ export const bookByIdResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header');
     } else {
-        return BookModelPerReality(context).find({ id: bookId });
+        return BookModelPerReality(context)
+            .findOne({ id: bookId })
+            .lean();
     }
 };
 export const bookStartsWithResolver = async (
