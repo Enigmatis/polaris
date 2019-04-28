@@ -17,7 +17,10 @@ import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
 
 export interface GraphQLServer {
+    server: ApolloServer;
+
     start(app?: Koa<any, {}>): void;
+
     stop(): void;
 }
 
@@ -25,8 +28,8 @@ export type contextCreator = (ctx: Koa.Context) => object;
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
+    server: ApolloServer;
     private app: Koa;
-    private server: ApolloServer;
     private polarisProperties: PolarisProperties;
     private customContexts: contextCreator[] = [];
     private httpServer?: http.Server;
