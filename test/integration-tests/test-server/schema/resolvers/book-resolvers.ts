@@ -1,4 +1,5 @@
 import {
+    authorResolver,
     bookByIdResolver,
     bookResolver,
     bookStartsWithResolver,
@@ -15,6 +16,7 @@ export const resolvers = {
         booksStartsWith: bookStartsWithResolver,
         bookById: bookByIdResolver,
         deletedBookById: deletedBookByIdResolver,
+        authors: authorResolver,
     },
     Mutation: {
         createBook: createBookResolver,

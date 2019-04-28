@@ -1,6 +1,7 @@
 import { QueryWithIrrelevant } from '@enigmatis/mongo-driver';
 import { UserInputError } from 'apollo-server-koa';
 import { PolarisContext } from '../../../../../src/server/polaris-context';
+import { AuthorModelPerReality } from '../../dal/author-model';
 import { BookModelPerReality } from '../../dal/book-model';
 import { Book } from '../definitions/book';
 import { BOOK_UPDATED } from './subscription-event-names';
@@ -39,6 +40,20 @@ export const bookResolver = async (
         throw new UserInputError('please provide reality-id header');
     } else {
         return BookModelPerReality(context)
+            .find({})
+            .lean();
+    }
+};
+export const authorResolver = async (
+    parent: object | null,
+    query: object,
+    context: PolarisContext,
+) => {
+    const { realityId } = context.headers;
+    if (!Number.isInteger(realityId as any)) {
+        throw new UserInputError('please provide reality-id header');
+    } else {
+        return AuthorModelPerReality(context)
             .find({})
             .lean();
     }

@@ -3,4 +3,5 @@ export const Query = `type Query {
                         bookById(bookId:String!): Book
                         deletedBookById(bookId:String!): Book
                         booksStartsWith(startsWith:String!): [Book]
+                        authors: [Author]
                       }`;
