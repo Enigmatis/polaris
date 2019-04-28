@@ -1,3 +1,10 @@
+# [2.10.0](https://github.com/Enigmatis/polaris/compare/v2.9.1...v2.10.0) (2019-04-28)
+
+
+### Features
+
+* **server:** export apollo server so users can test their logic ([211dfa8](https://github.com/Enigmatis/polaris/commit/211dfa8))
+
 ## [2.9.1](https://github.com/Enigmatis/polaris/compare/v2.9.0...v2.9.1) (2019-04-28)
 
 
