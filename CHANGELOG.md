@@ -1,3 +1,10 @@
+## [2.9.1](https://github.com/Enigmatis/polaris/compare/v2.9.0...v2.9.1) (2019-04-28)
+
+
+### Bug Fixes
+
+* **middlewares:** dataversion ([27d646a](https://github.com/Enigmatis/polaris/commit/27d646a))
+
 # [2.9.0](https://github.com/Enigmatis/polaris/compare/v2.8.1...v2.9.0) (2019-04-18)
 
 
