@@ -1,5 +1,4 @@
 import { PolarisContext } from '../../server/polaris-context';
-import { ResponseMiddlewareParams } from '../middleware';
 import { MiddlewareCondition } from './filter-condition';
 
 class FilterDataVersion implements MiddlewareCondition {
