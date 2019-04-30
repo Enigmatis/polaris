@@ -42,23 +42,6 @@ describe('reality tests', () => {
         );
     });
 
-    test.skip('fetch sub entities from specific reality without linked oper entities', async () => {
-        const queryBook = `query{books{realityId author{realityId}}}`;
-        const realityId: number = 3;
-        const response: any = await graphQLRequest(queryBook, realityIdHeader(realityId));
-        const responseRealities = [];
-        const responseSubRealities = [];
-        for (const book of response.books) {
-            responseRealities.push(book.realityId);
-            responseSubRealities.push(book.author.realityId);
-        }
-        const uniqueResponseRealities = [...new Set(responseRealities)];
-        const uniqueResponseSubRealities = [...new Set(responseSubRealities)];
-        expect(uniqueResponseRealities.length).toBe(1);
-        expect(uniqueResponseRealities).toContain(realityId);
-        expect(uniqueResponseSubRealities).not.toContain(0);
-    });
-
     test.skip('fetch sub entities from specific reality with linked oper entities', async () => {
         const queryBook = `query{books{realityId author{realityId}}}`;
         const realityId: number = 3;
