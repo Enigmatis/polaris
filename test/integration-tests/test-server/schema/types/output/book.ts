@@ -1,5 +1,6 @@
 export const Book = `type Book implements CommonEntity {
-                        id: ID!
+                        testId: String,
+                        id: ID!,
                         creationDate: String,
                         lastUpdateDate: String,
                         dataVersion: Int!,

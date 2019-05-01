@@ -2,7 +2,7 @@ import { getModelCreator, RepositoryModel } from '@enigmatis/mongo-driver';
 import { Schema } from 'mongoose';
 
 export interface Book extends RepositoryModel {
-    id: string;
+    testId: string;
     title: string;
     author: string;
     otherBook: Book;
@@ -10,7 +10,7 @@ export interface Book extends RepositoryModel {
 }
 
 export const bookSchema: Schema = new Schema({
-    id: String,
+    testId: String,
     title: String,
     author: String,
     otherBook: Object,
