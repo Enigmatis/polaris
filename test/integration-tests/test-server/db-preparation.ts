@@ -7,8 +7,11 @@ export const firstRealityTitles: string[] = ['first', 'second', 'third', 'fourth
 const secondRealityTitles: string[] = ['1st', '2nd'];
 
 export const prepareDb = async () => {
-    const author = { id: 0, firstName: 'Foo', lastName: 'Bar' };
-    await AuthorModelPerReality(realityIdHeader(0)).create(author);
+    const author = await AuthorModelPerReality(realityIdHeader(0)).create({
+        id: 0,
+        firstName: 'Foo',
+        lastName: 'Bar',
+    });
 
     await BookModelPerReality(realityIdHeader(1)).create(
         await generateBookArrayWithIds(firstRealityTitles),

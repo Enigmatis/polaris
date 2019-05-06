@@ -1,6 +1,6 @@
-import { getModelCreator, RepositoryModel } from '@enigmatis/mongo-driver';
+import { getModelCreator, RepositoryModel, SchemaCreator } from '@enigmatis/mongo-driver';
 import { Schema } from 'mongoose';
-import { Author, authorSchema } from './author-model';
+import { Author } from './author-model';
 
 export interface Book extends RepositoryModel {
     id: string;
@@ -9,11 +9,16 @@ export interface Book extends RepositoryModel {
     dataVersion: number;
 }
 
-export const bookSchema: Schema = new Schema({
-    id: String,
-    title: String,
-    author: authorSchema,
-    dataVersion: Number,
-});
+export const bookSchema: SchemaCreator = refNameCreator => {
+    return new Schema({
+        id: String,
+        title: String,
+        author: {
+            type: Schema.Types.ObjectId,
+            ref: refNameCreator('author'),
+        },
+        dataVersion: Number,
+    });
+};
 
 export const BookModelPerReality = getModelCreator<Book>('book', bookSchema);
