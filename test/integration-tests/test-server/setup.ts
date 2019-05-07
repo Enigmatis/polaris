@@ -1,8 +1,9 @@
 import { initConnection } from '@enigmatis/mongo-driver';
 import { config } from 'dotenv';
 import * as mongoose from 'mongoose';
-import { prepareDb } from './db-preparation';
+import { prepareDb } from './db-preparations';
 import { logger, server } from './server';
+
 async function init() {
     config();
     logger.debug('JEST global setup');

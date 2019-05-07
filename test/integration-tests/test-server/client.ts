@@ -10,7 +10,7 @@ export const graphqlRequest = async (data: string, headers: any, variables: any)
     return graphQLClient.request(data, variables);
 };
 
-export const graphqlRawRequest = async (data: string, headers: any, variables: any) => {
+export const graphqlRawRequest = async (data: string, headers: any, variables: any = undefined) => {
     const graphQLClient = new GraphQLClient(url, { headers });
     return graphQLClient.rawRequest(data, variables);
 };

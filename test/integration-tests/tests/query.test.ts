@@ -1,5 +1,5 @@
 import { graphqlRequest } from '../test-server/client';
-import { titles } from '../test-server/db-preparation';
+import { titles } from '../test-server/db-preparations';
 
 const headers = { 'reality-id': 1 };
 

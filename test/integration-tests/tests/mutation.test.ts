@@ -41,7 +41,7 @@ describe('mutation tests', () => {
         await graphqlRequest(createBookMutation, headers, {
             book: defaultBookVariables('book', id),
         });
-        await graphqlRequest(deleteBookMutation, headers, { bookId: id });
+        const result = await graphqlRequest(deleteBookMutation, headers, { bookId: id });
         const response: any = await graphqlRequest(findBookQuery, headers, { bookId: id });
         expect(response.bookById).toBeNull();
     });

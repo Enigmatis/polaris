@@ -1,4 +1,4 @@
-import { graphqlRawRequest } from '../test-server/client';
+import { graphqlRawRequest, graphqlRequest } from '../test-server/client';
 
 const headers = { 'reality-id': 1, 'data-version': 1 };
 
@@ -10,7 +10,7 @@ describe('irrelevant entities tests', () => {
             title
           }
         }`;
-        const { extensions }: any = await graphqlRawRequest(queryBook, headers, {});
+        const { extensions }: any = await graphqlRawRequest(queryBook, headers);
 
         expect(extensions.irrelevantEntities.booksStartsWith.length).toBe(2);
     });
@@ -26,7 +26,7 @@ describe('irrelevant entities tests', () => {
             title
           }
         }`;
-        const { extensions }: any = await graphqlRawRequest(queryBook, headers, {});
+        const { extensions }: any = await graphqlRawRequest(queryBook, headers);
 
         expect(extensions.irrelevantEntities.a.length).toBe(2);
         expect(extensions.irrelevantEntities.b.length).toBe(3);
@@ -38,7 +38,7 @@ describe('irrelevant entities tests', () => {
             title
           }
         }`;
-        const { data, extensions }: any = await graphqlRawRequest(queryBook, headers, {});
+        const { data, extensions }: any = await graphqlRawRequest(queryBook, headers);
         for (const entity of data.booksStartsWith) {
             expect(extensions.irrelevantEntities.booksStartsWith.includes(entity.id)).toBeFalsy();
         }
@@ -51,8 +51,31 @@ describe('irrelevant entities tests', () => {
             title
           }
         }`;
-        const { extensions }: any = await graphqlRawRequest(queryBook, { 'reality-id': 1 }, {});
+        const { extensions }: any = await graphqlRawRequest(queryBook, { 'reality-id': 1 });
 
         expect(extensions).not.toBeDefined();
     });
+
+    test.skip('deleted entity is in irrelevant entities', async () => {
+        const queryBookStartsWith =
+            'query{\n' +
+            '  booksStartsWith(startsWith:"f"){\n' +
+            '    testId\n' +
+            '    id\n' +
+            '  }\n' +
+            '}';
+
+        const deleteBookMutation = `mutation deleteBook ($bookId:String!) {
+         deleteBook(bookId: $bookId){ title }}`;
+
+        const result: any = await graphqlRequest(queryBookStartsWith, headers, {});
+        const idToDelete = result.booksStartsWith[0].testId;
+        const expectedIrrelevantId = result.booksStartsWith[0].id;
+        await graphqlRequest(deleteBookMutation, { 'reality-id': 1 }, { bookId: idToDelete });
+        const { data, extensions }: any = await graphqlRawRequest(queryBookStartsWith, headers);
+
+        expect(
+            extensions.irrelevantEntities.booksStartsWith.includes(expectedIrrelevantId),
+        ).toBeTruthy();
+    }, 300000);
 });
