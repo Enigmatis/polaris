@@ -31,7 +31,7 @@ export const prepareDb = async () => {
 const generateBookArrayWithIds = (titleArray: string[]) => {
     const books = [];
     for (let i = 0; i < titleArray.length; i++) {
-        books.push({ id: i, title: titleArray[i] });
+        books.push({ testId: i, title: titleArray[i], dataVersion: i + 1 });
     }
     return books;
 };

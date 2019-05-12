@@ -1,5 +1,6 @@
 export const BookInput = `input BookInput {
-                            id: ID!        
+                            id: ID,
+                            testId: String!,        
                             title: String,
                             author: AuthorInput,
                           },

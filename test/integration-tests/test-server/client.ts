@@ -7,6 +7,10 @@ export const url = `http://localhost:${polarisPropertiesPath.port}${
 
 export const graphQLRequest = async (data: string, headers: any, variables: any = undefined) => {
     const graphQLClient = new GraphQLClient(url, { headers });
-    const result = await graphQLClient.request(data, variables);
-    return result;
+    return graphQLClient.request(data, variables);
+};
+
+export const graphqlRawRequest = async (data: string, headers: any, variables: any = undefined) => {
+    const graphQLClient = new GraphQLClient(url, { headers });
+    return graphQLClient.rawRequest(data, variables);
 };

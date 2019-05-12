@@ -3,7 +3,7 @@ import { Schema } from 'mongoose';
 import { Author } from './author-model';
 
 export interface Book extends RepositoryModel {
-    id: string;
+    testId: string;
     title: string;
     author: Author;
     dataVersion: number;
@@ -11,7 +11,7 @@ export interface Book extends RepositoryModel {
 
 export const bookSchema: SchemaCreator = refNameCreator => {
     return new Schema({
-        id: String,
+        testId: String,
         title: String,
         author: {
             type: Schema.Types.ObjectId,

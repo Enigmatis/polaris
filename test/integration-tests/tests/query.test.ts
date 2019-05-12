@@ -1,5 +1,5 @@
 import { graphQLRequest } from '../test-server/client';
-import { firstRealityTitles } from '../test-server/db-preparation';
+import { firstRealityTitles } from '../test-server/db-preparations';
 
 const headers = { 'reality-id': 1 };
 
