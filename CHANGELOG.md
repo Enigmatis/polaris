@@ -1,3 +1,11 @@
+# [2.11.0](https://github.com/Enigmatis/polaris/compare/v2.10.0...v2.11.0) (2019-05-23)
+
+
+### Features
+
+* **scalars:** add date scalar ([7bed910](https://github.com/Enigmatis/polaris/commit/7bed910))
+* **scalars:** add date scalar ([1a7af81](https://github.com/Enigmatis/polaris/commit/1a7af81))
+
 # [2.10.0](https://github.com/Enigmatis/polaris/compare/v2.9.1...v2.10.0) (2019-04-28)
 
 

@@ -1,5 +1,6 @@
 export const AuthorInput = `input AuthorInput {
-                            id: ID!        
+                            id: ID!,
+                            testId: String!,
                             firstName: String,
                             lastName: String
                           },
