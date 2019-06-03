@@ -56,7 +56,7 @@ describe('irrelevant entities tests', () => {
         expect(extensions).not.toBeDefined();
     });
 
-    test.skip('deleted entity is in irrelevant entities', async () => {
+    test('deleted entity is in irrelevant entities', async () => {
         const queryBookStartsWith =
             'query{\n' +
             '  booksStartsWith(startsWith:"f"){\n' +
@@ -72,7 +72,7 @@ describe('irrelevant entities tests', () => {
         const idToDelete = result.booksStartsWith[0].testId;
         const expectedIrrelevantId = result.booksStartsWith[0].id;
         await graphqlRequest(deleteBookMutation, { 'reality-id': 1 }, { bookId: idToDelete });
-        const { data, extensions }: any = await graphqlRawRequest(queryBookStartsWith, headers);
+        const { extensions }: any = await graphqlRawRequest(queryBookStartsWith, headers);
 
         expect(
             extensions.irrelevantEntities.booksStartsWith.includes(expectedIrrelevantId),
