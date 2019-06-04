@@ -90,7 +90,7 @@
   "devDependencies": {
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.3.1",
-    "@enigmatis/mongo-driver": "^1.8.2",
+    "@enigmatis/mongo-driver": "^1.8.3",
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.8",
     "@types/cors": "^2.8.4",
@@ -107,7 +107,7 @@
     "mongoose": "^5.5.1",
     "prettier": "^1.17.0",
     "rimraf": "^2.6.3",
-    "semantic-release": "^15.13.12",
+    "semantic-release": "^15.13.14",
     "shx": "^0.3.2",
     "travis-deploy-once": "^5.0.11",
     "ts-jest": "^24.0.2",

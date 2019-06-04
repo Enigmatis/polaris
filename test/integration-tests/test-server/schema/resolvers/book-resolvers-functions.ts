@@ -26,7 +26,7 @@ export const updateBookResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header as number');
     } else {
-        return BookModelPerReality(context).update({ id: bookId }, update, { new: true });
+        return BookModelPerReality(context).update({ testId: bookId }, update, { new: true });
     }
 };
 export const bookResolver = async (
@@ -53,7 +53,7 @@ export const bookByIdResolver = async (
         throw new UserInputError('please provide reality-id header');
     } else {
         return BookModelPerReality(context)
-            .findOne({ id: bookId })
+            .findOne({ testId: bookId })
             .lean();
     }
 };
@@ -98,7 +98,7 @@ export const deletedBookByIdResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header');
     } else {
-        return BookModelPerReality(context).find({ id: bookId, deleted: true });
+        return BookModelPerReality(context).find({ testId: bookId, deleted: true });
     }
 };
 
@@ -111,6 +111,6 @@ export const deleteBookResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header as number');
     } else {
-        return BookModelPerReality(context).deleteOne({ id: bookId });
+        return BookModelPerReality(context).deleteOne({ testId: bookId });
     }
 };

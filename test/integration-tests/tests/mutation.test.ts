@@ -2,14 +2,14 @@ import { graphqlRequest } from '../test-server/client';
 import { finish, init } from '../test-server/run-test';
 
 const headers = { 'reality-id': 1 };
-const createBookMutation = `mutation createBook ($book:BookInput!) {createBook(book:$book){id}}`;
+const createBookMutation = `mutation createBook ($book:BookInput!) {createBook(book:$book){testId}}`;
 const updateBookMutation = `mutation updateBook ($bookId:String!, $update:UpdateBookInput) {
          updateBook(bookId: $bookId, update: $update){ title }}`;
 
 const findBookQuery = `query bookById ($bookId:String!) {bookById(bookId:$bookId){title}}`;
 const deleteBookMutation = `mutation deleteBook ($bookId:String!) {
          deleteBook(bookId: $bookId){ title }}`;
-const defaultBookVariables = (title: string, id: string) => ({ author: 'chen', title, id });
+const defaultBookVariables = (title: string, testId: string) => ({ author: 'chen', title, testId });
 
 beforeEach(() => {
     return init();
