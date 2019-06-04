@@ -15,12 +15,12 @@ const prepareDb = async (headers: PolarisRequestHeaders) => {
 
 const requestHeaders = { 'reality-id': 1 };
 
-beforeAll(async () => {
+beforeEach(async () => {
     await init();
     await prepareDb({ realityId: 1 });
 });
 
-afterAll(() => {
+afterEach(() => {
     return finish();
 });
 
