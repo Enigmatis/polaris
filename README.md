@@ -84,8 +84,8 @@ const {CommonEntities: {commonEntityInterface, upperCaseDirective}} = require('@
 const Book = `
     type Book implements CommonEntity {
         id: ID!
-        creationDate: String,
-        lastUpdateDate: String,
+        creationDate: Date,
+        lastUpdateDate: Date,
         dataVersion: Int!,
         title: String @upper,
         author: String
