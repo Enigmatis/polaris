@@ -27,6 +27,9 @@
       "never-prefix"
     ],
     "object-literal-sort-keys": false,
-    "no-implicit-dependencies": [true, "dev"]
+    "no-implicit-dependencies": [
+      true,
+      "dev"
+    ]
   }
 }

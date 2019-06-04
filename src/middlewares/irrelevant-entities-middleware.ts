@@ -11,6 +11,8 @@ export class IrrelevantEntitiesMiddleware implements Middleware {
     postResolve(params: ResponseMiddlewareParams): any {
         if (
             params.result &&
+            params.context &&
+            params.context.headers &&
             params.context.headers.dataVersion &&
             isIrrelevantEntitiesResponse(params.result)
         ) {
