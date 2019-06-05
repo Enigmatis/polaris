@@ -1,4 +1,5 @@
 import { graphQLRequest } from '../test-server/client';
+import { finish, init } from '../test-server/run-test';
 
 const headers = { 'reality-id': 1 };
 const createBookMutation = `mutation createBook ($book:BookInput!) {createBook(book:$book){testId}}`;
@@ -10,9 +11,17 @@ const deleteBookMutation = `mutation deleteBook ($bookId:String!) {
          deleteBook(bookId: $bookId){ title }}`;
 const defaultBookVariables = (title: string, testId: string) => ({ title, testId });
 
+beforeEach(() => {
+    return init();
+});
+
+afterEach(() => {
+    return finish();
+});
+
 describe('mutation tests', () => {
     test('create book, book is created ', async () => {
-        const id = '5';
+        const id = '1';
         const title = 'book';
         await graphQLRequest(createBookMutation, headers, {
             book: defaultBookVariables(title, id),
@@ -22,7 +31,7 @@ describe('mutation tests', () => {
         await graphQLRequest(deleteBookMutation, headers, { bookId: id });
     });
     test('update book, book is updated ', async () => {
-        const id = '6';
+        const id = '1';
         await graphQLRequest(createBookMutation, headers, {
             book: defaultBookVariables('book', id),
         });
@@ -37,7 +46,7 @@ describe('mutation tests', () => {
     });
 
     test('delete book, book is deleted ', async () => {
-        const id = '7';
+        const id = '1';
         await graphQLRequest(createBookMutation, headers, {
             book: defaultBookVariables('book', id),
         });

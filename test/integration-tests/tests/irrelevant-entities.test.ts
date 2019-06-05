@@ -1,6 +1,27 @@
+import { PolarisRequestHeaders } from '@enigmatis/utills';
 import { graphqlRawRequest, graphQLRequest } from '../test-server/client';
+import { BookModelPerReality } from '../test-server/dal/book-model';
+import { finish, init } from '../test-server/run-test';
+export const titles = ['first', 'second', 'third', 'fourth', 'fifth'];
 
-const headers = { 'reality-id': 1, 'data-version': 1 };
+const prepareDb = async (headers: PolarisRequestHeaders) => {
+    const books = [];
+    for (let i = 0; i < titles.length; i++) {
+        books.push({ title: titles[i], testId: i, dataVersion: i + 1 });
+    }
+    await BookModelPerReality({ headers }).create(books);
+};
+
+const requestHeaders = { 'reality-id': 1, 'data-version': 1 };
+
+beforeEach(async () => {
+    await init();
+    await prepareDb({ realityId: 1 });
+});
+
+afterEach(() => {
+    return finish();
+});
 
 describe('irrelevant entities tests', () => {
     test('2 irrelevant entities not starting with f', async () => {
@@ -10,7 +31,7 @@ describe('irrelevant entities tests', () => {
             title
           }
         }`;
-        const { extensions }: any = await graphqlRawRequest(queryBook, headers);
+        const { extensions }: any = await graphqlRawRequest(queryBook, requestHeaders);
 
         expect(extensions.irrelevantEntities.booksStartsWith.length).toBe(2);
     });
@@ -26,7 +47,7 @@ describe('irrelevant entities tests', () => {
             title
           }
         }`;
-        const { extensions }: any = await graphqlRawRequest(queryBook, headers);
+        const { extensions }: any = await graphqlRawRequest(queryBook, requestHeaders);
 
         expect(extensions.irrelevantEntities.a.length).toBe(2);
         expect(extensions.irrelevantEntities.b.length).toBe(3);
@@ -38,7 +59,7 @@ describe('irrelevant entities tests', () => {
             title
           }
         }`;
-        const { data, extensions }: any = await graphqlRawRequest(queryBook, headers);
+        const { data, extensions }: any = await graphqlRawRequest(queryBook, requestHeaders);
         for (const entity of data.booksStartsWith) {
             expect(extensions.irrelevantEntities.booksStartsWith.includes(entity.id)).toBeFalsy();
         }
@@ -56,7 +77,7 @@ describe('irrelevant entities tests', () => {
         expect(extensions).not.toBeDefined();
     });
 
-    test.skip('deleted entity is in irrelevant entities', async () => {
+    test('deleted entity is in irrelevant entities', async () => {
         const queryBookStartsWith =
             'query{\n' +
             '  booksStartsWith(startsWith:"f"){\n' +
@@ -68,14 +89,14 @@ describe('irrelevant entities tests', () => {
         const deleteBookMutation = `mutation deleteBook ($bookId:String!) {
          deleteBook(bookId: $bookId){ title }}`;
 
-        const result: any = await graphQLRequest(queryBookStartsWith, headers, {});
+        const result: any = await graphQLRequest(queryBookStartsWith, requestHeaders);
         const idToDelete = result.booksStartsWith[0].testId;
         const expectedIrrelevantId = result.booksStartsWith[0].id;
         await graphQLRequest(deleteBookMutation, { 'reality-id': 1 }, { bookId: idToDelete });
-        const { data, extensions }: any = await graphqlRawRequest(queryBookStartsWith, headers);
+        const { extensions }: any = await graphqlRawRequest(queryBookStartsWith, requestHeaders);
 
         expect(
             extensions.irrelevantEntities.booksStartsWith.includes(expectedIrrelevantId),
         ).toBeTruthy();
-    }, 300000);
+    });
 });

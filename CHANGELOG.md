@@ -1,3 +1,18 @@
+## [2.11.1](https://github.com/Enigmatis/polaris/compare/v2.11.0...v2.11.1) (2019-06-05)
+
+
+### Bug Fixes
+
+* fix integration tests travis ([d47835a](https://github.com/Enigmatis/polaris/commit/d47835a))
+* fix integration tests travis ([4c8c546](https://github.com/Enigmatis/polaris/commit/4c8c546))
+* merge ([0858c5e](https://github.com/Enigmatis/polaris/commit/0858c5e))
+* merge irrelevant int tests ([bc3f3ee](https://github.com/Enigmatis/polaris/commit/bc3f3ee))
+* merge irrelevant int tests ([62619ff](https://github.com/Enigmatis/polaris/commit/62619ff))
+* merge irrelevant int tests ([531ae66](https://github.com/Enigmatis/polaris/commit/531ae66))
+* polaris int test ([9f4e0d0](https://github.com/Enigmatis/polaris/commit/9f4e0d0))
+* remove skip from test ([efbe7b0](https://github.com/Enigmatis/polaris/commit/efbe7b0))
+* soft delete tests ([49490cf](https://github.com/Enigmatis/polaris/commit/49490cf))
+
 # [2.11.0](https://github.com/Enigmatis/polaris/compare/v2.10.0...v2.11.0) (2019-05-23)
 
 

@@ -1,16 +1,62 @@
 import { graphQLRequest } from '../test-server/client';
+import { AuthorModelPerReality } from '../test-server/dal/author-model';
+import { BookModelPerReality } from '../test-server/dal/book-model';
+import { finish, init } from '../test-server/run-test';
 
-const realityIdHeader = (realityId: any) => ({ 'reality-id': realityId });
+const dbRealityIdHeader = (realityId: any) => ({ realityId });
+const requestRealityIdHeader = (realityId: any) => ({ 'reality-id': realityId });
 const realityIdHeaderWithIncludeLinkedOper = (realityId: number) => ({
     'reality-id': realityId,
     'include-linked-oper': true,
+});
+
+export const firstRealityTitles: string[] = ['first', 'second', 'third', 'fourth', 'fifth'];
+const secondRealityTitles: string[] = ['1st', '2nd'];
+
+const prepareDb = async () => {
+    const author = await AuthorModelPerReality({ headers: dbRealityIdHeader(0) }).create({
+        id: 0,
+        firstName: 'Foo',
+        lastName: 'Bar',
+    });
+
+    await BookModelPerReality({ headers: dbRealityIdHeader(1) }).create(
+        await generateBookArrayWithIds(firstRealityTitles),
+    );
+
+    await BookModelPerReality({ headers: dbRealityIdHeader(2) }).create(
+        generateBookArrayWithIds(secondRealityTitles),
+    );
+
+    await BookModelPerReality({ headers: dbRealityIdHeader(3) }).create({
+        id: 0,
+        title: 'Shadow Realm',
+        author,
+    });
+};
+
+const generateBookArrayWithIds = (titleArray: string[]) => {
+    const books = [];
+    for (let i = 0; i < titleArray.length; i++) {
+        books.push({ testId: i, title: titleArray[i], dataVersion: i + 1 });
+    }
+    return books;
+};
+
+beforeEach(async () => {
+    await init();
+    await prepareDb();
+});
+
+afterEach(() => {
+    return finish();
 });
 
 describe('reality tests', () => {
     test('fetch entities from specific reality', async () => {
         const queryBook = `query{books{realityId}}`;
         const realityId: number = 1;
-        const response: any = await graphQLRequest(queryBook, realityIdHeader(realityId));
+        const response: any = await graphQLRequest(queryBook, requestRealityIdHeader(realityId));
         const responseRealities = [];
         for (const book of response.books) {
             responseRealities.push(book.realityId);
@@ -24,7 +70,7 @@ describe('reality tests', () => {
         const emptyResult: [] = [];
         const queryBook = `query{books{realityId}}`;
         const realityId: number = 999;
-        const response: any = await graphQLRequest(queryBook, realityIdHeader(realityId));
+        const response: any = await graphQLRequest(queryBook, requestRealityIdHeader(realityId));
         expect(response.books).toEqual(emptyResult);
     });
 
@@ -37,7 +83,7 @@ describe('reality tests', () => {
 
     test('fetch entities with invalid reality header', async () => {
         const queryBook = `query{books{title}}`;
-        await expect(graphQLRequest(queryBook, realityIdHeader('oops'))).rejects.toThrow(
+        await expect(graphQLRequest(queryBook, requestRealityIdHeader('oops'))).rejects.toThrow(
             'Unable to format headers',
         );
     });
