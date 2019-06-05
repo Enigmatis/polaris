@@ -42,7 +42,7 @@ describe('reality tests', () => {
         );
     });
 
-    test.skip('fetch sub entities from specific reality with linked oper entities', async () => {
+    test('fetch sub entities from specific reality with linked oper entities', async () => {
         const queryBook = `query{books{realityId author{realityId}}}`;
         const realityId: number = 3;
         const response: any = await graphQLRequest(

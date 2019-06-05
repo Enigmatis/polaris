@@ -1,6 +1,8 @@
 import { QueryWithIrrelevant } from '@enigmatis/mongo-driver';
+import { PolarisRequestHeaders } from '@enigmatis/utills';
 import { UserInputError } from 'apollo-server-koa';
 import { PolarisContext } from '../../../../../src/server/polaris-context';
+import { AuthorModelPerReality } from '../../dal/author-model';
 import { BookModelPerReality } from '../../dal/book-model';
 import { Book } from '../definitions/book';
 import { BOOK_UPDATED } from './subscription-event-names';
@@ -34,9 +36,15 @@ export const bookResolver = async (
     query: object,
     context: PolarisContext,
 ) => {
-    const { realityId } = context.headers;
+    const { realityId, includeLinkedOperation } = context.headers;
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header');
+    } else if (includeLinkedOperation) {
+        const realityZeroContext: PolarisContext = getRealityZeroContext(context);
+        return BookModelPerReality(context)
+            .find({})
+            .populate({ path: 'author', model: AuthorModelPerReality(realityZeroContext) })
+            .lean();
     } else {
         return BookModelPerReality(context)
             .find({})
@@ -114,3 +122,27 @@ export const deleteBookResolver = async (
         return BookModelPerReality(context).deleteOne({ testId: bookId });
     }
 };
+
+function getRealityZeroHeaders(headers: PolarisRequestHeaders): PolarisRequestHeaders {
+    return {
+        dataVersion: headers.dataVersion,
+        isSnapshot: headers.isSnapshot,
+        includeLinkedOperation: headers.includeLinkedOperation,
+        snapshotPageSize: headers.snapshotPageSize,
+        requestId: headers.requestId,
+        upn: headers.upn,
+        eventKind: headers.eventKind,
+        realityId: 0,
+        requestingSystemId: headers.requestingSystemId,
+        requestingSystemName: headers.requestingSystemName,
+    };
+}
+
+function getRealityZeroContext(context: PolarisContext): PolarisContext {
+    return {
+        headers: getRealityZeroHeaders(context.headers),
+        body: context.body,
+        irrelevantEntities: context.irrelevantEntities,
+        pubSub: context.pubSub,
+    };
+}

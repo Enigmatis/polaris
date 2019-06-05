@@ -2,13 +2,13 @@ import { getModelCreator, RepositoryModel } from '@enigmatis/mongo-driver';
 import { Schema } from 'mongoose';
 
 export interface Author extends RepositoryModel {
-    id: string;
+    testId: string;
     firstName: string;
     lastName: string;
 }
 
 export const authorSchema: Schema = new Schema({
-    id: String,
+    testId: String,
     firstName: String,
     lastName: String,
 });
