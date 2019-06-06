@@ -10,8 +10,7 @@ const realityIdHeaderWithIncludeLinkedOper = (realityId: number) => ({
     'include-linked-oper': true,
 });
 
-export const firstRealityTitles: string[] = ['first', 'second', 'third', 'fourth', 'fifth'];
-const secondRealityTitles: string[] = ['1st', '2nd'];
+export const titleArray: string[] = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 const prepareDb = async () => {
     const author = await AuthorModelPerReality({ headers: dbRealityIdHeader(0) }).create({
@@ -20,27 +19,17 @@ const prepareDb = async () => {
         lastName: 'Bar',
     });
 
-    await BookModelPerReality({ headers: dbRealityIdHeader(1) }).create(
-        await generateBookArrayWithIds(firstRealityTitles),
-    );
-
-    await BookModelPerReality({ headers: dbRealityIdHeader(2) }).create(
-        generateBookArrayWithIds(secondRealityTitles),
-    );
+    const books = [];
+    for (let i = 0; i < titleArray.length; i++) {
+        books.push({ testId: i, title: titleArray[i], dataVersion: i + 1 });
+    }
+    await BookModelPerReality({ headers: dbRealityIdHeader(1) }).create(books);
 
     await BookModelPerReality({ headers: dbRealityIdHeader(3) }).create({
         id: 0,
         title: 'Shadow Realm',
         author,
     });
-};
-
-const generateBookArrayWithIds = (titleArray: string[]) => {
-    const books = [];
-    for (let i = 0; i < titleArray.length; i++) {
-        books.push({ testId: i, title: titleArray[i], dataVersion: i + 1 });
-    }
-    return books;
 };
 
 beforeEach(async () => {
