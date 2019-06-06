@@ -1,7 +1,7 @@
-import {graphQLRequest} from '../test-server/client';
-import {AuthorModelPerReality} from '../test-server/dal/author-model';
-import {BookModelPerReality} from '../test-server/dal/book-model';
-import {finish, init} from '../test-server/run-test';
+import { graphQLRequest } from '../test-server/client';
+import { AuthorModelPerReality } from '../test-server/dal/author-model';
+import { BookModelPerReality } from '../test-server/dal/book-model';
+import { finish, init } from '../test-server/run-test';
 
 const dbRealityIdHeader = (realityId: any) => ({ realityId });
 const requestRealityIdHeader = (realityId: any) => ({ 'reality-id': realityId });
