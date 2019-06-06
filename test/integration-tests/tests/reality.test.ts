@@ -1,7 +1,7 @@
-import { graphQLRequest } from '../test-server/client';
-import { AuthorModelPerReality } from '../test-server/dal/author-model';
-import { BookModelPerReality } from '../test-server/dal/book-model';
-import { finish, init } from '../test-server/run-test';
+import {graphQLRequest} from '../test-server/client';
+import {AuthorModelPerReality} from '../test-server/dal/author-model';
+import {BookModelPerReality} from '../test-server/dal/book-model';
+import {finish, init} from '../test-server/run-test';
 
 const dbRealityIdHeader = (realityId: any) => ({ realityId });
 const requestRealityIdHeader = (realityId: any) => ({ 'reality-id': realityId });
@@ -13,10 +13,16 @@ const realityIdHeaderWithIncludeLinkedOper = (realityId: number) => ({
 export const titleArray: string[] = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 const prepareDb = async () => {
-    const author = await AuthorModelPerReality({ headers: dbRealityIdHeader(0) }).create({
-        id: 0,
+    const firstAuthor = await AuthorModelPerReality({ headers: dbRealityIdHeader(0) }).create({
+        testId: 0,
         firstName: 'Foo',
         lastName: 'Bar',
+    });
+
+    const secondAuthor = await AuthorModelPerReality({ headers: dbRealityIdHeader(2) }).create({
+        testId: 0,
+        firstName: 'Hello',
+        lastName: 'World',
     });
 
     const books = [];
@@ -26,9 +32,15 @@ const prepareDb = async () => {
     await BookModelPerReality({ headers: dbRealityIdHeader(1) }).create(books);
 
     await BookModelPerReality({ headers: dbRealityIdHeader(3) }).create({
-        id: 0,
+        testId: 0,
         title: 'Shadow Realm',
-        author,
+        author: firstAuthor,
+    });
+
+    await BookModelPerReality({ headers: dbRealityIdHeader(4) }).create({
+        testId: 0,
+        title: 'Lorem Ipsum',
+        author: secondAuthor,
     });
 };
 
@@ -55,7 +67,7 @@ describe('reality tests', () => {
         expect(uniqueResponseRealities).toContain(realityId);
     });
 
-    test('fetch entities from an empty reality', async () => {
+    test('fetch entities from a non existing reality', async () => {
         const emptyResult: [] = [];
         const queryBook = `query{books{realityId}}`;
         const realityId: number = 999;
@@ -95,5 +107,17 @@ describe('reality tests', () => {
         expect(uniqueResponseRealities.length).toBe(1);
         expect(uniqueResponseRealities).toContain(realityId);
         expect(uniqueResponseSubRealities).toContain(0);
+    });
+
+    test('fetch sub entities from specific reality without linked oper entities', async () => {
+        const queryBook = `query{books{realityId title author{realityId}}}`;
+        const realityId: number = 4;
+        const response: any = await graphQLRequest(
+            queryBook,
+            realityIdHeaderWithIncludeLinkedOper(realityId),
+        );
+        for (const book of response.books) {
+            expect(book.author).toBeNull();
+        }
     });
 });
