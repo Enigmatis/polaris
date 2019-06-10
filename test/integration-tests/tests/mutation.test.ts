@@ -1,5 +1,5 @@
 import { graphQLRequest } from '../test-server/client';
-import { finish, init } from '../test-server/run-test';
+import { startTestServer, stopTestServer } from '../test-server/run-test';
 
 const headers = { 'reality-id': 1 };
 const createBookMutation = `mutation createBook ($book:BookInput!) {createBook(book:$book){testId}}`;
@@ -12,11 +12,11 @@ const deleteBookMutation = `mutation deleteBook ($bookId:String!) {
 const defaultBookVariables = (title: string, testId: string) => ({ title, testId });
 
 beforeEach(() => {
-    return init();
+    return startTestServer();
 });
 
 afterEach(() => {
-    return finish();
+    return stopTestServer();
 });
 
 describe('mutation tests', () => {

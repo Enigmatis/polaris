@@ -2,7 +2,8 @@ import { closeConnection, initConnection } from '@enigmatis/mongo-driver';
 import { config } from 'dotenv';
 import * as mongoose from 'mongoose';
 import { logger, server } from './server';
-export async function init() {
+
+export async function startTestServer() {
     config();
     jest.setTimeout(15000);
     const connectionString =
@@ -12,7 +13,7 @@ export async function init() {
     server.start();
 }
 
-export async function finish() {
+export async function stopTestServer() {
     await closeConnection();
     await server.stop();
 }

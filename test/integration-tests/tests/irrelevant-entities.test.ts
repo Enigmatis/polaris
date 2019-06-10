@@ -1,7 +1,7 @@
 import { PolarisRequestHeaders } from '@enigmatis/utills';
 import { graphqlRawRequest, graphQLRequest } from '../test-server/client';
 import { BookModelPerReality } from '../test-server/dal/book-model';
-import { finish, init } from '../test-server/run-test';
+import { startTestServer, stopTestServer } from '../test-server/run-test';
 export const titles = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 const prepareDb = async (headers: PolarisRequestHeaders) => {
@@ -15,12 +15,12 @@ const prepareDb = async (headers: PolarisRequestHeaders) => {
 const requestHeaders = { 'reality-id': 1, 'data-version': 1 };
 
 beforeEach(async () => {
-    await init();
+    await startTestServer();
     await prepareDb({ realityId: 1 });
 });
 
 afterEach(() => {
-    return finish();
+    return stopTestServer();
 });
 
 describe('irrelevant entities tests', () => {
