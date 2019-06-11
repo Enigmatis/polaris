@@ -1,13 +1,13 @@
 import { PolarisRequestHeaders } from '@enigmatis/utills';
-import { graphqlRawRequest, graphqlRequest } from '../test-server/client';
+import { graphqlRawRequest, graphQLRequest } from '../test-server/client';
 import { BookModelPerReality } from '../test-server/dal/book-model';
-import { finish, init } from '../test-server/run-test';
+import { startTestServer, stopTestServer } from '../test-server/run-test';
 export const titles = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 const prepareDb = async (headers: PolarisRequestHeaders) => {
     const books = [];
     for (let i = 0; i < titles.length; i++) {
-        books.push({ author: 'arik', title: titles[i], testId: i, dataVersion: i + 1 });
+        books.push({ title: titles[i], testId: i, dataVersion: i + 1 });
     }
     await BookModelPerReality({ headers }).create(books);
 };
@@ -15,12 +15,12 @@ const prepareDb = async (headers: PolarisRequestHeaders) => {
 const requestHeaders = { 'reality-id': 1, 'data-version': 1 };
 
 beforeEach(async () => {
-    await init();
+    await startTestServer();
     await prepareDb({ realityId: 1 });
 });
 
 afterEach(() => {
-    return finish();
+    return stopTestServer();
 });
 
 describe('irrelevant entities tests', () => {
@@ -89,14 +89,14 @@ describe('irrelevant entities tests', () => {
         const deleteBookMutation = `mutation deleteBook ($bookId:String!) {
          deleteBook(bookId: $bookId){ title }}`;
 
-        const result: any = await graphqlRequest(queryBookStartsWith, requestHeaders, {});
+        const result: any = await graphQLRequest(queryBookStartsWith, requestHeaders);
         const idToDelete = result.booksStartsWith[0].testId;
         const expectedIrrelevantId = result.booksStartsWith[0].id;
-        await graphqlRequest(deleteBookMutation, { 'reality-id': 1 }, { bookId: idToDelete });
+        await graphQLRequest(deleteBookMutation, { 'reality-id': 1 }, { bookId: idToDelete });
         const { extensions }: any = await graphqlRawRequest(queryBookStartsWith, requestHeaders);
 
         expect(
             extensions.irrelevantEntities.booksStartsWith.includes(expectedIrrelevantId),
         ).toBeTruthy();
-    }, 300000);
+    });
 });

@@ -2,5 +2,6 @@ export const CommonEntityInterface = `interface CommonEntity {
                                           id: ID!
                                           creationDate: Date,
                                           lastUpdateDate: Date,
-                                          dataVersion: Int!
+                                          dataVersion: Int!,
+                                          realityId: Int!
                                       }`;
