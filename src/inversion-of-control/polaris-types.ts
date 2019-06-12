@@ -14,6 +14,7 @@ export const POLARIS_TYPES = {
     Middleware: Symbol('Middleware'),
     PolarisServerConfig: Symbol('PolarisServerConfig'),
     MiddlewaresConfig: Symbol('MiddlewaresConfig'),
+    SoftDeleteConfiguration: Symbol('SoftDeleteConfiguration'),
     LoggerConfig: Symbol('LoggerConfig'),
     InjectableType: Symbol('InjectableType'),
     InjectableResolver: Symbol('InjectableResolver'),

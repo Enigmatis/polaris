@@ -1,8 +1,9 @@
 import { closeConnection, initConnection } from '@enigmatis/mongo-driver';
 import { config } from 'dotenv';
 import * as mongoose from 'mongoose';
-import { logger, server } from './server';
-export async function init() {
+import { GraphQLServer } from '../../../src/server/graphql-server';
+import { logger } from './server';
+export async function startTestServer(server: GraphQLServer) {
     config();
     jest.setTimeout(15000);
     const connectionString =
@@ -12,7 +13,10 @@ export async function init() {
     server.start();
 }
 
-export async function finish() {
+export async function stopTestServer(server: GraphQLServer) {
+    for (const m of mongoose.connection.modelNames()) {
+        mongoose.connection.deleteModel(m);
+    }
     await closeConnection();
     await server.stop();
 }

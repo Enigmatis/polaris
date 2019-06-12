@@ -2,11 +2,9 @@ export const BookInput = `input BookInput {
                             id: ID,
                             testId: String!,        
                             title: String,
-                            author: String,
-                            otherBook: BookInput
+                            author: AuthorInput,
                           },
                           input UpdateBookInput {
                             title: String,
-                            author: String,
-                            otherBook: BookInput
+                            author: AuthorInput,
                           }`;

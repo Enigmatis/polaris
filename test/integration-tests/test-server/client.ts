@@ -5,7 +5,7 @@ export const url = `http://localhost:${polarisPropertiesPath.port}${
     polarisPropertiesPath.endpoint
 }`;
 
-export const graphqlRequest = async (data: string, headers: any, variables: any) => {
+export const graphQLRequest = async (data: string, headers: any, variables: any = undefined) => {
     const graphQLClient = new GraphQLClient(url, { headers });
     return graphQLClient.request(data, variables);
 };
