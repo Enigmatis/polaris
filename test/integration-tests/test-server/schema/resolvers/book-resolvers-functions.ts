@@ -42,7 +42,7 @@ export const updateBookResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header as number');
     } else {
-        return getModelCreator<Book>('book', bookSchema)(context).update(
+        return getModelCreator<Book>('book', bookSchema)(context).updateOne(
             { testId: bookId },
             update,
             {
@@ -60,7 +60,7 @@ export const updateAuthorResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header as number');
     } else {
-        return getModelCreator<Author>('author', authorSchema)(context).update(
+        return getModelCreator<Author>('author', authorSchema)(context).updateOne(
             { testId: authorId },
             update,
             {

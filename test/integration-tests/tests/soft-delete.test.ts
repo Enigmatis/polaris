@@ -18,14 +18,17 @@ const deleteBookMutation = `mutation deleteBook ($bookId:String!) {
 
 const deleteAuthorMutation = `mutation deleteAuthor ($authorId:String!) {
          deleteAuthor(authorId: $authorId){ firstName }}`;
+const defaultAuthor = {
+    testId: 0,
+    firstName: 'Foo',
+    lastName: 'Bar',
+};
 
-export const prepareDb = async (softDeleteConfiguration?: SoftDeleteConfiguration) => {
+const prepareDb = async (softDeleteConfiguration?: SoftDeleteConfiguration) => {
     const context: PolarisBaseContext = { headers, softDeleteConfiguration };
-    const author = await getModelCreator<Author>('author', authorSchema)(context).create({
-        testId: 0,
-        firstName: 'Foo',
-        lastName: 'Bar',
-    });
+    const author = await getModelCreator<Author>('author', authorSchema)(context).create(
+        defaultAuthor,
+    );
 
     await getModelCreator<Book>('book', bookSchema)(context).create({
         testId: 0,
@@ -36,27 +39,32 @@ export const prepareDb = async (softDeleteConfiguration?: SoftDeleteConfiguratio
 
 const requestHeaders = { 'reality-id': 1 };
 
+let testServer: TestServer;
+
+beforeEach(async () => {
+    testServer = new TestServer();
+    await startTestServer(testServer.server);
+});
+
+afterEach(() => {
+    return stopTestServer(testServer.server);
+});
+
 describe('soft delete tests', () => {
     test('delete author, should return soft deleted entities is false, return book without author', async () => {
-        const testServer = new TestServer();
-        await startTestServer(testServer.server);
         await prepareDb();
         const res = await graphQLRequest(deleteAuthorMutation, requestHeaders, { authorId: '0' });
         const response: any = await graphQLRequest(findBookQuery, requestHeaders, { bookId: '0' });
         expect(response.bookById.author).toBeNull();
         expect(response.bookById.testId).toEqual('0');
-        await stopTestServer(testServer.server);
     });
 
     test('delete book, should return soft deleted entities is false, return null when fetching the same book', async () => {
-        const testServer = new TestServer();
-        await startTestServer(testServer.server);
         await prepareDb();
         const bookId = '0';
         await graphQLRequest(deleteBookMutation, requestHeaders, { bookId });
         const response: any = await graphQLRequest(findBookQuery, requestHeaders, { bookId });
         expect(response.bookById).toBeNull();
-        await stopTestServer(testServer.server);
     });
     test('delete book, allow soft delete is false, return null when fetching the same book', async () => {
         const softDeleteConfiguration: SoftDeleteConfiguration = {
@@ -66,8 +74,6 @@ describe('soft delete tests', () => {
         polarisContainer
             .rebind(POLARIS_TYPES.SoftDeleteConfiguration)
             .toConstantValue(softDeleteConfiguration);
-        const testServer = new TestServer();
-        await startTestServer(testServer.server);
         await prepareDb(softDeleteConfiguration);
         const bookId = '0';
         await graphQLRequest(deleteBookMutation, requestHeaders, { bookId });
@@ -75,7 +81,6 @@ describe('soft delete tests', () => {
             bookId,
         });
         expect(responseDel.bookById).toBeNull();
-        await stopTestServer(testServer.server);
     });
 
     test('delete book, return not null', async () => {
@@ -83,8 +88,6 @@ describe('soft delete tests', () => {
         polarisContainer
             .rebind(POLARIS_TYPES.SoftDeleteConfiguration)
             .toConstantValue(softDeleteConfiguration);
-        const testServer = new TestServer();
-        await startTestServer(testServer.server);
         await prepareDb(softDeleteConfiguration);
         const bookId = '0';
         await graphQLRequest(deleteBookMutation, requestHeaders, { bookId });
@@ -92,7 +95,6 @@ describe('soft delete tests', () => {
             bookId,
         });
         expect(responseDel.bookById.testId).toBe('0');
-        await stopTestServer(testServer.server);
     });
 
     test('delete author, should return soft deleted entities is true, return the author that was deleted', async () => {
@@ -100,14 +102,11 @@ describe('soft delete tests', () => {
         polarisContainer
             .rebind(POLARIS_TYPES.SoftDeleteConfiguration)
             .toConstantValue(softDeleteConfiguration);
-        const testServer = new TestServer();
-        await startTestServer(testServer.server);
         await prepareDb(softDeleteConfiguration);
         await graphQLRequest(deleteAuthorMutation, requestHeaders, { authorId: '0' });
         const responseDel: any = await graphQLRequest(findBookQuery, requestHeaders, {
             bookId: '0',
         });
-        expect(responseDel.bookById.author.firstName).toBe('Foo');
-        await stopTestServer(testServer.server);
+        expect(responseDel.bookById.author.firstName).toBe(defaultAuthor.firstName);
     });
 });
