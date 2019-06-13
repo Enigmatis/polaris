@@ -1,4 +1,4 @@
-import { GraphQLExtension} from 'graphql-extensions';
+import { GraphQLExtension } from 'graphql-extensions';
 import { RealitiesHolder } from '../realities-holder/realities-holder';
 import { PolarisContext } from './polaris-context';
 
