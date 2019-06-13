@@ -1,11 +1,13 @@
-import { QueryWithIrrelevant } from '@enigmatis/mongo-driver';
 import { PolarisRequestHeaders } from '@enigmatis/utills';
 import { UserInputError } from 'apollo-server-koa';
 import { PolarisContext } from '../../../../../src/server/polaris-context';
-import { AuthorModelPerReality } from '../../dal/author-model';
-import { BookModelPerReality } from '../../dal/book-model';
+import { Author } from '../definitions/author';
 import { Book } from '../definitions/book';
 import { BOOK_UPDATED } from './subscription-event-names';
+
+import { getModelCreator, QueryWithIrrelevant } from '@enigmatis/mongo-driver';
+import { authorSchema } from '../../dal/author-model';
+import { bookSchema } from '../../dal/book-model';
 
 export const createBookResolver = async (
     parent: object | null,
@@ -16,7 +18,19 @@ export const createBookResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header as number');
     } else {
-        return BookModelPerReality(context).create(book);
+        return getModelCreator<Book>('book', bookSchema)(context).create(book);
+    }
+};
+export const createAuthorResolver = async (
+    parent: object | null,
+    { author }: { author: Author },
+    context: PolarisContext,
+) => {
+    const { realityId } = context.headers;
+    if (!Number.isInteger(realityId as any)) {
+        throw new UserInputError('please provide reality-id header as number');
+    } else {
+        return getModelCreator<Author>('author', authorSchema)(context).create(author);
     }
 };
 export const updateBookResolver = async (
@@ -28,9 +42,34 @@ export const updateBookResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header as number');
     } else {
-        return BookModelPerReality(context).update({ testId: bookId }, update, { new: true });
+        return getModelCreator<Book>('book', bookSchema)(context).updateOne(
+            { testId: bookId },
+            update,
+            {
+                new: true,
+            },
+        );
     }
 };
+export const updateAuthorResolver = async (
+    parent: object | null,
+    { authorId, update }: { authorId: string; update: Partial<Author> },
+    context: PolarisContext,
+) => {
+    const { realityId } = context.headers;
+    if (!Number.isInteger(realityId as any)) {
+        throw new UserInputError('please provide reality-id header as number');
+    } else {
+        return getModelCreator<Author>('author', authorSchema)(context).updateOne(
+            { testId: authorId },
+            update,
+            {
+                new: true,
+            },
+        );
+    }
+};
+
 export const bookResolver = async (
     parent: object | null,
     query: object,
@@ -44,13 +83,20 @@ export const bookResolver = async (
         zeroRealityHeaders.realityId = 0;
         const zeroRealityContext = { ...context };
         zeroRealityContext.headers = zeroRealityHeaders;
-        return BookModelPerReality(context)
+        return getModelCreator<Book>('book', bookSchema)(context)
             .find({})
-            .populate({ path: 'author', model: AuthorModelPerReality(zeroRealityContext) })
+            .populate({
+                path: 'author',
+                model: getModelCreator<Author>('author', authorSchema)(zeroRealityContext),
+            })
             .lean();
     } else {
-        return BookModelPerReality(context)
+        return getModelCreator<Book>('book', bookSchema)(context)
             .find({})
+            .populate({
+                path: 'author',
+                model: getModelCreator<Author>('author', authorSchema)(context),
+            })
             .lean();
     }
 };
@@ -63,11 +109,16 @@ export const bookByIdResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header');
     } else {
-        return BookModelPerReality(context)
+        return getModelCreator<Book>('book', bookSchema)(context)
             .findOne({ testId: bookId })
+            .populate({
+                path: 'author',
+                model: getModelCreator<Author>('author', authorSchema)(context),
+            })
             .lean();
     }
 };
+
 export const bookStartsWithResolver = async (
     parent: object | null,
     query: any,
@@ -77,7 +128,7 @@ export const bookStartsWithResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header');
     } else {
-        const bookModel = BookModelPerReality(context);
+        const bookModel = getModelCreator<Book>('book', bookSchema)(context);
         return QueryWithIrrelevant(
             bookModel,
             await bookModel.find({
@@ -87,12 +138,12 @@ export const bookStartsWithResolver = async (
         );
     }
 };
-export const subscribeResolver = (
+export const subscribeResolver = async (
     root: any,
     { realityId }: { realityId: number },
     { pubSub }: PolarisContext,
 ) => {
-    BookModelPerReality({ headers: { realityId } })
+    getModelCreator<Book>('book', bookSchema)({ headers: { realityId } })
         .watch({ fullDocument: 'updateLookup' })
         .on('change', async change => {
             await pubSub!.publish(BOOK_UPDATED, { bookChanged: change.fullDocument });
@@ -100,28 +151,30 @@ export const subscribeResolver = (
     return pubSub!.asyncIterator([BOOK_UPDATED]);
 };
 
-export const deletedBookByIdResolver = async (
+export const deleteBookResolver = async (
     parent: object | null,
     { bookId }: { bookId: string },
     context: PolarisContext,
 ) => {
     const { realityId } = context.headers;
     if (!Number.isInteger(realityId as any)) {
-        throw new UserInputError('please provide reality-id header');
+        throw new UserInputError('please provide reality-id header as number');
     } else {
-        return BookModelPerReality(context).find({ testId: bookId, deleted: true });
+        return getModelCreator<Book>('book', bookSchema)(context).deleteOne({ testId: bookId });
     }
 };
 
-export const deleteBookResolver = async (
+export const deleteAuthorResolver = async (
     parent: object | null,
-    { bookId, update }: { bookId: string; update: Partial<Book> },
+    { authorId }: { authorId: string },
     context: PolarisContext,
 ) => {
     const { realityId } = context.headers;
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header as number');
     } else {
-        return BookModelPerReality(context).deleteOne({ testId: bookId });
+        return getModelCreator<Author>('author', authorSchema)(context).deleteOne({
+            testId: authorId,
+        });
     }
 };

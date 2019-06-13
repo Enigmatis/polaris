@@ -1,4 +1,4 @@
-import { GraphqlLogger } from '@enigmatis/utills';
+import { GraphqlLogger, SoftDeleteConfiguration } from '@enigmatis/utills';
 import { inject, injectable } from 'inversify';
 import { MiddlewaresConfig } from '../common/injectable-interfaces';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
@@ -10,6 +10,9 @@ import { Middleware, RequestMiddlewareParams, ResponseMiddlewareParams } from '.
 @injectable()
 export class PolarisMiddleware implements Middleware {
     @inject(POLARIS_TYPES.GraphQLLogger) polarisLogger!: GraphqlLogger<PolarisContext>;
+    @inject(POLARIS_TYPES.SoftDeleteConfiguration) softDeleteConfiguration:
+        | SoftDeleteConfiguration
+        | undefined;
     filterExecutor: FilterExecutor;
 
     constructor(@inject(POLARIS_TYPES.MiddlewaresConfig) middlewaresConfig: MiddlewaresConfig) {
@@ -23,7 +26,7 @@ export class PolarisMiddleware implements Middleware {
     postResolve(params: ResponseMiddlewareParams): any {
         const resolveResult =
             params.info.operation.operation === 'query'
-                ? this.filterExecutor.executeFilters(params)
+                ? this.filterExecutor.executeFilters(params, this.softDeleteConfiguration)
                 : params.result;
         this.logEndOfResolve(params);
         return resolveResult;

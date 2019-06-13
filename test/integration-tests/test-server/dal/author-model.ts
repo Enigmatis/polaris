@@ -1,4 +1,4 @@
-import { getModelCreator, RepositoryModel } from '@enigmatis/mongo-driver';
+import { RepositoryModel } from '@enigmatis/mongo-driver';
 import { Schema } from 'mongoose';
 
 export interface Author extends RepositoryModel {
@@ -12,5 +12,3 @@ export const authorSchema: Schema = new Schema({
     firstName: String,
     lastName: String,
 });
-
-export const AuthorModelPerReality = getModelCreator<Author>('author', authorSchema);

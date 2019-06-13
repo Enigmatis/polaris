@@ -1,7 +1,9 @@
+import { getModelCreator } from '@enigmatis/mongo-driver';
 import { graphQLRequest } from '../test-server/client';
-import { AuthorModelPerReality } from '../test-server/dal/author-model';
-import { BookModelPerReality } from '../test-server/dal/book-model';
+import { authorSchema } from '../test-server/dal/author-model';
+import { bookSchema } from '../test-server/dal/book-model';
 import { startTestServer, stopTestServer } from '../test-server/run-test';
+import { TestServer } from '../test-server/server';
 
 const dbRealityIdHeader = (realityId: any) => ({ realityId });
 const requestRealityIdHeader = (realityId: any) => ({ 'reality-id': realityId });
@@ -13,13 +15,17 @@ const realityIdHeaderWithIncludeLinkedOper = (realityId: number) => ({
 export const titleArray: string[] = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 const prepareDb = async () => {
-    const firstAuthor = await AuthorModelPerReality({ headers: dbRealityIdHeader(0) }).create({
+    const firstAuthor = await getModelCreator('author', authorSchema)({
+        headers: dbRealityIdHeader(0),
+    }).create({
         testId: 0,
         firstName: 'Foo',
         lastName: 'Bar',
     });
 
-    const secondAuthor = await AuthorModelPerReality({ headers: dbRealityIdHeader(2) }).create({
+    const secondAuthor = await getModelCreator('author', authorSchema)({
+        headers: dbRealityIdHeader(2),
+    }).create({
         testId: 0,
         firstName: 'Hello',
         lastName: 'World',
@@ -29,28 +35,30 @@ const prepareDb = async () => {
     for (let i = 0; i < titleArray.length; i++) {
         books.push({ testId: i, title: titleArray[i], dataVersion: i + 1 });
     }
-    await BookModelPerReality({ headers: dbRealityIdHeader(1) }).create(books);
+    await getModelCreator('book', bookSchema)({ headers: dbRealityIdHeader(1) }).create(books);
 
-    await BookModelPerReality({ headers: dbRealityIdHeader(3) }).create({
+    await getModelCreator('book', bookSchema)({ headers: dbRealityIdHeader(3) }).create({
         testId: 0,
         title: 'Shadow Realm',
         author: firstAuthor,
     });
 
-    await BookModelPerReality({ headers: dbRealityIdHeader(4) }).create({
+    await getModelCreator('book', bookSchema)({ headers: dbRealityIdHeader(4) }).create({
         testId: 0,
         title: 'Lorem Ipsum',
         author: secondAuthor,
     });
 };
+let testServer: TestServer;
 
 beforeEach(async () => {
-    await startTestServer();
+    testServer = new TestServer();
+    await startTestServer(testServer.server);
     await prepareDb();
 });
 
 afterEach(() => {
-    return stopTestServer();
+    return stopTestServer(testServer.server);
 });
 
 describe('reality tests', () => {
