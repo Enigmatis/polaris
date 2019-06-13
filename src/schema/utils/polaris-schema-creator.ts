@@ -2,7 +2,7 @@ import { buildSchema, GraphQLSchema } from 'graphql';
 import { IExecutableSchemaDefinition, makeExecutableSchema } from 'graphql-tools';
 import { mergeResolvers, mergeTypes } from 'merge-graphql-schemas';
 import { CommonEntityInterface } from '../common/common-entity-interface';
-import { dateResolver, dateSchema } from '../common/date';
+import { dateSchema } from '../common/date';
 
 export function makeExecutablePolarisSchema<TContext = any>({
     typeDefs,
@@ -24,7 +24,7 @@ export function makeExecutablePolarisSchema<TContext = any>({
     );
     return makeExecutableSchema({
         typeDefs: typeDefsWithCommonEntity,
-        resolvers: mergeResolvers([dateResolver, ...(resolvers as [])]), // resolvers,
+        resolvers: mergeResolvers(resolvers as []),
         connectors,
         logger,
         allowUndefinedInResolve,

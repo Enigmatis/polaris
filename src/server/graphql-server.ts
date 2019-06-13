@@ -1,3 +1,4 @@
+import { SoftDeleteConfiguration } from '@enigmatis/utills';
 import { ApolloServer, Config, PubSub } from 'apollo-server-koa';
 import { GraphQLError, GraphQLFormattedError, GraphQLSchema } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
@@ -42,6 +43,8 @@ export class PolarisGraphQLServer implements GraphQLServer {
         @inject(POLARIS_TYPES.GraphQLLogger) private polarisLogger: PolarisGraphQLLogger,
         @inject(POLARIS_TYPES.RealitiesHolderValidator)
         private realitiesHolderValidator: RealitiesHolderValidator,
+        @inject(POLARIS_TYPES.SoftDeleteConfiguration)
+        private softDeleteConfiguration?: SoftDeleteConfiguration,
     ) {
         const executableSchemaWithMiddleware = applyMiddleware(
             schema,
@@ -138,6 +141,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         const context: PolarisContext = {
             headers,
             body: ctx.request.body,
+            softDeleteConfiguration: this.softDeleteConfiguration,
             irrelevantEntities: new IrrelevantEntitiesContainer(),
             ...this.getCustomContext(ctx),
         };

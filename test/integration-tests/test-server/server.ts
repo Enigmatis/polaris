@@ -13,8 +13,13 @@ polarisContainer.bind(POLARIS_TYPES.PolarisServerConfig).to(TestServerConfig);
 polarisContainer.bind(POLARIS_TYPES.MiddlewaresConfig).to(TestMiddlewaresConfig);
 polarisContainer.bind(POLARIS_TYPES.GraphQLSchema).toConstantValue(schema);
 polarisContainer.rebind(POLARIS_TYPES.RealitiesHolder).to(TestRealitiesHolder);
-export const logger = polarisContainer.get<GraphqlLogger<any>>(POLARIS_TYPES.GraphQLLogger);
 
-export const server: GraphQLServer = polarisContainer.get<GraphQLServer>(
-    POLARIS_TYPES.GraphQLServer,
-);
+export class TestServer {
+    server: GraphQLServer;
+
+    constructor() {
+        this.server = polarisContainer.get<GraphQLServer>(POLARIS_TYPES.GraphQLServer);
+    }
+}
+
+export const logger = polarisContainer.get<GraphqlLogger<any>>(POLARIS_TYPES.GraphQLLogger);

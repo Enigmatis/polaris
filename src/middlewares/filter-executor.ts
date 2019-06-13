@@ -1,3 +1,4 @@
+import { SoftDeleteConfiguration } from '@enigmatis/utills';
 import { isRepositoryEntity } from '../dal/entities/repository-entity';
 import { PolarisContext } from '../server/polaris-context';
 import { MiddlewaresConfiguration, ResponseMiddlewareParams } from './middleware';
@@ -12,15 +13,23 @@ export class FilterExecutor {
         this.middlewaresConfig = middlewaresConfig;
     }
 
-    executeFilters(params: ResponseMiddlewareParams): any {
+    executeFilters(
+        params: ResponseMiddlewareParams,
+        softDeleteConfiguration?: SoftDeleteConfiguration,
+    ): any {
         const hasRoot: boolean = !!params.root;
         return (
             params.result &&
-            (hasRoot ? this.filterSubEntity(params) : this.filterRootEntities(params))
+            (hasRoot
+                ? this.filterSubEntity(params, softDeleteConfiguration)
+                : this.filterRootEntities(params, softDeleteConfiguration))
         );
     }
 
-    filterRootEntities(params: ResponseMiddlewareParams): any[] {
+    filterRootEntities(
+        params: ResponseMiddlewareParams,
+        softDeleteConfiguration?: SoftDeleteConfiguration,
+    ): any[] {
         const { result } = params;
         if (Array.isArray(result)) {
             return result.filter(
@@ -31,6 +40,7 @@ export class FilterExecutor {
                             result: entity,
                         },
                         false,
+                        softDeleteConfiguration,
                     ),
             );
         } else {
@@ -41,23 +51,31 @@ export class FilterExecutor {
                         result,
                     },
                     false,
+                    softDeleteConfiguration,
                 ) || result
             );
         }
     }
 
-    filterSubEntity(params: ResponseMiddlewareParams): any {
-        return this.shouldFilterEntity(params, true) ? null : params.result;
+    filterSubEntity(
+        params: ResponseMiddlewareParams,
+        softDeleteConfiguration?: SoftDeleteConfiguration,
+    ): any {
+        return this.shouldFilterEntity(params, true, softDeleteConfiguration)
+            ? null
+            : params.result;
     }
 
     shouldFilterEntity(
         { context, result }: { context: PolarisContext; result: any },
         isSubEntity: boolean,
+        softDeleteConfiguration?: SoftDeleteConfiguration,
     ): boolean {
         return (
             isRepositoryEntity(result) &&
             !(
-                SoftDeleteFilter.shouldBeReturned(result) &&
+                ((softDeleteConfiguration && softDeleteConfiguration.softDeleteReturnEntities) ||
+                    SoftDeleteFilter.shouldBeReturned(result)) &&
                 (!this.middlewaresConfig.allowDataVersionMiddleware ||
                     DataVersionFilter.shouldBeReturned({ context, result }, isSubEntity)) &&
                 (!this.middlewaresConfig.allowRealityMiddleware ||

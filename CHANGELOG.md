@@ -1,3 +1,19 @@
+## [2.11.3](https://github.com/Enigmatis/polaris/compare/v2.11.2...v2.11.3) (2019-06-13)
+
+
+### Bug Fixes
+
+* change description ([67c64fb](https://github.com/Enigmatis/polaris/commit/67c64fb))
+* change description, add tests by lists ([6a8948e](https://github.com/Enigmatis/polaris/commit/6a8948e))
+* working soft delete tests ([fc43505](https://github.com/Enigmatis/polaris/commit/fc43505))
+
+## [2.11.2](https://github.com/Enigmatis/polaris/compare/v2.11.1...v2.11.2) (2019-06-13)
+
+
+### Bug Fixes
+
+* **scalars:** date scalar resolver ([f407a02](https://github.com/Enigmatis/polaris/commit/f407a02))
+
 ## [2.11.1](https://github.com/Enigmatis/polaris/compare/v2.11.0...v2.11.1) (2019-06-05)
 
 
