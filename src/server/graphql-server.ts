@@ -13,8 +13,10 @@ import { PolarisGraphQLLogger } from '../logging/polaris-graphql-logger';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
+import { RealitiesHolder } from '../realities-holder/realities-holder';
 import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
+import { RealitiesHolderChecker } from './realities-holder-checker';
 
 export interface GraphQLServer {
     server: ApolloServer;
@@ -39,6 +41,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
         @inject(POLARIS_TYPES.GraphQLLogger) private polarisLogger: PolarisGraphQLLogger,
+        @inject(POLARIS_TYPES.RealitiesHolder) private realitiesHolder: RealitiesHolder,
     ) {
         const executableSchemaWithMiddleware = applyMiddleware(
             schema,
@@ -51,7 +54,10 @@ export class PolarisGraphQLServer implements GraphQLServer {
             context: (args: { ctx: Koa.Context; connection: any }) => this.getContext(args),
             formatError: (error: any) => this.formatError(error),
             formatResponse: (response: any) => this.formatResponse(response),
-            extensions: [() => new IrrelevantEntitiesExtension()],
+            extensions: [
+                () => new IrrelevantEntitiesExtension(),
+                () => new RealitiesHolderChecker(realitiesHolder),
+            ],
         };
         this.server = new ApolloServer(config);
         this.app = new Koa();

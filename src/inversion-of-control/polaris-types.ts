@@ -18,4 +18,5 @@ export const POLARIS_TYPES = {
     InjectableType: Symbol('InjectableType'),
     InjectableResolver: Symbol('InjectableResolver'),
     CommonEntityInterface: Symbol('CommonEntityInterface`'),
+    RealitiesHolder: Symbol('RealitiesHolder'),
 };

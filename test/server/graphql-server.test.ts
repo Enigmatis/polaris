@@ -5,6 +5,7 @@ import 'reflect-metadata';
 import { PolarisServerConfig } from '../../src/common/injectable-interfaces';
 import { PolarisMiddleware } from '../../src/middlewares/polaris-middleware';
 import { createMiddleware } from '../../src/middlewares/polaris-middleware-creator';
+import { RealitiesHolder } from '../../src/realities-holder/realities-holder';
 import { PolarisGraphQLServer } from '../../src/server/graphql-server';
 
 const apolloServerMock: { [T in keyof ApolloServer]: any } = {
@@ -34,6 +35,7 @@ describe('graphql-server tests', () => {
         polarisProperties: jest.fn(),
     } as any;
     const polarisMiddlewareMock: { [T in keyof PolarisMiddleware]: any } = {} as any;
+    const realitiesHolderMock: { [T in keyof RealitiesHolder]: any } = {} as any;
 
     test('creating new polaris server - with arguments - graphql apply middleware have been called', () => {
         const server = new PolarisGraphQLServer(
@@ -41,6 +43,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMock,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderMock,
         );
 
         expect(applyMiddleware).toHaveBeenCalled();
@@ -53,6 +56,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMock,
             middlewares,
             polarisLog,
+            realitiesHolderMock,
         );
 
         expect(createMiddleware).toHaveBeenCalledTimes(middlewares.length);
@@ -64,6 +68,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMock,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderMock,
         );
 
         expect(ApolloServer).toHaveBeenCalled();
@@ -79,6 +84,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMockWithEndpoint,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderMock,
         );
         server.start();
         expect(apolloServerMock.applyMiddleware).toHaveBeenCalledWith(
@@ -103,6 +109,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMockWithEndpoint,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderMock,
         );
         server.start(app);
         expect(apolloServerMock.applyMiddleware).toHaveBeenCalledWith(
@@ -126,6 +133,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMockWithEndpoint,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderMock,
         );
         server.start(app);
         expect(apolloServerMock.applyMiddleware).toHaveBeenCalledWith(

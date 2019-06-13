@@ -1,12 +1,14 @@
 module.exports = {
-    preset: 'ts-jest',
-    setupTestFrameworkScriptFile: './jest.setup.js',
-    testEnvironment: 'node',
-    clearMocks : true,
+    clearMocks: true,
     moduleFileExtensions: [
         "ts",
         "js",
     ],
+    preset: 'ts-jest',
+    setupFilesAfterEnv: [
+        './jest.setup.js'
+    ],
+    testEnvironment: 'node',
     testMatch: [
         "**/*.test.ts"
     ],
