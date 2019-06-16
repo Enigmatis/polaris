@@ -15,6 +15,7 @@ import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
 import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
+import { ResponseHeadersExtension } from './response-headers-extension';
 
 export interface GraphQLServer {
     server: ApolloServer;
@@ -51,7 +52,10 @@ export class PolarisGraphQLServer implements GraphQLServer {
             context: (args: { ctx: Koa.Context; connection: any }) => this.getContext(args),
             formatError: (error: any) => this.formatError(error),
             formatResponse: (response: any) => this.formatResponse(response),
-            extensions: [() => new IrrelevantEntitiesExtension()],
+            extensions: [
+                () => new IrrelevantEntitiesExtension(),
+                () => new ResponseHeadersExtension(),
+            ],
         };
         this.server = new ApolloServer(config);
         this.app = new Koa();
