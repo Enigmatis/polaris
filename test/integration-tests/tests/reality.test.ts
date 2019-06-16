@@ -128,4 +128,12 @@ describe('reality tests', () => {
             expect(book.author).toBeNull();
         }
     });
+
+    test('fetch entities from unsupported reality', async () => {
+        const queryBook = `query{books{realityId}}`;
+        const realityId: number = 1337;
+        await expect(graphQLRequest(queryBook, requestRealityIdHeader(realityId))).rejects.toThrow(
+            `The requested reality-id ${realityId} is not supported!`,
+        );
+    });
 });
