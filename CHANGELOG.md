@@ -1,3 +1,19 @@
+# [2.12.0](https://github.com/Enigmatis/polaris/compare/v2.11.3...v2.12.0) (2019-06-16)
+
+
+### Features
+
+* add polaris headers support in response ([6c99c60](https://github.com/Enigmatis/polaris/commit/6c99c60))
+* add polaris headers support in response ([c0ef899](https://github.com/Enigmatis/polaris/commit/c0ef899))
+* add polaris headers support in response ([401c18f](https://github.com/Enigmatis/polaris/commit/401c18f))
+* add polaris headers support in response ([a6cd96f](https://github.com/Enigmatis/polaris/commit/a6cd96f))
+* added realities holder ([9a8753e](https://github.com/Enigmatis/polaris/commit/9a8753e))
+* added realities holder ([56a6a2a](https://github.com/Enigmatis/polaris/commit/56a6a2a))
+* added realities holder ([dbcb1ce](https://github.com/Enigmatis/polaris/commit/dbcb1ce))
+* added realities holder ([521b42d](https://github.com/Enigmatis/polaris/commit/521b42d))
+* added realities holder ([98ab84c](https://github.com/Enigmatis/polaris/commit/98ab84c))
+* fixed import ([0babe13](https://github.com/Enigmatis/polaris/commit/0babe13))
+
 ## [2.11.3](https://github.com/Enigmatis/polaris/compare/v2.11.2...v2.11.3) (2019-06-13)
 
 
