@@ -1,18 +1,18 @@
 import { UserInputError } from 'apollo-server-koa';
 import { inject, injectable } from 'inversify';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
+import { RealitiesHolder } from '../main';
 import { PolarisContext } from '../server/polaris-context';
 
 @injectable()
 export class RealitiesHolderValidator {
-    constructor(@inject(POLARIS_TYPES.RealitiesHolder) private realitiesHolder: any) {}
+    constructor(@inject(POLARIS_TYPES.RealitiesHolder) private realitiesHolder: RealitiesHolder) {}
 
     validateRealitySupport(context: PolarisContext) {
         if (context) {
             const requestedReality = context.headers.realityId;
             if (
                 requestedReality != null &&
-                typeof this.realitiesHolder.isRealitySupported === 'function' &&
                 !this.realitiesHolder.isRealitySupported(requestedReality)
             ) {
                 throw new UserInputError(
