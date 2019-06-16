@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { PolarisContext, RealitiesHolder } from '../..';
+import { PolarisContext, RealitiesHolder } from '../../src/main';
 import { RealitiesHolderValidator } from '../../src/realities-holder/realities-holder-validator';
 
 describe('realities-holder-validator tests', () => {
