@@ -16,7 +16,7 @@ import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
 import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
-import { ResponseHeadersExtension } from './response-headers-extension';
+import { ResponseHeadersExtension } from '../http/response/response-headers-extension';
 
 export interface GraphQLServer {
     server: ApolloServer;

@@ -1,5 +1,5 @@
 import { GraphQLExtension, GraphQLResponse } from 'graphql-extensions';
-import { PolarisContext } from './polaris-context';
+import { PolarisContext } from '../../server/polaris-context';
 
 export const requestIdHeaderName: string = 'Request-Id';
 export const oicdClaimUpnHeaderName: string = 'Oicd-Claim-Upn';
