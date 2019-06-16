@@ -14,9 +14,9 @@ import { PolarisGraphQLLogger } from '../logging/polaris-graphql-logger';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
+import { RealitiesHolderValidator } from '../realities-holder/realities-holder-validator';
 import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
-import { RealitiesHolderValidator } from './realities-holder-validator';
 
 export interface GraphQLServer {
     server: ApolloServer;

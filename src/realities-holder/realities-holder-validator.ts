@@ -1,8 +1,8 @@
 import { UserInputError } from 'apollo-server-koa';
 import { inject, injectable } from 'inversify';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
-import { RealitiesHolder } from '../realities-holder/realities-holder';
-import { PolarisContext } from './polaris-context';
+import { PolarisContext } from '../server/polaris-context';
+import { RealitiesHolder } from './realities-holder';
 
 @injectable()
 export class RealitiesHolderValidator {
