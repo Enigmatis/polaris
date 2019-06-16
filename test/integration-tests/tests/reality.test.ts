@@ -93,7 +93,7 @@ describe('reality tests', () => {
     test('fetch entities with invalid reality header', async () => {
         const queryBook = `query{books{title}}`;
         await expect(graphQLRequest(queryBook, requestRealityIdHeader('oops'))).rejects.toThrow(
-            'Unable to format headers',
+            '"reality-id" must be a number',
         );
     });
 
@@ -127,5 +127,13 @@ describe('reality tests', () => {
         for (const book of response.books) {
             expect(book.author).toBeNull();
         }
+    });
+
+    test('fetch entities from unsupported reality', async () => {
+        const queryBook = `query{books{realityId}}`;
+        const realityId: number = 1337;
+        await expect(graphQLRequest(queryBook, requestRealityIdHeader(realityId))).rejects.toThrow(
+            `The requested reality-id ${realityId} is not supported!`,
+        );
     });
 });

@@ -4,6 +4,8 @@ import 'reflect-metadata';
 import { PolarisGraphQLLogger } from '../logging/polaris-graphql-logger';
 import { IrrelevantEntitiesMiddleware } from '../middlewares/irrelevant-entities-middleware';
 import { PolarisMiddleware } from '../middlewares/polaris-middleware';
+import { DefaultRealitiesHolder } from '../realities-holder/default-realities-holder';
+import { RealitiesHolderValidator } from '../realities-holder/realities-holder-validator';
 import { PolarisGraphQLServer } from '../server/graphql-server';
 import { POLARIS_TYPES } from './polaris-types';
 
@@ -13,4 +15,6 @@ polarisContainer.bind(POLARIS_TYPES.GraphQLServer).to(PolarisGraphQLServer);
 polarisContainer.bind(POLARIS_TYPES.GraphQLLogger).to(PolarisGraphQLLogger);
 polarisContainer.bind(POLARIS_TYPES.Middleware).to(PolarisMiddleware);
 polarisContainer.bind(POLARIS_TYPES.Middleware).to(IrrelevantEntitiesMiddleware);
+polarisContainer.bind(POLARIS_TYPES.RealitiesHolderValidator).to(RealitiesHolderValidator);
+polarisContainer.bind(POLARIS_TYPES.RealitiesHolder).to(DefaultRealitiesHolder);
 polarisContainer.bind(POLARIS_TYPES.SoftDeleteConfiguration).toConstantValue({});

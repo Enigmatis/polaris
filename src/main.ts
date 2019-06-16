@@ -22,3 +22,4 @@ export {
     buildPolarisSchema,
     makeExecutablePolarisSchema,
 } from './schema/utils/polaris-schema-creator';
+export { RealitiesHolder } from './realities-holder/realities-holder';

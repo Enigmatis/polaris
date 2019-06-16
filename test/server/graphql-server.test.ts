@@ -34,6 +34,7 @@ describe('graphql-server tests', () => {
         polarisProperties: jest.fn(),
     } as any;
     const polarisMiddlewareMock: { [T in keyof PolarisMiddleware]: any } = {} as any;
+    const realitiesHolderValidatorMock = {} as any;
 
     test('creating new polaris server - with arguments - graphql apply middleware have been called', () => {
         const server = new PolarisGraphQLServer(
@@ -41,6 +42,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMock,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderValidatorMock,
         );
 
         expect(applyMiddleware).toHaveBeenCalled();
@@ -53,6 +55,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMock,
             middlewares,
             polarisLog,
+            realitiesHolderValidatorMock,
         );
 
         expect(createMiddleware).toHaveBeenCalledTimes(middlewares.length);
@@ -64,6 +67,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMock,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderValidatorMock,
         );
 
         expect(ApolloServer).toHaveBeenCalled();
@@ -79,6 +83,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMockWithEndpoint,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderValidatorMock,
         );
         server.start();
         expect(apolloServerMock.applyMiddleware).toHaveBeenCalledWith(
@@ -103,6 +108,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMockWithEndpoint,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderValidatorMock,
         );
         server.start(app);
         expect(apolloServerMock.applyMiddleware).toHaveBeenCalledWith(
@@ -126,6 +132,7 @@ describe('graphql-server tests', () => {
             polarisServerConfigMockWithEndpoint,
             [polarisMiddlewareMock],
             polarisLog,
+            realitiesHolderValidatorMock,
         );
         server.start(app);
         expect(apolloServerMock.applyMiddleware).toHaveBeenCalledWith(

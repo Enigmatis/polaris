@@ -1,6 +1,5 @@
 import { PolarisRequestHeaders } from '@enigmatis/utills';
 import { PolarisContext } from '../../server/polaris-context';
-import { ResponseMiddlewareParams } from '../middleware';
 import { MiddlewareCondition } from './filter-condition';
 
 class FilterRealities implements MiddlewareCondition {

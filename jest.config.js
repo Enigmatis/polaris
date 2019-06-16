@@ -1,5 +1,5 @@
 module.exports = {
-    clearMocks : true,
+    clearMocks: true,
     moduleFileExtensions: [
         "ts",
         "js",

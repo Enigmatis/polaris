@@ -15,6 +15,7 @@ import { PolarisGraphQLLogger } from '../logging/polaris-graphql-logger';
 import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
+import { RealitiesHolderValidator } from '../realities-holder/realities-holder-validator';
 import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
 
@@ -35,22 +36,23 @@ export class PolarisGraphQLServer implements GraphQLServer {
     private polarisProperties: PolarisProperties;
     private customContexts: contextCreator[] = [];
     private httpServer?: http.Server;
-    private softDeleteConfiguration?: SoftDeleteConfiguration;
 
     constructor(
         @inject(POLARIS_TYPES.GraphQLSchema) schema: GraphQLSchema,
         @inject(POLARIS_TYPES.PolarisServerConfig) propertiesConfig: PolarisServerConfig,
         @multiInject(POLARIS_TYPES.Middleware) middlewares: Middleware[],
         @inject(POLARIS_TYPES.GraphQLLogger) private polarisLogger: PolarisGraphQLLogger,
+        @inject(POLARIS_TYPES.RealitiesHolderValidator)
+        private realitiesHolderValidator: RealitiesHolderValidator,
         @inject(POLARIS_TYPES.SoftDeleteConfiguration)
-        softDeleteConfiguration?: SoftDeleteConfiguration,
+        private softDeleteConfiguration?: SoftDeleteConfiguration,
     ) {
         const executableSchemaWithMiddleware = applyMiddleware(
             schema,
             ...(middlewares.map(createMiddleware) as any),
         );
         this.polarisProperties = propertiesConfig.polarisProperties;
-        this.softDeleteConfiguration = softDeleteConfiguration;
+
         const config: Config = {
             schema: executableSchemaWithMiddleware,
             context: (args: { ctx: Koa.Context; connection: any }) => this.getContext(args),
@@ -124,19 +126,21 @@ export class PolarisGraphQLServer implements GraphQLServer {
     private getContext({ ctx, connection }: { ctx: Koa.Context; connection: any }): PolarisContext {
         try {
             if (!connection) {
-                return this.getHttpContext(ctx);
+                const context: PolarisContext = this.getHttpContext(ctx);
+                this.realitiesHolderValidator.validateRealitySupport(context);
+                return context;
             } else {
                 return { body: {}, pubSub: new PubSub() } as any;
             }
         } catch (e) {
-            this.polarisLogger.error('Headers error', {
+            this.polarisLogger.error('Context error', {
                 polarisLogProperties: { throwable: e },
             });
-            throw new Error('Unable to format headers');
+            throw new Error(e.message);
         }
     }
 
-    private getHttpContext(ctx: Koa.Context) {
+    private getHttpContext(ctx: Koa.Context): PolarisContext {
         const headers = getHeaders(ctx.request.headers);
         const context: PolarisContext = {
             headers,

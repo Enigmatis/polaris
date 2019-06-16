@@ -1,4 +1,3 @@
-import { ResponseMiddlewareParams } from '../middleware';
 import { MiddlewareCondition } from './filter-condition';
 
 class FilterSoftDelete implements MiddlewareCondition {
