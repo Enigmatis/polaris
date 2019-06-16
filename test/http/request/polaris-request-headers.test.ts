@@ -78,30 +78,15 @@ describe('polaris-request-headers tests', () => {
         });
     });
 
-    describe('upn header', () => {
+    describe('oicd-claim-upn header', () => {
         test('string header', () => {
-            const headers = { upn: 'wow' };
+            const headers = { 'oicd-claim-upn': 'wow' };
             const polarisRequestHeaders = getHeaders(headers);
-            expect(polarisRequestHeaders.upn).toBe(headers.upn);
+            expect(polarisRequestHeaders.upn).toBe(headers['oicd-claim-upn']);
         });
 
         test('not string header', () => {
-            const headers = { upn: 55 };
-            expect(() => {
-                getHeaders(headers);
-            }).toThrowError('must be a string');
-        });
-    });
-
-    describe('event kind header', () => {
-        test('string header', () => {
-            const headers = { 'event-kind': 'wow' };
-            const polarisRequestHeaders = getHeaders(headers);
-            expect(polarisRequestHeaders.eventKind).toBe(headers['event-kind']);
-        });
-
-        test('not string header', () => {
-            const headers = { 'event-kind': 55 };
+            const headers = { 'oicd-claim-upn': 55 };
             expect(() => {
                 getHeaders(headers);
             }).toThrowError('must be a string');

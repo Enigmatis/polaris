@@ -9,6 +9,7 @@ import * as koaBody from 'koa-bodyparser';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
 import { IrrelevantEntitiesContainer } from '../common/irrelevant-entities-container';
 import { getHeaders } from '../http/request/polaris-request-headers';
+import { ResponseHeadersExtension } from '../http/response/response-headers-extension';
 import { POLARIS_TYPES } from '../inversion-of-control/polaris-types';
 import { PolarisGraphQLLogger } from '../logging/polaris-graphql-logger';
 import { Middleware } from '../middlewares/middleware';
@@ -57,7 +58,10 @@ export class PolarisGraphQLServer implements GraphQLServer {
             context: (args: { ctx: Koa.Context; connection: any }) => this.getContext(args),
             formatError: (error: any) => this.formatError(error),
             formatResponse: (response: any) => this.formatResponse(response),
-            extensions: [() => new IrrelevantEntitiesExtension()],
+            extensions: [
+                () => new IrrelevantEntitiesExtension(),
+                () => new ResponseHeadersExtension(),
+            ],
         };
         this.server = new ApolloServer(config);
         this.app = new Koa();
