@@ -13,3 +13,4 @@ polarisContainer.bind(POLARIS_TYPES.GraphQLServer).to(PolarisGraphQLServer);
 polarisContainer.bind(POLARIS_TYPES.GraphQLLogger).to(PolarisGraphQLLogger);
 polarisContainer.bind(POLARIS_TYPES.Middleware).to(PolarisMiddleware);
 polarisContainer.bind(POLARIS_TYPES.Middleware).to(IrrelevantEntitiesMiddleware);
+polarisContainer.bind(POLARIS_TYPES.SoftDeleteConfiguration).toConstantValue({});

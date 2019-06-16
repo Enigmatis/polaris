@@ -1,5 +1,9 @@
+import { getModelCreator } from '@enigmatis/mongo-driver';
 import { graphQLRequest } from '../test-server/client';
+import { authorSchema } from '../test-server/dal/author-model';
 import { startTestServer, stopTestServer } from '../test-server/run-test';
+import { Author } from '../test-server/schema/definitions/author';
+import { TestServer } from '../test-server/server';
 
 const headers = { 'reality-id': 1 };
 const createBookMutation = `mutation createBook ($book:BookInput!) {createBook(book:$book){testId}}`;
@@ -11,12 +15,14 @@ const deleteBookMutation = `mutation deleteBook ($bookId:String!) {
          deleteBook(bookId: $bookId){ title }}`;
 const defaultBookVariables = (title: string, testId: string) => ({ title, testId });
 
+let testServer: TestServer;
 beforeEach(() => {
-    return startTestServer();
+    testServer = new TestServer();
+    return startTestServer(testServer.server);
 });
 
 afterEach(() => {
-    return stopTestServer();
+    return stopTestServer(testServer.server);
 });
 
 describe('mutation tests', () => {

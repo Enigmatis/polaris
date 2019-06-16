@@ -1,4 +1,4 @@
-import { getModelCreator, RepositoryModel, SchemaCreator } from '@enigmatis/mongo-driver';
+import { RepositoryModel, SchemaCreator } from '@enigmatis/mongo-driver';
 import { Schema } from 'mongoose';
 import { Author } from './author-model';
 
@@ -20,5 +20,3 @@ export const bookSchema: SchemaCreator = refNameCreator => {
         dataVersion: Number,
     });
 };
-
-export const BookModelPerReality = getModelCreator<Book>('book', bookSchema);

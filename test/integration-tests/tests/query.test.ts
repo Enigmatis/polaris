@@ -1,27 +1,36 @@
+import { getModelCreator } from '@enigmatis/mongo-driver';
 import { PolarisRequestHeaders } from '@enigmatis/utills';
 import { graphQLRequest } from '../test-server/client';
-import { BookModelPerReality } from '../test-server/dal/book-model';
+import { Author, authorSchema } from '../test-server/dal/author-model';
+import { Book, bookSchema } from '../test-server/dal/book-model';
 import { startTestServer, stopTestServer } from '../test-server/run-test';
+import { TestServer } from '../test-server/server';
 
 const titles = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 const prepareDb = async (headers: PolarisRequestHeaders) => {
     const books = [];
+    const author = await getModelCreator<Author>('author', authorSchema)({ headers }).create({
+        testId: 0,
+        firstName: 'Foo',
+        lastName: 'Bar',
+    });
     for (let i = 0; i < titles.length; i++) {
-        books.push({ title: titles[i], testId: i });
+        books.push({ title: titles[i], testId: i, author });
     }
-    await BookModelPerReality({ headers }).create(books);
+    await getModelCreator<Book>('book', bookSchema)({ headers }).create(books);
 };
 
 const requestHeaders = { 'reality-id': 1 };
-
+let testServer: TestServer;
 beforeEach(async () => {
-    await startTestServer();
+    testServer = new TestServer();
+    await startTestServer(testServer.server);
     await prepareDb({ realityId: 1 });
 });
 
 afterEach(() => {
-    return stopTestServer();
+    return stopTestServer(testServer.server);
 });
 
 describe('query tests', () => {
