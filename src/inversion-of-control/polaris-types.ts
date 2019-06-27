@@ -21,4 +21,5 @@ export const POLARIS_TYPES = {
     CommonEntityInterface: Symbol('CommonEntityInterface`'),
     RealitiesHolder: Symbol('RealitiesHolder'),
     RealitiesHolderValidator: Symbol('RealitiesHolderValidator'),
+    ApolloConfig: Symbol('ApolloConfig'),
 };
