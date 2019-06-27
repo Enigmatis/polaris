@@ -1,3 +1,10 @@
+# [2.13.0](https://github.com/Enigmatis/polaris/compare/v2.12.0...v2.13.0) (2019-06-27)
+
+
+### Features
+
+* **apollo-config:** allow user to pass config to apollo ([36cd3de](https://github.com/Enigmatis/polaris/commit/36cd3de))
+
 # [2.12.0](https://github.com/Enigmatis/polaris/compare/v2.11.3...v2.12.0) (2019-06-16)
 
 
