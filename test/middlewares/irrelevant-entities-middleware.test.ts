@@ -1,6 +1,7 @@
 import { QueryIrrelevantResult } from '@enigmatis/utills';
 import { GraphQLResolveInfo } from 'graphql';
 import 'reflect-metadata';
+import { getCurrentDataVersion } from '../../../mongo-driver/src/data-version/data-version-manager';
 import { IrrelevantEntitiesContainer } from '../../src/common/irrelevant-entities-container';
 import { IrrelevantEntitiesMiddleware } from '../../src/middlewares/irrelevant-entities-middleware';
 import { ResponseMiddlewareParams } from '../../src/middlewares/middleware';
@@ -31,6 +32,7 @@ describe('split relevantEntities and irrelevant', () => {
                 headers: { dataVersion: 3 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -51,6 +53,7 @@ describe('split relevantEntities and irrelevant', () => {
                 headers: { dataVersion: 3 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -70,6 +73,7 @@ describe('split relevantEntities and irrelevant', () => {
                 headers: { dataVersion: 0 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -94,6 +98,7 @@ describe('not modifying result if not needed', () => {
                 headers: {},
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -112,6 +117,7 @@ describe('not modifying result if not needed', () => {
                 headers: {},
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -133,6 +139,7 @@ describe('not modifying result if not needed', () => {
                 headers: {},
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -151,6 +158,7 @@ describe('not modifying result if not needed', () => {
                 headers: {},
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,

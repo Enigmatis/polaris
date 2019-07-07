@@ -6,6 +6,7 @@ import * as http from 'http';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
+import { getCurrentDataVersion } from '../../../mongo-driver/src/data-version/data-version-manager';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
 import { IrrelevantEntitiesContainer } from '../common/irrelevant-entities-container';
 import { getHeaders } from '../http/request/polaris-request-headers';
@@ -16,6 +17,7 @@ import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
 import { RealitiesHolderValidator } from '../realities-holder/realities-holder-validator';
+import { DataVersionExtension } from './data-version-extension';
 import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
 
@@ -61,6 +63,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             extensions: [
                 () => new IrrelevantEntitiesExtension(),
                 () => new ResponseHeadersExtension(),
+                () => new DataVersionExtension(),
             ],
         };
         this.server = new ApolloServer(config);
@@ -81,9 +84,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                     `🚀 Server ready at http://localhost:${port}${this.server.graphqlPath}`,
                 );
                 this.polarisLogger.info(
-                    `🚀 Subscriptions ready at ws://localhost:${port}${
-                        this.server.subscriptionsPath
-                    }`,
+                    `🚀 Subscriptions ready at ws://localhost:${port}${this.server.subscriptionsPath}`,
                 );
                 resolve();
             });
@@ -147,6 +148,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             body: ctx.request.body,
             softDeleteConfiguration: this.softDeleteConfiguration,
             irrelevantEntities: new IrrelevantEntitiesContainer(),
+            dataVersionRetriever: getCurrentDataVersion,
             ...this.getCustomContext(ctx),
         };
         if (this.polarisProperties.includeSubscription) {

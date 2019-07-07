@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { getCurrentDataVersion } from '../../../../mongo-driver/src/data-version/data-version-manager';
 import { IrrelevantEntitiesContainer } from '../../../src/common/irrelevant-entities-container';
 import { ResponseMiddlewareParams } from '../../../src/middlewares/middleware';
 import { SoftDeleteFilter } from '../../../src/middlewares/middleware-activation-condition/filter-soft-delete';
@@ -10,6 +11,7 @@ describe('filter-soft-delete tests', () => {
         headers: {},
         body: {},
         irrelevantEntities: new IrrelevantEntitiesContainer(),
+        dataVersionRetriever: getCurrentDataVersion,
     };
     const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
     const root = undefined;

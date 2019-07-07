@@ -12,4 +12,5 @@ export interface PolarisContext extends PolarisBaseContext {
     pubSub?: PubSub;
     softDeleteConfiguration?: SoftDeleteConfiguration;
     irrelevantEntities: IrrelevantEntitiesContainer;
+    dataVersionRetriever: () => Promise<number | null>;
 }

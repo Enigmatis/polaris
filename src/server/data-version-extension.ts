@@ -1,19 +1,17 @@
 import { GraphQLExtension, GraphQLResponse } from 'graphql-extensions';
 import { PolarisContext } from './polaris-context';
 
-export class IrrelevantEntitiesExtension extends GraphQLExtension {
+export class DataVersionExtension extends GraphQLExtension {
     willSendResponse(responseContext: {
         graphqlResponse: GraphQLResponse;
         context: PolarisContext;
     }) {
         const { context, graphqlResponse } = responseContext;
 
-        if (context.headers.dataVersion) {
-            graphqlResponse.extensions = {
-                ...graphqlResponse.extensions,
-                irrelevantEntities: context.irrelevantEntities.irrelevantContainer,
-            };
-        }
+        graphqlResponse.extensions = {
+            ...graphqlResponse.extensions,
+            dataVersion: 1,
+        };
 
         return responseContext;
     }

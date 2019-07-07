@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { getCurrentDataVersion } from '../../../../mongo-driver/src/data-version/data-version-manager';
 import { IrrelevantEntitiesContainer } from '../../../src/common/irrelevant-entities-container';
 import { ResponseMiddlewareParams } from '../../../src/middlewares/middleware';
 import { DataVersionFilter } from '../../../src/middlewares/middleware-activation-condition/filter-data-version';
@@ -14,6 +15,7 @@ describe('data version tests', () => {
             headers: {},
             body: {},
             irrelevantEntities: new IrrelevantEntitiesContainer(),
+            dataVersionRetriever: getCurrentDataVersion,
         };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
@@ -30,6 +32,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -45,6 +48,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -60,6 +64,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 2 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -75,6 +80,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 2 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                dataVersionRetriever: getCurrentDataVersion,
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
