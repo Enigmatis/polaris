@@ -1,4 +1,5 @@
 import * as joi from 'joi';
+
 export interface RepositoryEntity {
     _id: object;
     deleted: boolean;
@@ -13,7 +14,8 @@ export interface RepositoryEntity {
 }
 
 const schema = joi.object().keys({
-    _id: joi.object().required(),
+    // By default mongoose return _id as object(Mongoose.Types.ObjectId) but if you populate that object its just a string
+    _id: joi.alternatives([joi.object(), joi.string()]).required(),
     deleted: joi.boolean().required(),
     createdBy: joi.string(),
     lastUpdatedBy: joi.string(),

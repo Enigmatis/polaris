@@ -48,6 +48,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         private realitiesHolderValidator: RealitiesHolderValidator,
         @inject(POLARIS_TYPES.SoftDeleteConfiguration)
         private softDeleteConfiguration?: SoftDeleteConfiguration,
+        @inject(POLARIS_TYPES.ApolloConfig) private userApolloConfig: Config = {},
     ) {
         const executableSchemaWithMiddleware = applyMiddleware(
             schema,
@@ -65,6 +66,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                 () => new ResponseHeadersExtension(),
                 () => new DataVersionExtension(),
             ],
+            ...userApolloConfig,
         };
         this.server = new ApolloServer(config);
         this.app = new Koa();
