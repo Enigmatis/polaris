@@ -1,4 +1,3 @@
-import { getCurrentDataVersion } from '@enigmatis/mongo-driver';
 import { GraphQLResolveInfo } from 'graphql';
 import { IrrelevantEntitiesContainer } from '../../../src/common/irrelevant-entities-container';
 import { ResponseMiddlewareParams } from '../../../src/middlewares/middleware';
@@ -14,7 +13,7 @@ describe('reality id tests', () => {
             headers: {},
             body: {},
             irrelevantEntities: new IrrelevantEntitiesContainer(),
-            dataVersionRetriever: getCurrentDataVersion,
+            dataVersionRetriever: () => Promise.resolve(null),
         };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
@@ -30,7 +29,7 @@ describe('reality id tests', () => {
             headers: { realityId: 1 },
             body: {},
             irrelevantEntities: new IrrelevantEntitiesContainer(),
-            dataVersionRetriever: getCurrentDataVersion,
+            dataVersionRetriever: () => Promise.resolve(null),
         };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
@@ -46,7 +45,7 @@ describe('reality id tests', () => {
             headers: { realityId: 1 },
             body: {},
             irrelevantEntities: new IrrelevantEntitiesContainer(),
-            dataVersionRetriever: getCurrentDataVersion,
+            dataVersionRetriever: () => Promise.resolve(null),
         };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
@@ -65,7 +64,7 @@ describe('reality id tests', () => {
                         headers: { realityId: 1, includeLinkedOperation: true },
                         body: {},
                         irrelevantEntities: new IrrelevantEntitiesContainer(),
-                        dataVersionRetriever: getCurrentDataVersion,
+                        dataVersionRetriever: () => Promise.resolve(null),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -81,7 +80,7 @@ describe('reality id tests', () => {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
                         irrelevantEntities: new IrrelevantEntitiesContainer(),
-                        dataVersionRetriever: getCurrentDataVersion,
+                        dataVersionRetriever: () => Promise.resolve(null),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -99,7 +98,7 @@ describe('reality id tests', () => {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
                         irrelevantEntities: new IrrelevantEntitiesContainer(),
-                        dataVersionRetriever: getCurrentDataVersion,
+                        dataVersionRetriever: () => Promise.resolve(null),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -115,7 +114,7 @@ describe('reality id tests', () => {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
                         irrelevantEntities: new IrrelevantEntitiesContainer(),
-                        dataVersionRetriever: getCurrentDataVersion,
+                        dataVersionRetriever: () => Promise.resolve(null),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -135,7 +134,7 @@ describe('reality id tests', () => {
                         headers: { realityId: 1, includeLinkedOperation: true },
                         body: {},
                         irrelevantEntities: new IrrelevantEntitiesContainer(),
-                        dataVersionRetriever: getCurrentDataVersion,
+                        dataVersionRetriever: () => Promise.resolve(null),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -151,7 +150,7 @@ describe('reality id tests', () => {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
                         irrelevantEntities: new IrrelevantEntitiesContainer(),
-                        dataVersionRetriever: getCurrentDataVersion,
+                        dataVersionRetriever: () => Promise.resolve(null),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -169,7 +168,7 @@ describe('reality id tests', () => {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
                         irrelevantEntities: new IrrelevantEntitiesContainer(),
-                        dataVersionRetriever: getCurrentDataVersion,
+                        dataVersionRetriever: () => Promise.resolve(null),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,
@@ -185,7 +184,7 @@ describe('reality id tests', () => {
                         headers: { realityId: 1, includeLinkedOperation: false },
                         body: {},
                         irrelevantEntities: new IrrelevantEntitiesContainer(),
-                        dataVersionRetriever: getCurrentDataVersion,
+                        dataVersionRetriever: () => Promise.resolve(null),
                     };
                     const middlewareParams: ResponseMiddlewareParams = {
                         root: undefined,

@@ -1,4 +1,3 @@
-import { getCurrentDataVersion } from '@enigmatis/mongo-driver';
 import { SoftDeleteConfiguration } from '@enigmatis/utills';
 import { ApolloServer, Config, PubSub } from 'apollo-server-koa';
 import { GraphQLError, GraphQLFormattedError, GraphQLSchema } from 'graphql';
@@ -150,7 +149,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             body: ctx.request.body,
             softDeleteConfiguration: this.softDeleteConfiguration,
             irrelevantEntities: new IrrelevantEntitiesContainer(),
-            dataVersionRetriever: getCurrentDataVersion,
+            dataVersionRetriever: () => Promise.resolve(1),
             ...this.getCustomContext(ctx),
         };
         if (this.polarisProperties.includeSubscription) {

@@ -1,4 +1,3 @@
-import { getCurrentDataVersion } from '@enigmatis/mongo-driver';
 import { GraphQLResolveInfo } from 'graphql';
 import { IrrelevantEntitiesContainer } from '../../src/common/irrelevant-entities-container';
 import { FilterExecutor } from '../../src/middlewares/filter-executor';
@@ -40,7 +39,7 @@ describe('filter resolver tests', () => {
                 headers: { dataVersion: 3, realityId: 0 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -62,7 +61,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -84,7 +83,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -106,7 +105,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -130,7 +129,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -150,7 +149,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,

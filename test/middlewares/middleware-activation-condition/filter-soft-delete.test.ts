@@ -1,4 +1,3 @@
-import { getCurrentDataVersion } from '@enigmatis/mongo-driver';
 import { GraphQLResolveInfo } from 'graphql';
 import { IrrelevantEntitiesContainer } from '../../../src/common/irrelevant-entities-container';
 import { ResponseMiddlewareParams } from '../../../src/middlewares/middleware';
@@ -11,7 +10,7 @@ describe('filter-soft-delete tests', () => {
         headers: {},
         body: {},
         irrelevantEntities: new IrrelevantEntitiesContainer(),
-        dataVersionRetriever: getCurrentDataVersion,
+        dataVersionRetriever: () => Promise.resolve(null),
     };
     const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
     const root = undefined;

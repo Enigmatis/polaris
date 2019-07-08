@@ -1,4 +1,3 @@
-import { getCurrentDataVersion } from '@enigmatis/mongo-driver';
 import { GraphQLResolveInfo } from 'graphql';
 import { IrrelevantEntitiesContainer } from '../../../src/common/irrelevant-entities-container';
 import { ResponseMiddlewareParams } from '../../../src/middlewares/middleware';
@@ -15,7 +14,7 @@ describe('data version tests', () => {
             headers: {},
             body: {},
             irrelevantEntities: new IrrelevantEntitiesContainer(),
-            dataVersionRetriever: getCurrentDataVersion,
+            dataVersionRetriever: () => Promise.resolve(null),
         };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
@@ -32,7 +31,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -48,7 +47,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -64,7 +63,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 2 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -80,7 +79,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 2 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: getCurrentDataVersion,
+                dataVersionRetriever: () => Promise.resolve(null),
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
