@@ -1,7 +1,7 @@
+import { getCurrentDataVersion } from '@enigmatis/mongo-driver';
 import { QueryIrrelevantResult } from '@enigmatis/utills';
 import { GraphQLResolveInfo } from 'graphql';
 import 'reflect-metadata';
-import { getCurrentDataVersion } from '../../../mongo-driver/src/data-version/data-version-manager';
 import { IrrelevantEntitiesContainer } from '../../src/common/irrelevant-entities-container';
 import { IrrelevantEntitiesMiddleware } from '../../src/middlewares/irrelevant-entities-middleware';
 import { ResponseMiddlewareParams } from '../../src/middlewares/middleware';

@@ -1,5 +1,5 @@
+import { getCurrentDataVersion } from '@enigmatis/mongo-driver';
 import { GraphQLResolveInfo } from 'graphql';
-import { getCurrentDataVersion } from '../../../mongo-driver/src/data-version/data-version-manager';
 import { IrrelevantEntitiesContainer } from '../../src/common/irrelevant-entities-container';
 import { FilterExecutor } from '../../src/middlewares/filter-executor';
 import { ResponseMiddlewareParams } from '../../src/middlewares/middleware';

@@ -1,3 +1,4 @@
+import { getCurrentDataVersion } from '@enigmatis/mongo-driver';
 import { SoftDeleteConfiguration } from '@enigmatis/utills';
 import { ApolloServer, Config, PubSub } from 'apollo-server-koa';
 import { GraphQLError, GraphQLFormattedError, GraphQLSchema } from 'graphql';
@@ -6,7 +7,6 @@ import * as http from 'http';
 import { inject, injectable, multiInject } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
-import { getCurrentDataVersion } from '../../../mongo-driver/src/data-version/data-version-manager';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
 import { IrrelevantEntitiesContainer } from '../common/irrelevant-entities-container';
 import { getHeaders } from '../http/request/polaris-request-headers';
