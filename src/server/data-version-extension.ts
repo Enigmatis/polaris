@@ -7,12 +7,12 @@ export class DataVersionExtension extends GraphQLExtension {
         context: PolarisContext;
     }) {
         const { context, graphqlResponse } = responseContext;
-
-        graphqlResponse.extensions = {
-            ...graphqlResponse.extensions,
-            dataVersion: 1,
-        };
-
+        if (context.body.operationName !== 'IntrospectionQuery') {
+            graphqlResponse.extensions = {
+                ...graphqlResponse.extensions,
+                dataVersion: context.executionMetadata && context.executionMetadata.dataVersion,
+            };
+        }
         return responseContext;
     }
 }

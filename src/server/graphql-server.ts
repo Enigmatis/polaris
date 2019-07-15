@@ -1,4 +1,4 @@
-import { SoftDeleteConfiguration } from '@enigmatis/utills';
+import { ExecutionMetadata, SoftDeleteConfiguration } from '@enigmatis/utills';
 import { ApolloServer, Config, PubSub } from 'apollo-server-koa';
 import { GraphQLError, GraphQLFormattedError, GraphQLSchema } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
@@ -148,8 +148,8 @@ export class PolarisGraphQLServer implements GraphQLServer {
             headers,
             body: ctx.request.body,
             softDeleteConfiguration: this.softDeleteConfiguration,
+            executionMetadata: { debugDate: new Date() },
             irrelevantEntities: new IrrelevantEntitiesContainer(),
-            dataVersionRetriever: () => Promise.resolve(1),
             ...this.getCustomContext(ctx),
         };
         if (this.polarisProperties.includeSubscription) {
