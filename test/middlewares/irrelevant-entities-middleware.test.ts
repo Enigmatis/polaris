@@ -31,6 +31,7 @@ describe('split relevantEntities and irrelevant', () => {
                 headers: { dataVersion: 3 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -51,6 +52,7 @@ describe('split relevantEntities and irrelevant', () => {
                 headers: { dataVersion: 3 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -70,6 +72,7 @@ describe('split relevantEntities and irrelevant', () => {
                 headers: { dataVersion: 0 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -94,6 +97,7 @@ describe('not modifying result if not needed', () => {
                 headers: {},
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -112,6 +116,7 @@ describe('not modifying result if not needed', () => {
                 headers: {},
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -133,6 +138,7 @@ describe('not modifying result if not needed', () => {
                 headers: {},
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -151,6 +157,7 @@ describe('not modifying result if not needed', () => {
                 headers: {},
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,

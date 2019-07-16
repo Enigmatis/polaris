@@ -8,7 +8,7 @@ import { TestServer } from '../test-server/server';
 const titles = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 const prepareDb = async (headers: PolarisRequestHeaders) => {
-    const context: PolarisBaseContext = { headers };
+    const context: PolarisBaseContext = { headers, executionMetadata: { dataVersion: 0 } };
 
     const books = [];
     for (let i = 0; i < titles.length; i++) {

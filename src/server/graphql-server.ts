@@ -1,4 +1,4 @@
-import { SoftDeleteConfiguration } from '@enigmatis/utills';
+import { ExecutionMetadata, SoftDeleteConfiguration } from '@enigmatis/utills';
 import { ApolloServer, Config, PubSub } from 'apollo-server-koa';
 import { GraphQLError, GraphQLFormattedError, GraphQLSchema } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
@@ -16,6 +16,7 @@ import { Middleware } from '../middlewares/middleware';
 import { createMiddleware } from '../middlewares/polaris-middleware-creator';
 import { PolarisProperties } from '../properties/polaris-properties';
 import { RealitiesHolderValidator } from '../realities-holder/realities-holder-validator';
+import { DataVersionExtension } from './data-version-extension';
 import { IrrelevantEntitiesExtension } from './irrelevant-entities-extension';
 import { PolarisContext } from './polaris-context';
 
@@ -62,6 +63,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             extensions: [
                 () => new IrrelevantEntitiesExtension(),
                 () => new ResponseHeadersExtension(),
+                () => new DataVersionExtension(),
             ],
             ...userApolloConfig,
         };
@@ -83,9 +85,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                     `🚀 Server ready at http://localhost:${port}${this.server.graphqlPath}`,
                 );
                 this.polarisLogger.info(
-                    `🚀 Subscriptions ready at ws://localhost:${port}${
-                        this.server.subscriptionsPath
-                    }`,
+                    `🚀 Subscriptions ready at ws://localhost:${port}${this.server.subscriptionsPath}`,
                 );
                 resolve();
             });
@@ -148,6 +148,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
             headers,
             body: ctx.request.body,
             softDeleteConfiguration: this.softDeleteConfiguration,
+            executionMetadata: { debugDate: new Date() },
             irrelevantEntities: new IrrelevantEntitiesContainer(),
             ...this.getCustomContext(ctx),
         };

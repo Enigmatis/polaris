@@ -10,7 +10,7 @@ export const titles = ['first', 'second', 'third', 'fourth', 'fifth'];
 const prepareDb = async (headers: PolarisRequestHeaders) => {
     const books = [];
     for (let i = 0; i < titles.length; i++) {
-        books.push({ title: titles[i], testId: i, dataVersion: i + 1 });
+        books.push({ title: titles[i], testId: i });
     }
     await getModelCreator<Book>('book', bookSchema)({ headers }).create(books);
 };
@@ -80,7 +80,7 @@ describe('irrelevant entities tests', () => {
         }`;
         const { extensions }: any = await graphqlRawRequest(queryBook, { 'reality-id': 1 });
 
-        expect(extensions).not.toBeDefined();
+        expect(extensions.irrelevantEntities).not.toBeDefined();
     });
 
     test('deleted entity is in irrelevant entities', async () => {
