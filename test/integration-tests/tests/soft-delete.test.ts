@@ -30,7 +30,11 @@ const defaultAuthor = {
 const bookId = '0';
 
 const prepareDb = async (softDeleteConfiguration?: SoftDeleteConfiguration) => {
-    const context: PolarisBaseContext = { headers, softDeleteConfiguration };
+    const context: PolarisBaseContext = {
+        headers,
+        softDeleteConfiguration,
+        executionMetadata: { dataVersion: 0 },
+    };
     const author = await getModelCreator<Author>('author', authorSchema)(context).create(
         defaultAuthor,
     );

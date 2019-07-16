@@ -39,7 +39,7 @@ describe('filter resolver tests', () => {
                 headers: { dataVersion: 3, realityId: 0 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -61,7 +61,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -83,7 +83,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -105,7 +105,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -129,7 +129,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,
@@ -149,7 +149,7 @@ describe('filter resolver tests', () => {
                 headers: { realityId: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root,

@@ -1,11 +1,10 @@
-import { PolarisRequestHeaders } from '@enigmatis/utills';
 import { UserInputError } from 'apollo-server-koa';
 import { PolarisContext } from '../../../../../src/server/polaris-context';
 import { Author } from '../definitions/author';
 import { Book } from '../definitions/book';
 import { BOOK_UPDATED } from './subscription-event-names';
 
-import { getModelCreator, QueryWithIrrelevant } from '@enigmatis/mongo-driver';
+import { getModelCreator, getModelExecutor, QueryWithIrrelevant } from '@enigmatis/mongo-driver';
 import { authorSchema } from '../../dal/author-model';
 import { bookSchema } from '../../dal/book-model';
 
@@ -109,13 +108,17 @@ export const bookByIdResolver = async (
     if (!Number.isInteger(realityId as any)) {
         throw new UserInputError('please provide reality-id header');
     } else {
-        return getModelCreator<Book>('book', bookSchema)(context)
-            .findOne({ testId: bookId })
-            .populate({
-                path: 'author',
-                model: getModelCreator<Author>('author', authorSchema)(context),
-            })
-            .lean();
+        return getModelExecutor<Book>('book', bookSchema).execute(
+            m =>
+                m
+                    .findOne({ testId: bookId })
+                    .populate({
+                        path: 'author',
+                        model: getModelCreator<Author>('author', authorSchema)(context),
+                    })
+                    .lean(),
+            context,
+        );
     }
 };
 

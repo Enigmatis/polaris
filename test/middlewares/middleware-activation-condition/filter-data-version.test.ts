@@ -14,7 +14,7 @@ describe('data version tests', () => {
             headers: {},
             body: {},
             irrelevantEntities: new IrrelevantEntitiesContainer(),
-            dataVersionRetriever: () => Promise.resolve(null),
+            executionMetadata: { dataVersion: 0 },
         };
         const middlewareParams: ResponseMiddlewareParams = {
             root: undefined,
@@ -31,7 +31,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -47,7 +47,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 1 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -63,7 +63,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 2 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,
@@ -79,7 +79,7 @@ describe('data version tests', () => {
                 headers: { dataVersion: 2 },
                 body: {},
                 irrelevantEntities: new IrrelevantEntitiesContainer(),
-                dataVersionRetriever: () => Promise.resolve(null),
+                executionMetadata: { dataVersion: 0 },
             };
             const middlewareParams: ResponseMiddlewareParams = {
                 root: undefined,

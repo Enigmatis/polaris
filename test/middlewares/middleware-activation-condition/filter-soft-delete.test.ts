@@ -10,7 +10,7 @@ describe('filter-soft-delete tests', () => {
         headers: {},
         body: {},
         irrelevantEntities: new IrrelevantEntitiesContainer(),
-        dataVersionRetriever: () => Promise.resolve(null),
+        executionMetadata: { dataVersion: 0 },
     };
     const info: { [T in keyof GraphQLResolveInfo]: any } = {} as any;
     const root = undefined;
