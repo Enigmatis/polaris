@@ -46,7 +46,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         private realitiesHolderValidator: RealitiesHolderValidator,
         @inject(POLARIS_TYPES.SoftDeleteConfiguration)
         private softDeleteConfiguration?: SoftDeleteConfiguration,
-        @inject(POLARIS_TYPES.ApolloConfig) private userApolloConfig: Config,
+        @inject(POLARIS_TYPES.ApolloConfig) private userApolloConfig?: Config,
     ) {
         const executableSchemaWithMiddleware = applyMiddleware(
             schema,
