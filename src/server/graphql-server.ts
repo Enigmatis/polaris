@@ -3,7 +3,7 @@ import { ApolloServer, Config, PubSub } from 'apollo-server-koa';
 import { GraphQLError, GraphQLFormattedError, GraphQLSchema } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
 import * as http from 'http';
-import { inject, injectable, multiInject } from 'inversify';
+import { inject, injectable, multiInject, optional } from 'inversify';
 import * as Koa from 'koa';
 import * as koaBody from 'koa-bodyparser';
 import { PolarisServerConfig } from '../common/injectable-interfaces';
@@ -46,7 +46,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         private realitiesHolderValidator: RealitiesHolderValidator,
         @inject(POLARIS_TYPES.SoftDeleteConfiguration)
         private softDeleteConfiguration?: SoftDeleteConfiguration,
-        @inject(POLARIS_TYPES.ApolloConfig) private userApolloConfig: Config = {},
+        @inject(POLARIS_TYPES.ApolloConfig) @optional() private userApolloConfig: Config = {},
     ) {
         const executableSchemaWithMiddleware = applyMiddleware(
             schema,
