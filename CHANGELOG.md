@@ -1,3 +1,10 @@
+## [2.13.1](https://github.com/Enigmatis/polaris/compare/v2.13.0...v2.13.1) (2019-07-28)
+
+
+### Bug Fixes
+
+* **server:** allow pass user config to apollo server ([4083be7](https://github.com/Enigmatis/polaris/commit/4083be7))
+
 # [2.13.0](https://github.com/Enigmatis/polaris/compare/v2.12.0...v2.13.0) (2019-06-27)
 
 
