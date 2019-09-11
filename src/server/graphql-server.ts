@@ -27,14 +27,16 @@ export interface GraphQLServer {
     stop(): void;
 }
 
-export type contextCreator = (ctx: Koa.Context) => object;
+export type ContextCreator = (ctx: Koa.Context) => object;
+export type SubscriptionContextCreator = (connection: any) => object;
 
 @injectable()
 export class PolarisGraphQLServer implements GraphQLServer {
     server: ApolloServer;
     private app: Koa;
     private polarisProperties: PolarisProperties;
-    private customContexts: contextCreator[] = [];
+    private customContexts: ContextCreator[] = [];
+    private customSubscriptionContexts: SubscriptionContextCreator[] = [];
     private httpServer?: http.Server;
 
     constructor(
@@ -46,7 +48,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
         private realitiesHolderValidator: RealitiesHolderValidator,
         @inject(POLARIS_TYPES.SoftDeleteConfiguration)
         private softDeleteConfiguration?: SoftDeleteConfiguration,
-        @inject(POLARIS_TYPES.ApolloConfig) @optional() private userApolloConfig: Config = {},
+        @inject(POLARIS_TYPES.ApolloConfig) @optional() private userApolloConfig?: Config,
     ) {
         const executableSchemaWithMiddleware = applyMiddleware(
             schema,
@@ -63,7 +65,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                 () => new IrrelevantEntitiesExtension(),
                 () => new ResponseHeadersExtension(),
             ],
-            ...userApolloConfig,
+            ...(userApolloConfig || {}),
         };
         this.server = new ApolloServer(config);
         this.app = new Koa();
@@ -85,7 +87,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                 this.polarisLogger.info(
                     `🚀 Subscriptions ready at ws://localhost:${port}${
                         this.server.subscriptionsPath
-                    }`,
+                        }`,
                 );
                 resolve();
             });
@@ -101,8 +103,12 @@ export class PolarisGraphQLServer implements GraphQLServer {
         }
     }
 
-    addContextCreator(...contextCreators: contextCreator[]) {
+    addContextCreator(...contextCreators: ContextCreator[]) {
         this.customContexts.push(...contextCreators);
+    }
+
+    addSubscriptionContextCreator(...contextCreators: SubscriptionContextCreator[]) {
+        this.customSubscriptionContexts.push(...contextCreators);
     }
 
     private formatResponse(response: any) {
@@ -132,7 +138,7 @@ export class PolarisGraphQLServer implements GraphQLServer {
                 this.realitiesHolderValidator.validateRealitySupport(context);
                 return context;
             } else {
-                return { body: {}, pubSub: new PubSub() } as any;
+                return this.getSubscriptionContext(connection);
             }
         } catch (e) {
             this.polarisLogger.error('Context error', {
@@ -157,7 +163,23 @@ export class PolarisGraphQLServer implements GraphQLServer {
         return context;
     }
 
-    private getCustomContext(ctx: Koa.Context): object[] {
-        return this.customContexts.map(creator => creator(ctx));
+    private getSubscriptionContext(connection: any): PolarisContext {
+        return {
+            body: {},
+            pubSub: new PubSub(),
+            ...this.getCustomSubscriptionContext(connection),
+        } as any;
+    }
+
+    private getCustomContext(ctx: Koa.Context): object {
+        return this.customContexts.reduce((previousValue, customContext) => ({
+            ...customContext(ctx), ...previousValue,
+        }), {});
+    }
+
+    private getCustomSubscriptionContext(connection: any): object {
+        return this.customSubscriptionContexts.reduce((previousValue, customContext) => ({
+            ...customContext(connection), ...previousValue,
+        }), {});
     }
 }
