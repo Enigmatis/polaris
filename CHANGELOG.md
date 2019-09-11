@@ -1,3 +1,10 @@
+# [2.14.0](https://github.com/Enigmatis/polaris/compare/v2.13.1...v2.14.0) (2019-09-11)
+
+
+### Features
+
+* **context:** allow user to create context ofor subscriptions ([7e78143](https://github.com/Enigmatis/polaris/commit/7e78143))
+
 ## [2.13.1](https://github.com/Enigmatis/polaris/compare/v2.13.0...v2.13.1) (2019-07-28)
 
 
